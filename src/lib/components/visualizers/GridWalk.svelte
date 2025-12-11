@@ -6,6 +6,7 @@
 		class?: string;
 		speedMultiplier?: number;
 		agentCount?: number;
+		trailLength?: number;
 		restartSignal?: number;
 	}
 
@@ -13,6 +14,7 @@
 		class: className = '',
 		speedMultiplier = 1.0,
 		agentCount = 8,
+		trailLength = 40,
 		restartSignal = 0
 	}: Props = $props();
 
@@ -50,12 +52,15 @@
 
 	function createWalker(fromCenter = false): Walker {
 		const colors = getColors();
+		// Use trailLength prop with some variance
+		const baseTrail = trailLength;
+		const variance = Math.floor(baseTrail * 0.3);
 		return {
 			x: fromCenter ? centerX : Math.floor(Math.random() * gridWidth),
 			y: fromCenter ? centerY : Math.floor(Math.random() * gridHeight),
 			color: colors[Math.floor(Math.random() * colors.length)],
 			trail: [],
-			maxTrail: 30 + Math.floor(Math.random() * 40),
+			maxTrail: baseTrail - variance + Math.floor(Math.random() * variance * 2),
 			moveTimer: Math.random() * BASE_MOVE_INTERVAL
 		};
 	}

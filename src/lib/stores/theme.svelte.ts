@@ -1,5 +1,5 @@
 import { browser } from '$app/environment';
-import { visualizers, visualizerOrder, type VisualizerName } from '$lib/themes';
+import { visualizers, visualizerOrder, getDefaultParams, type VisualizerName } from '$lib/themes';
 
 // Speed multiplier options
 export const speedOptions = [0.1, 0.25, 0.5, 1.0, 2.0, 4.0] as const;
@@ -9,10 +9,24 @@ class VisualizerState {
 	current = $state<VisualizerName>('grid-walk');
 	isTransitioning = $state(false);
 
-	// Visualizer controls
+	// Global controls
 	speedMultiplier = $state<SpeedMultiplier>(1.0);
-	agentCount = $state(8);
 	restartSignal = $state(0);
+
+	// Per-visualizer params
+	params = $state<Record<VisualizerName, Record<string, number>>>({
+		'grid-walk': getDefaultParams('grid-walk'),
+		'random-walk': getDefaultParams('random-walk'),
+		'matrix-rain': getDefaultParams('matrix-rain'),
+		'particle-swarm': getDefaultParams('particle-swarm'),
+		starfield: getDefaultParams('starfield'),
+		ripples: getDefaultParams('ripples')
+	});
+
+	// Mouse position for interactive visualizers
+	mouseX = $state(0);
+	mouseY = $state(0);
+	mouseActive = $state(false);
 
 	constructor() {
 		if (browser) {
@@ -20,6 +34,17 @@ class VisualizerState {
 			if (saved && visualizers[saved]) {
 				this.current = saved;
 			}
+
+			// Track mouse position
+			window.addEventListener('mousemove', (e) => {
+				this.mouseX = e.clientX;
+				this.mouseY = e.clientY;
+				this.mouseActive = true;
+			});
+
+			window.addEventListener('mouseleave', () => {
+				this.mouseActive = false;
+			});
 		}
 	}
 
@@ -27,10 +52,17 @@ class VisualizerState {
 		return visualizers[this.current];
 	}
 
+	get currentParams() {
+		return this.params[this.current];
+	}
+
 	async set(visualizer: VisualizerName) {
 		if (visualizer === this.current || this.isTransitioning) return;
 
 		this.isTransitioning = true;
+
+		// Reset speed to default when switching
+		this.speedMultiplier = 1.0;
 
 		if (browser) {
 			localStorage.setItem('rs-visualizer', visualizer);
@@ -61,12 +93,28 @@ class VisualizerState {
 		this.speedMultiplier = speedOptions[newIndex];
 	}
 
-	adjustAgents(delta: number) {
-		this.agentCount = Math.max(1, Math.min(100, this.agentCount + delta));
+	setParam(key: string, value: number) {
+		const config = visualizers[this.current];
+		const paramConfig = config.params[key];
+		if (paramConfig) {
+			// Clamp to min/max
+			const clamped = Math.max(paramConfig.min, Math.min(paramConfig.max, value));
+			this.params[this.current][key] = clamped;
+		}
+	}
+
+	adjustParam(key: string, delta: number) {
+		const currentValue = this.params[this.current][key] ?? 0;
+		this.setParam(key, currentValue + delta);
 	}
 
 	restart() {
 		this.restartSignal++;
+	}
+
+	resetParams() {
+		this.params[this.current] = getDefaultParams(this.current);
+		this.speedMultiplier = 1.0;
 	}
 }
 

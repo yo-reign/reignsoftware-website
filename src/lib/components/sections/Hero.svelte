@@ -18,6 +18,9 @@
 	const fullText = 'Better software, done right';
 	let typeIndex = $state(0);
 
+	// Track which param input is focused
+	let focusedParam = $state<string | null>(null);
+
 	$effect(() => {
 		if (mounted && typeIndex < fullText.length) {
 			const timeout = setTimeout(() => {
@@ -71,6 +74,14 @@
 				return 'var(--term-green)';
 			case 'random-walk':
 				return 'var(--term-blue)';
+			case 'matrix-rain':
+				return 'var(--term-green)';
+			case 'particle-swarm':
+				return 'var(--term-yellow)';
+			case 'starfield':
+				return 'var(--term-purple)';
+			case 'ripples':
+				return 'var(--term-aqua)';
 			default:
 				return 'var(--term-green)';
 		}
@@ -87,6 +98,38 @@
 
 	function canIncreaseSpeed(): boolean {
 		return speedOptions.indexOf(visualizerState.speedMultiplier) < speedOptions.length - 1;
+	}
+
+	// Handle keyboard input for params
+	function handleParamKeydown(e: KeyboardEvent, key: string) {
+		const config = visualizers[visualizerState.current].params[key];
+		if (!config) return;
+
+		if (e.key === 'ArrowUp' || e.key === 'ArrowRight') {
+			e.preventDefault();
+			visualizerState.adjustParam(key, config.step);
+		} else if (e.key === 'ArrowDown' || e.key === 'ArrowLeft') {
+			e.preventDefault();
+			visualizerState.adjustParam(key, -config.step);
+		}
+	}
+
+	function handleParamInput(e: Event, key: string) {
+		const input = e.target as HTMLInputElement;
+		const value = parseInt(input.value, 10);
+		if (!isNaN(value)) {
+			visualizerState.setParam(key, value);
+		}
+	}
+
+	function handleParamBlur(e: Event, key: string) {
+		focusedParam = null;
+		// Ensure value is clamped on blur
+		const config = visualizers[visualizerState.current].params[key];
+		if (config) {
+			const currentValue = visualizerState.currentParams[key];
+			visualizerState.setParam(key, currentValue);
+		}
 	}
 </script>
 
@@ -107,7 +150,7 @@
 					<h1
 						class="text-3xl font-bold leading-tight text-[var(--term-fg)] sm:text-4xl md:text-5xl"
 					>
-						{typedText}<span class="animate-pulse text-[var(--term-green)]">█</span>
+						{typedText}<span class="animate-pulse text-[var(--term-green)]"></span>
 					</h1>
 				</div>
 
@@ -189,7 +232,7 @@
 													? 'border-[var(--term-green)] bg-[var(--term-bg1)]'
 													: 'border-border hover:border-[var(--term-gray)]'}"
 											>
-												<span style="color: {visualizerColor}">■</span>
+												<span style="color: {visualizerColor}"></span>
 												<div class="flex-1">
 													<div class="text-sm" style="color: {visualizerColor}">
 														./{visualizer.name}/
@@ -206,7 +249,12 @@
 
 								<!-- Controls -->
 								<div class="p-3">
-									<div class="mb-2 text-xs text-[var(--term-gray)]"># Adjust parameters</div>
+									<div class="mb-2 text-xs text-[var(--term-gray)]">
+										# Adjust parameters
+										{#if visualizers[visualizerState.current].interactive}
+											<span class="ml-2 text-[var(--term-yellow)]">(interactive)</span>
+										{/if}
+									</div>
 									<div class="flex flex-col gap-3">
 										<!-- Speed control -->
 										<div class="flex items-center justify-between gap-3">
@@ -234,38 +282,63 @@
 											</div>
 										</div>
 
-										<!-- Agent count control -->
-										<div class="flex items-center justify-between gap-3">
-											<span class="text-sm text-[var(--term-blue)]">--agents</span>
-											<div class="flex items-center gap-1">
-												<button
-													onclick={() => visualizerState.adjustAgents(-1)}
-													disabled={visualizerState.agentCount <= 1}
-													class="flex h-7 w-7 items-center justify-center border border-border transition-colors hover:border-[var(--term-blue)] hover:text-[var(--term-blue)] disabled:opacity-30 disabled:hover:border-border disabled:hover:text-current"
-												>
-													<Minus class="h-3 w-3" />
-												</button>
-												<span class="w-16 text-center font-mono text-sm text-[var(--term-blue)]">
-													{visualizerState.agentCount}
-												</span>
-												<button
-													onclick={() => visualizerState.adjustAgents(1)}
-													disabled={visualizerState.agentCount >= 100}
-													class="flex h-7 w-7 items-center justify-center border border-border transition-colors hover:border-[var(--term-blue)] hover:text-[var(--term-blue)] disabled:opacity-30 disabled:hover:border-border disabled:hover:text-current"
-												>
-													<Plus class="h-3 w-3" />
-												</button>
+										<!-- Dynamic params for current visualizer -->
+										{#each Object.entries(visualizers[visualizerState.current].params) as [key, config]}
+											<div class="flex items-center justify-between gap-3">
+												<span class="text-sm" style="color: {config.color}">{config.label}</span>
+												<div class="flex items-center gap-1">
+													<button
+														onclick={() => visualizerState.adjustParam(key, -config.step)}
+														disabled={visualizerState.currentParams[key] <= config.min}
+														class="flex h-7 w-7 items-center justify-center border border-border transition-colors disabled:opacity-30 disabled:hover:border-border disabled:hover:text-current"
+														style="--hover-color: {config.color}"
+														onmouseenter={(e) =>
+															(e.currentTarget.style.borderColor = config.color)}
+														onmouseleave={(e) => (e.currentTarget.style.borderColor = '')}
+													>
+														<Minus class="h-3 w-3" />
+													</button>
+													<input
+														type="number"
+														value={visualizerState.currentParams[key]}
+														min={config.min}
+														max={config.max}
+														step={config.step}
+														onfocus={() => (focusedParam = key)}
+														onblur={(e) => handleParamBlur(e, key)}
+														onkeydown={(e) => handleParamKeydown(e, key)}
+														oninput={(e) => handleParamInput(e, key)}
+														class="w-16 border border-border bg-transparent text-center font-mono text-sm transition-colors focus:border-[var(--term-fg)] focus:outline-none"
+														style="color: {config.color}"
+													/>
+													<button
+														onclick={() => visualizerState.adjustParam(key, config.step)}
+														disabled={visualizerState.currentParams[key] >= config.max}
+														class="flex h-7 w-7 items-center justify-center border border-border transition-colors disabled:opacity-30 disabled:hover:border-border disabled:hover:text-current"
+														style="--hover-color: {config.color}"
+														onmouseenter={(e) =>
+															(e.currentTarget.style.borderColor = config.color)}
+														onmouseleave={(e) => (e.currentTarget.style.borderColor = '')}
+													>
+														<Plus class="h-3 w-3" />
+													</button>
+												</div>
 											</div>
-										</div>
+										{/each}
 
-										<!-- Restart button -->
-										<button
-											onclick={() => visualizerState.restart()}
-											class="flex w-full items-center justify-center gap-2 border border-[var(--term-red)] px-3 py-2 text-sm text-[var(--term-red)] transition-colors hover:bg-[var(--term-red)] hover:text-[var(--term-bg)]"
-										>
-											<RotateCcw class="h-3 w-3" />
-											<span>--restart</span>
-										</button>
+										<!-- Action button -->
+										<div class="pt-1">
+											<button
+												onclick={() => {
+													visualizerState.resetParams();
+													visualizerState.restart();
+												}}
+												class="flex w-full items-center justify-center gap-2 border border-[var(--term-red)] px-3 py-2 text-sm text-[var(--term-red)] transition-colors hover:bg-[var(--term-red)] hover:text-[var(--term-bg)]"
+											>
+												<RotateCcw class="h-3 w-3" />
+												<span>--reset</span>
+											</button>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -276,3 +349,17 @@
 		</div>
 	</div>
 </section>
+
+<style>
+	/* Hide number input spinners */
+	input[type='number']::-webkit-inner-spin-button,
+	input[type='number']::-webkit-outer-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+
+	input[type='number'] {
+		-moz-appearance: textfield;
+		appearance: textfield;
+	}
+</style>

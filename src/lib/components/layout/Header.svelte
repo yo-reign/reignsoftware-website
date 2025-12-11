@@ -150,9 +150,17 @@
 	function getVisualizerColor(name: VisualizerName): string {
 		switch (name) {
 			case 'grid-walk':
-				return '#b8bb26';
+				return '#b8bb26'; // green
 			case 'random-walk':
-				return '#83a598';
+				return '#83a598'; // blue
+			case 'matrix-rain':
+				return '#b8bb26'; // green
+			case 'particle-swarm':
+				return '#fabd2f'; // yellow
+			case 'starfield':
+				return '#d3869b'; // purple
+			case 'ripples':
+				return '#8ec07c'; // aqua
 			default:
 				return '#b8bb26';
 		}

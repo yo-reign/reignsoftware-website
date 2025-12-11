@@ -6,6 +6,7 @@
 		class?: string;
 		speedMultiplier?: number;
 		agentCount?: number;
+		thickness?: number;
 		restartSignal?: number;
 	}
 
@@ -13,6 +14,7 @@
 		class: className = '',
 		speedMultiplier = 1.0,
 		agentCount = 8,
+		thickness: baseThickness = 2,
 		restartSignal = 0
 	}: Props = $props();
 
@@ -44,6 +46,8 @@
 		const rect = canvas.getBoundingClientRect();
 		const colors = getColors();
 		const angle = Math.random() * Math.PI * 2;
+		// Use baseThickness prop with some variance
+		const thicknessVariance = baseThickness * 0.5;
 		return {
 			x: fromCenter ? rect.width / 2 : Math.random() * rect.width,
 			y: fromCenter ? rect.height / 2 : Math.random() * rect.height,
@@ -54,7 +58,7 @@
 			baseSpeed: 1 + Math.random() * 2,
 			life: 0,
 			maxLife: 400 + Math.random() * 400,
-			thickness: 1 + Math.random() * 2
+			thickness: baseThickness - thicknessVariance / 2 + Math.random() * thicknessVariance
 		};
 	}
 
