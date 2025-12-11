@@ -51,11 +51,11 @@
 				>
 					<span
 						class="h-3 w-3 rounded-full"
-						style="background: {theme.name === 'gruvbox'
+						style="background: {theme.name === 'terminal'
 							? '#fe8019'
-							: theme.name === 'nord'
+							: theme.name === 'minimal'
 								? '#88c0d0'
-								: theme.name === 'dracula'
+								: theme.name === 'cyber'
 									? '#bd93f9'
 									: '#cba6f7'}"
 					></span>

@@ -58,7 +58,7 @@
 		<div class="grid items-center gap-12 lg:grid-cols-2">
 			<!-- Content -->
 			<div data-content class="opacity-0">
-				{#if themeState.current === 'gruvbox'}
+				{#if themeState.current === 'terminal'}
 					<div class="mb-4 inline-flex items-center gap-2 rounded-md border border-border bg-card px-3 py-1">
 						<span class="text-xs text-muted-foreground">~/products $</span>
 						<span class="text-xs text-primary">cat importdoc/README.md</span>
@@ -70,20 +70,20 @@
 				{/if}
 
 				<h2 class="mb-4 text-3xl font-bold sm:text-4xl">
-					{#if themeState.current === 'gruvbox'}
+					{#if themeState.current === 'terminal'}
 						<span class="text-muted-foreground"># </span>
 					{/if}
 					importDoc
 				</h2>
 
 				<p class="mb-6 text-lg text-muted-foreground">
-					{#if themeState.current === 'gruvbox'}
+					{#if themeState.current === 'terminal'}
 						<span class="text-[var(--gruvbox-bright-green)]">/**</span><br />
 						<span class="text-[var(--gruvbox-bright-green)]"> * </span>
 					{/if}
 					Mail intake automation for law firms. Transform the chaos of incoming documents
 					into organized, actionable case files—automatically.
-					{#if themeState.current === 'gruvbox'}
+					{#if themeState.current === 'terminal'}
 						<br /><span class="text-[var(--gruvbox-bright-green)]"> */</span>
 					{/if}
 				</p>
@@ -96,7 +96,7 @@
 								<feature.icon class="h-4 w-4" />
 							</div>
 							<span>
-								{#if themeState.current === 'gruvbox'}
+								{#if themeState.current === 'terminal'}
 									<span class="text-muted-foreground">-></span>
 								{/if}
 								{feature.text}
@@ -110,7 +110,7 @@
 					href="/products/importdoc"
 					class="group inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 font-medium text-primary-foreground transition-all hover:opacity-90"
 				>
-					{#if themeState.current === 'gruvbox'}
+					{#if themeState.current === 'terminal'}
 						<span>./learn_more --verbose</span>
 					{:else}
 						<span>Learn More</span>
@@ -122,7 +122,7 @@
 			<!-- Visual mockup -->
 			<div data-visual class="relative opacity-0">
 				<div class="rounded-xl border border-border bg-card p-4 shadow-2xl">
-					{#if themeState.current === 'gruvbox'}
+					{#if themeState.current === 'terminal'}
 						<!-- Terminal-style header -->
 						<div class="mb-4 flex items-center gap-2 border-b border-border pb-3">
 							<div class="flex gap-1.5">
@@ -149,7 +149,7 @@
 						<!-- Recent items -->
 						<div class="rounded-lg bg-secondary p-3">
 							<div class="mb-2 text-xs text-muted-foreground">
-								{#if themeState.current === 'gruvbox'}
+								{#if themeState.current === 'terminal'}
 									$ tail -3 ./recent_docs.log
 								{:else}
 									Recent Documents

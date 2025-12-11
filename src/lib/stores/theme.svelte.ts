@@ -1,8 +1,9 @@
 import { browser } from '$app/environment';
-import { themes, type ThemeName } from '$lib/themes';
+import { themes, themeOrder, type ThemeName } from '$lib/themes';
 
 class ThemeState {
-	current = $state<ThemeName>('gruvbox');
+	current = $state<ThemeName>('terminal');
+	isTransitioning = $state(false);
 
 	constructor() {
 		if (browser) {
@@ -19,24 +20,41 @@ class ThemeState {
 		return themes[this.current];
 	}
 
-	set(theme: ThemeName) {
-		this.current = theme;
+	async set(theme: ThemeName) {
+		if (theme === this.current || this.isTransitioning) return;
+
+		this.isTransitioning = true;
+
+		// Trigger transition animation
 		if (browser) {
+			document.documentElement.classList.add('theme-transitioning');
+
+			// Wait for transition setup
+			await new Promise((r) => setTimeout(r, 50));
+
+			this.current = theme;
 			this.applyTheme(theme);
 			localStorage.setItem('rs-theme', theme);
+
+			// Wait for transition to complete
+			await new Promise((r) => setTimeout(r, 500));
+
+			document.documentElement.classList.remove('theme-transitioning');
+		} else {
+			this.current = theme;
 		}
+
+		this.isTransitioning = false;
 	}
 
 	cycle() {
-		const themeNames = Object.keys(themes) as ThemeName[];
-		const currentIndex = themeNames.indexOf(this.current);
-		const nextIndex = (currentIndex + 1) % themeNames.length;
-		this.set(themeNames[nextIndex]);
+		const currentIndex = themeOrder.indexOf(this.current);
+		const nextIndex = (currentIndex + 1) % themeOrder.length;
+		this.set(themeOrder[nextIndex]);
 	}
 
 	private applyTheme(theme: ThemeName) {
 		document.documentElement.setAttribute('data-theme', theme);
-		// Update font family based on theme
 		document.documentElement.style.setProperty('--font-theme', themes[theme].fontFamily);
 	}
 }

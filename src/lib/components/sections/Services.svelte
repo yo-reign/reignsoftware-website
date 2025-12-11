@@ -71,7 +71,7 @@
 	<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 		<!-- Section header -->
 		<div class="mb-16 text-center">
-			{#if themeState.current === 'gruvbox'}
+			{#if themeState.current === 'terminal'}
 				<p class="mb-2 text-sm text-muted-foreground">
 					<span class="text-primary">$</span> ls ./services
 				</p>
@@ -96,7 +96,7 @@
 					class="group relative overflow-hidden rounded-xl border border-border bg-card p-6 opacity-0 transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5"
 				>
 					<!-- Terminal header for gruvbox -->
-					{#if themeState.current === 'gruvbox'}
+					{#if themeState.current === 'terminal'}
 						<div class="mb-4 flex items-center gap-2 border-b border-border pb-3">
 							<div class="flex gap-1.5">
 								<div class="h-3 w-3 rounded-full bg-[var(--gruvbox-red)]"></div>
@@ -116,11 +116,11 @@
 
 					<!-- Content -->
 					<h3 class="mb-2 text-xl font-semibold">
-						{#if themeState.current === 'gruvbox'}
+						{#if themeState.current === 'terminal'}
 							<span class="text-primary">./</span>{/if}{service.title}
 					</h3>
 					<p class="mb-4 text-muted-foreground">
-						{#if themeState.current === 'gruvbox'}
+						{#if themeState.current === 'terminal'}
 							<span class="text-[var(--gruvbox-bright-green)]"># </span>{/if}{service.description}
 					</p>
 
@@ -130,7 +130,7 @@
 							<span
 								class="rounded-md bg-secondary px-2 py-1 text-xs text-secondary-foreground"
 							>
-								{#if themeState.current === 'gruvbox'}--{/if}{tag}
+								{#if themeState.current === 'terminal'}--{/if}{tag}
 							</span>
 						{/each}
 					</div>

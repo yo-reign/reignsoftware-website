@@ -122,37 +122,75 @@ export const themeState = new ThemeState();
 ### 1. The "Playground" Philosophy
 
 The website should feel interactive and explorable. Visitors can:
-- Toggle between different visual themes (Gruvbox, Nord, Dracula, Catppuccin, etc.)
-- Watch generative art/visualizations that respond to their theme choice
-- Experience micro-interactions and smooth animations everywhere
-- Feel like they're exploring a crafted digital space, not reading a brochure
+- Toggle between completely different visual **experiences** (not just color swaps)
+- Each theme has its own layout, UI style, animations, and visualizer
+- The theme selector is a **prominent part of the design**, not hidden in a toolbar
+- Switching themes should feel like entering a new space with smooth, intentional transitions
 
-### 2. Theme System Architecture
+### 2. Theme Design Principles
 
-```
-┌─────────────────────────────────────────────────────────┐
-│                    Theme Context                         │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐     │
-│  │   Colors    │  │    Fonts    │  │  Visualizer │     │
-│  │  (CSS vars) │  │  (families) │  │  (component)│     │
-│  └─────────────┘  └─────────────┘  └─────────────┘     │
-└─────────────────────────────────────────────────────────┘
-                          │
-                          ▼
-┌─────────────────────────────────────────────────────────┐
-│                   Theme Definitions                      │
-│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐   │
-│  │ Gruvbox  │ │   Nord   │ │ Dracula  │ │Catppuccin│   │
-│  │ +random  │ │ +aurora  │ │ +bats    │ │ +pastel  │   │
-│  │  walk    │ │ particles│ │ swarm    │ │  waves   │   │
-│  └──────────┘ └──────────┘ └──────────┘ └──────────┘   │
-└─────────────────────────────────────────────────────────┘
-```
+**Themes are experiences, not color schemes.** Each theme should:
+- Have a distinct **name based on aesthetic** (e.g., "Terminal", "Minimal"), not color palette names
+- Feature a **unique layout** and component styling
+- Include a **signature visualizer** that fits the theme's personality
+- Feel **alive and intentional** — no lifeless or generic variations
 
-Each theme includes:
-- **Color palette** (CSS custom properties)
-- **Typography** (font families, weights)
-- **Signature visualization** (unique per theme)
+### 3. Theme Definitions
+
+| Theme | Color Base | Aesthetic | Visualizer | Layout Style |
+|-------|-----------|-----------|------------|--------------|
+| **Terminal** | Gruvbox | Retro hacker, CLI-inspired | Grid-based random walk | Monospace, boxy, command prompts |
+| **Minimal** | Nord | Clean, Scandinavian, calm | Subtle aurora waves | Lots of whitespace, elegant type |
+| **Cyber** | Dracula | Neon, futuristic, bold | Particle swarm / glitch | High contrast, sharp edges |
+| **Soft** | Catppuccin | Cozy, pastel, approachable | Flowing gradient blobs | Rounded, friendly, warm |
+
+### 4. Theme Transition System
+
+When switching themes:
+1. **Mask/reveal animation** — not just CSS variable swap
+2. **Content morphs** to new layout (e.g., cards reshape, spacing adjusts)
+3. **Visualizer crossfades** to theme-specific one
+4. **Typography animates** weight/size changes
+5. Feels like a **page transformation**, not a repaint
+
+### 5. Theme Selector Placement
+
+The theme selector should be:
+- **Part of the hero/landing experience** — users discover it naturally
+- Possibly an interactive element in the visualizer area
+- A "portal" or "door" to other experiences
+- Always accessible but not just a dropdown in the nav
+
+### 6. Per-Theme Specifications
+
+#### Terminal (Gruvbox)
+- **Font:** JetBrains Mono (monospace only)
+- **UI:** Terminal window chrome, command prompts (`$`, `./`), ASCII-style borders
+- **Visualizer:** Random walk on a **visible grid** (not free-flowing)
+- **No glow effects** — flat, authentic terminal feel
+- **Layout:** Dense, information-rich, left-aligned
+- **Interactions:** Typing animations, cursor blinks, command-style CTAs
+
+#### Minimal (Nord) — *To be designed*
+- **Font:** Inter or similar clean sans-serif
+- **UI:** Extreme whitespace, subtle borders, muted accents
+- **Visualizer:** Soft aurora/northern lights gradient animation
+- **Layout:** Centered, sparse, breathing room
+- **Interactions:** Fade-ins, gentle hovers, no flashy effects
+
+#### Cyber (Dracula) — *To be designed*
+- **Font:** Bold geometric sans, maybe some glow on headers
+- **UI:** Sharp corners, neon accents, grid lines
+- **Visualizer:** Particle effects, possible glitch/noise
+- **Layout:** Asymmetric, bold sections, high visual contrast
+- **Interactions:** Glitch effects, fast transitions, scan lines
+
+#### Soft (Catppuccin) — *To be designed*
+- **Font:** Rounded sans-serif, friendly weight
+- **UI:** Pill shapes, soft shadows, pastel gradients
+- **Visualizer:** Flowing blob/lava lamp style
+- **Layout:** Card-heavy, cozy spacing, warm feel
+- **Interactions:** Bounce, squish, playful micro-animations
 
 ---
 

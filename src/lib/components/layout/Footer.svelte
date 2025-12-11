@@ -36,13 +36,13 @@
 			<!-- Brand column -->
 			<div class="lg:col-span-2">
 				<a href="/" class="inline-block">
-					{#if themeState.current === 'gruvbox'}
+					{#if themeState.current === 'terminal'}
 						<span class="text-muted-foreground">~/</span>
 					{/if}
 					<span class="text-xl font-bold text-primary">ReignSoftware</span>
 				</a>
 				<p class="mt-4 max-w-xs text-sm text-muted-foreground">
-					{#if themeState.current === 'gruvbox'}
+					{#if themeState.current === 'terminal'}
 						<span class="text-[var(--gruvbox-bright-green)]">// </span>
 					{/if}
 					Building software that's not just functional—it's exceptional. Fast, robust, and visually stunning.
@@ -67,7 +67,7 @@
 			<!-- Links columns -->
 			<div>
 				<h3 class="mb-4 text-sm font-semibold">
-					{#if themeState.current === 'gruvbox'}
+					{#if themeState.current === 'terminal'}
 						<span class="text-primary">./</span>products
 					{:else}
 						Products
@@ -89,7 +89,7 @@
 
 			<div>
 				<h3 class="mb-4 text-sm font-semibold">
-					{#if themeState.current === 'gruvbox'}
+					{#if themeState.current === 'terminal'}
 						<span class="text-primary">./</span>company
 					{:else}
 						Company
@@ -111,7 +111,7 @@
 
 			<div>
 				<h3 class="mb-4 text-sm font-semibold">
-					{#if themeState.current === 'gruvbox'}
+					{#if themeState.current === 'terminal'}
 						<span class="text-primary">./</span>resources
 					{:else}
 						Resources
@@ -135,7 +135,7 @@
 		<!-- Bottom bar -->
 		<div class="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 text-sm text-muted-foreground sm:flex-row">
 			<p>
-				{#if themeState.current === 'gruvbox'}
+				{#if themeState.current === 'terminal'}
 					<span class="text-primary">$</span> echo "© {currentYear} ReignSoftware. All rights reserved."
 				{:else}
 					© {currentYear} ReignSoftware. All rights reserved.

@@ -22,7 +22,7 @@
 <!-- CTA Section -->
 <section class="relative py-24">
 	<div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-		{#if themeState.current === 'gruvbox'}
+		{#if themeState.current === 'terminal'}
 			<!-- Terminal-style CTA -->
 			<div class="mx-auto max-w-2xl rounded-xl border border-border bg-card p-8">
 				<div class="mb-4 flex items-center justify-center gap-2 text-sm text-muted-foreground">

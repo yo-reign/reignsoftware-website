@@ -1,53 +1,58 @@
-// Theme definitions - each theme is a complete design system
-export type ThemeName = 'gruvbox' | 'nord' | 'dracula' | 'catppuccin';
+// Theme definitions - each theme is a complete EXPERIENCE, not just colors
+export type ThemeName = 'terminal' | 'minimal' | 'cyber' | 'soft';
 
 export interface ThemeConfig {
 	name: ThemeName;
 	displayName: string;
+	tagline: string;
 	description: string;
-	visualizer: 'random-walk' | 'aurora' | 'bat-swarm' | 'pastel-waves';
+	visualizer: 'grid-walk' | 'aurora' | 'glitch-particles' | 'flowing-blobs';
 	fontFamily: string;
-	aesthetic: 'terminal' | 'minimal' | 'gothic' | 'soft';
+	fontMono: string;
 }
 
 export const themes: Record<ThemeName, ThemeConfig> = {
-	gruvbox: {
-		name: 'gruvbox',
-		displayName: 'Gruvbox',
-		description: 'Retro terminal vibes with warm, earthy tones',
-		visualizer: 'random-walk',
+	terminal: {
+		name: 'terminal',
+		displayName: 'Terminal',
+		tagline: 'Enter the command line',
+		description: 'Retro hacker aesthetic. CLI-inspired, monospace everything.',
+		visualizer: 'grid-walk',
 		fontFamily: '"JetBrains Mono", "Fira Code", monospace',
-		aesthetic: 'terminal'
+		fontMono: '"JetBrains Mono", monospace'
 	},
-	nord: {
-		name: 'nord',
-		displayName: 'Nord',
-		description: 'Arctic, north-bluish color palette',
+	minimal: {
+		name: 'minimal',
+		displayName: 'Minimal',
+		tagline: 'Less is more',
+		description: 'Clean Scandinavian design. Whitespace, elegance, calm.',
 		visualizer: 'aurora',
 		fontFamily: '"Inter", system-ui, sans-serif',
-		aesthetic: 'minimal'
+		fontMono: '"JetBrains Mono", monospace'
 	},
-	dracula: {
-		name: 'dracula',
-		displayName: 'Dracula',
-		description: 'Dark theme with vibrant accent colors',
-		visualizer: 'bat-swarm',
-		fontFamily: '"Fira Code", monospace',
-		aesthetic: 'gothic'
-	},
-	catppuccin: {
-		name: 'catppuccin',
-		displayName: 'Catppuccin',
-		description: 'Soothing pastel theme for cozy coding',
-		visualizer: 'pastel-waves',
+	cyber: {
+		name: 'cyber',
+		displayName: 'Cyber',
+		tagline: 'Welcome to the grid',
+		description: 'Neon futuristic. Bold, high-contrast, electric.',
+		visualizer: 'glitch-particles',
 		fontFamily: '"Inter", system-ui, sans-serif',
-		aesthetic: 'soft'
+		fontMono: '"JetBrains Mono", monospace'
+	},
+	soft: {
+		name: 'soft',
+		displayName: 'Soft',
+		tagline: 'Cozy and warm',
+		description: 'Pastel comfort. Friendly, approachable, inviting.',
+		visualizer: 'flowing-blobs',
+		fontFamily: '"Inter", system-ui, sans-serif',
+		fontMono: '"JetBrains Mono", monospace'
 	}
 };
 
-// Color palettes for visualizers
+// Color palettes for visualizers (internal use)
 export const themeColors: Record<ThemeName, string[]> = {
-	gruvbox: [
+	terminal: [
 		'#cc241d', // red
 		'#98971a', // green
 		'#d79921', // yellow
@@ -57,34 +62,37 @@ export const themeColors: Record<ThemeName, string[]> = {
 		'#fe8019', // orange
 		'#fabd2f' // bright yellow
 	],
-	nord: [
-		'#8fbcbb', // nord7
-		'#88c0d0', // nord8
-		'#81a1c1', // nord9
-		'#5e81ac', // nord10
-		'#bf616a', // nord11
-		'#d08770', // nord12
-		'#ebcb8b', // nord13
-		'#a3be8c' // nord14
+	minimal: [
+		'#8fbcbb',
+		'#88c0d0',
+		'#81a1c1',
+		'#5e81ac',
+		'#a3be8c',
+		'#ebcb8b',
+		'#d08770',
+		'#bf616a'
 	],
-	dracula: [
-		'#ff79c6', // pink
-		'#bd93f9', // purple
-		'#8be9fd', // cyan
-		'#50fa7b', // green
-		'#ffb86c', // orange
-		'#ff5555', // red
-		'#f1fa8c', // yellow
-		'#6272a4' // comment
+	cyber: [
+		'#ff79c6',
+		'#bd93f9',
+		'#8be9fd',
+		'#50fa7b',
+		'#ffb86c',
+		'#ff5555',
+		'#f1fa8c',
+		'#6272a4'
 	],
-	catppuccin: [
-		'#f5c2e7', // pink
-		'#cba6f7', // mauve
-		'#f38ba8', // red
-		'#eba0ac', // maroon
-		'#fab387', // peach
-		'#f9e2af', // yellow
-		'#a6e3a1', // green
-		'#94e2d5' // teal
+	soft: [
+		'#f5c2e7',
+		'#cba6f7',
+		'#f38ba8',
+		'#eba0ac',
+		'#fab387',
+		'#f9e2af',
+		'#a6e3a1',
+		'#94e2d5'
 	]
 };
+
+// Theme order for cycling
+export const themeOrder: ThemeName[] = ['terminal', 'minimal', 'cyber', 'soft'];

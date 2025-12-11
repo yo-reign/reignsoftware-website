@@ -1,7 +1,9 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
-/* Theme font variable */
+/* ============================================
+   FONTS
+   ============================================ */
 @font-face {
 	font-family: 'JetBrains Mono';
 	src: url('https://fonts.gstatic.com/s/jetbrainsmono/v18/tDbY2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKxjOVGa.woff2')
@@ -21,9 +23,22 @@
 }
 
 /* ============================================
-   GRUVBOX THEME - Terminal Retro Aesthetic
+   THEME TRANSITIONS
    ============================================ */
-[data-theme='gruvbox'] {
+.theme-transitioning * {
+	transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease !important;
+}
+
+/* Ensure Svelte transitions work during theme changes */
+.theme-transitioning [style*="opacity"],
+.theme-transitioning [style*="transform"] {
+	transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease, opacity 0.4s ease, transform 0.4s ease !important;
+}
+
+/* ============================================
+   TERMINAL THEME - CLI Retro Aesthetic
+   ============================================ */
+[data-theme='terminal'] {
 	--background: #282828;
 	--foreground: #ebdbb2;
 	--card: #3c3836;
@@ -43,39 +58,31 @@
 	--input: #504945;
 	--ring: #fe8019;
 
-	/* Gruvbox specific colors */
-	--gruvbox-bg: #282828;
-	--gruvbox-bg-soft: #32302f;
-	--gruvbox-bg1: #3c3836;
-	--gruvbox-bg2: #504945;
-	--gruvbox-bg3: #665c54;
-	--gruvbox-fg: #ebdbb2;
-	--gruvbox-fg-dim: #a89984;
-	--gruvbox-red: #cc241d;
-	--gruvbox-green: #98971a;
-	--gruvbox-yellow: #d79921;
-	--gruvbox-blue: #458588;
-	--gruvbox-purple: #b16286;
-	--gruvbox-aqua: #689d6a;
-	--gruvbox-orange: #fe8019;
-	--gruvbox-bright-red: #fb4934;
-	--gruvbox-bright-green: #b8bb26;
-	--gruvbox-bright-yellow: #fabd2f;
-	--gruvbox-bright-blue: #83a598;
-	--gruvbox-bright-purple: #d3869b;
-	--gruvbox-bright-aqua: #8ec07c;
-	--gruvbox-bright-orange: #fe8019;
-
-	/* Terminal styling */
-	--terminal-glow: rgba(254, 128, 25, 0.15);
-	--terminal-scanline: rgba(0, 0, 0, 0.1);
-	--cursor-blink: #fe8019;
+	/* Terminal palette */
+	--term-bg: #282828;
+	--term-bg1: #3c3836;
+	--term-bg2: #504945;
+	--term-fg: #ebdbb2;
+	--term-fg-dim: #a89984;
+	--term-red: #cc241d;
+	--term-green: #98971a;
+	--term-yellow: #d79921;
+	--term-blue: #458588;
+	--term-purple: #b16286;
+	--term-aqua: #689d6a;
+	--term-orange: #fe8019;
+	--term-bright-red: #fb4934;
+	--term-bright-green: #b8bb26;
+	--term-bright-yellow: #fabd2f;
+	--term-bright-blue: #83a598;
+	--term-bright-purple: #d3869b;
+	--term-bright-aqua: #8ec07c;
 }
 
 /* ============================================
-   NORD THEME - Arctic Minimal Aesthetic
+   MINIMAL THEME - Clean Scandinavian
    ============================================ */
-[data-theme='nord'] {
+[data-theme='minimal'] {
 	--background: #2e3440;
 	--foreground: #eceff4;
 	--card: #3b4252;
@@ -94,19 +101,12 @@
 	--border: #4c566a;
 	--input: #4c566a;
 	--ring: #88c0d0;
-
-	/* Nord specific */
-	--nord-aurora-green: #a3be8c;
-	--nord-aurora-yellow: #ebcb8b;
-	--nord-aurora-orange: #d08770;
-	--nord-aurora-red: #bf616a;
-	--nord-aurora-purple: #b48ead;
 }
 
 /* ============================================
-   DRACULA THEME - Gothic Dark Aesthetic
+   CYBER THEME - Neon Futuristic
    ============================================ */
-[data-theme='dracula'] {
+[data-theme='cyber'] {
 	--background: #282a36;
 	--foreground: #f8f8f2;
 	--card: #44475a;
@@ -126,20 +126,17 @@
 	--input: #6272a4;
 	--ring: #bd93f9;
 
-	/* Dracula specific */
-	--dracula-pink: #ff79c6;
-	--dracula-purple: #bd93f9;
-	--dracula-cyan: #8be9fd;
-	--dracula-green: #50fa7b;
-	--dracula-orange: #ffb86c;
-	--dracula-red: #ff5555;
-	--dracula-yellow: #f1fa8c;
+	/* Cyber neon colors */
+	--cyber-pink: #ff79c6;
+	--cyber-purple: #bd93f9;
+	--cyber-cyan: #8be9fd;
+	--cyber-green: #50fa7b;
 }
 
 /* ============================================
-   CATPPUCCIN THEME - Soft Pastel Aesthetic
+   SOFT THEME - Cozy Pastel
    ============================================ */
-[data-theme='catppuccin'] {
+[data-theme='soft'] {
 	--background: #1e1e2e;
 	--foreground: #cdd6f4;
 	--card: #313244;
@@ -159,27 +156,22 @@
 	--input: #585b70;
 	--ring: #cba6f7;
 
-	/* Catppuccin specific */
-	--ctp-pink: #f5c2e7;
-	--ctp-mauve: #cba6f7;
-	--ctp-red: #f38ba8;
-	--ctp-peach: #fab387;
-	--ctp-yellow: #f9e2af;
-	--ctp-green: #a6e3a1;
-	--ctp-teal: #94e2d5;
-	--ctp-sky: #89dceb;
-	--ctp-sapphire: #74c7ec;
-	--ctp-blue: #89b4fa;
-	--ctp-lavender: #b4befe;
+	/* Soft pastel colors */
+	--soft-pink: #f5c2e7;
+	--soft-mauve: #cba6f7;
+	--soft-peach: #fab387;
+	--soft-green: #a6e3a1;
+	--soft-teal: #94e2d5;
 }
 
-/* Default to gruvbox */
+/* ============================================
+   ROOT DEFAULTS (Terminal as default)
+   ============================================ */
 :root {
 	--radius: 0.5rem;
 	--font-theme: 'JetBrains Mono', monospace;
 }
 
-/* Apply gruvbox as default when no theme is set */
 :root:not([data-theme]) {
 	--background: #282828;
 	--foreground: #ebdbb2;
@@ -226,21 +218,11 @@
 	--color-border: var(--border);
 	--color-input: var(--input);
 	--color-ring: var(--ring);
-	--color-chart-1: var(--chart-1);
-	--color-chart-2: var(--chart-2);
-	--color-chart-3: var(--chart-3);
-	--color-chart-4: var(--chart-4);
-	--color-chart-5: var(--chart-5);
-	--color-sidebar: var(--sidebar);
-	--color-sidebar-foreground: var(--sidebar-foreground);
-	--color-sidebar-primary: var(--sidebar-primary);
-	--color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-	--color-sidebar-accent: var(--sidebar-accent);
-	--color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-	--color-sidebar-border: var(--sidebar-border);
-	--color-sidebar-ring: var(--sidebar-ring);
 }
 
+/* ============================================
+   BASE STYLES
+   ============================================ */
 @layer base {
 	* {
 		@apply border-border outline-ring/50;
@@ -251,46 +233,27 @@
 		font-family: var(--font-theme);
 	}
 
-	/* Gruvbox terminal aesthetic enhancements */
-	[data-theme='gruvbox'] body {
-		/* Subtle scanline effect */
-		background-image: repeating-linear-gradient(
-			0deg,
-			transparent,
-			transparent 2px,
-			var(--terminal-scanline) 2px,
-			var(--terminal-scanline) 4px
-		);
-		background-attachment: fixed;
+	/* Terminal theme - flat, no glow, authentic */
+	[data-theme='terminal'] ::selection {
+		background: var(--term-orange);
+		color: var(--term-bg);
 	}
 
-	[data-theme='gruvbox'] ::selection {
-		background: var(--gruvbox-orange);
-		color: var(--gruvbox-bg);
+	/* Terminal scrollbars */
+	[data-theme='terminal'] ::-webkit-scrollbar {
+		width: 8px;
+		height: 8px;
 	}
 
-	/* Glowing text effect for headers in gruvbox */
-	[data-theme='gruvbox'] h1,
-	[data-theme='gruvbox'] h2 {
-		text-shadow: 0 0 10px var(--terminal-glow);
+	[data-theme='terminal'] ::-webkit-scrollbar-track {
+		background: var(--term-bg);
 	}
-}
 
-/* Scrollbar styling per theme */
-[data-theme='gruvbox'] ::-webkit-scrollbar {
-	width: 8px;
-	height: 8px;
-}
+	[data-theme='terminal'] ::-webkit-scrollbar-thumb {
+		background: var(--term-bg2);
+	}
 
-[data-theme='gruvbox'] ::-webkit-scrollbar-track {
-	background: var(--gruvbox-bg);
-}
-
-[data-theme='gruvbox'] ::-webkit-scrollbar-thumb {
-	background: var(--gruvbox-bg2);
-	border-radius: 4px;
-}
-
-[data-theme='gruvbox'] ::-webkit-scrollbar-thumb:hover {
-	background: var(--gruvbox-orange);
+	[data-theme='terminal'] ::-webkit-scrollbar-thumb:hover {
+		background: var(--term-orange);
+	}
 }

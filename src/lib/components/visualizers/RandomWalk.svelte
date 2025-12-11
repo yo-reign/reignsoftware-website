@@ -40,7 +40,7 @@
 		}
 
 		function getColors(): string[] {
-			return themeColors[themeState.current] || themeColors.gruvbox;
+			return themeColors[themeState.current] || themeColors.terminal;
 		}
 
 		function createWalker(): Walker {
