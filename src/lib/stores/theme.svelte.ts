@@ -1,9 +1,18 @@
 import { browser } from '$app/environment';
 import { visualizers, visualizerOrder, type VisualizerName } from '$lib/themes';
 
+// Speed multiplier options
+export const speedOptions = [0.1, 0.25, 0.5, 1.0, 2.0, 4.0] as const;
+export type SpeedMultiplier = (typeof speedOptions)[number];
+
 class VisualizerState {
 	current = $state<VisualizerName>('grid-walk');
 	isTransitioning = $state(false);
+
+	// Visualizer controls
+	speedMultiplier = $state<SpeedMultiplier>(1.0);
+	agentCount = $state(8);
+	restartSignal = $state(0);
 
 	constructor() {
 		if (browser) {
@@ -43,6 +52,21 @@ class VisualizerState {
 		const currentIndex = visualizerOrder.indexOf(this.current);
 		const nextIndex = (currentIndex + 1) % visualizerOrder.length;
 		this.set(visualizerOrder[nextIndex]);
+	}
+
+	// Control methods
+	cycleSpeed(direction: 1 | -1) {
+		const currentIndex = speedOptions.indexOf(this.speedMultiplier);
+		const newIndex = Math.max(0, Math.min(speedOptions.length - 1, currentIndex + direction));
+		this.speedMultiplier = speedOptions[newIndex];
+	}
+
+	adjustAgents(delta: number) {
+		this.agentCount = Math.max(1, Math.min(100, this.agentCount + delta));
+	}
+
+	restart() {
+		this.restartSignal++;
 	}
 }
 

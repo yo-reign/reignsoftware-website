@@ -4,12 +4,17 @@
 
 	interface Props {
 		class?: string;
-		speed?: number;
+		speedMultiplier?: number;
 		agentCount?: number;
 		restartSignal?: number;
 	}
 
-	let { class: className = '', speed = 100, agentCount = 8, restartSignal = 0 }: Props = $props();
+	let {
+		class: className = '',
+		speedMultiplier = 1.0,
+		agentCount = 8,
+		restartSignal = 0
+	}: Props = $props();
 
 	let canvas: HTMLCanvasElement;
 	let animationId: number;
@@ -20,7 +25,6 @@
 	let lastTime = 0;
 	let centerX = 0;
 	let centerY = 0;
-	let currentSpeed = speed;
 	let currentAgentCount = agentCount;
 
 	// Grid settings - Gruvbox Dark Hard
@@ -28,14 +32,16 @@
 	const GRID_LINE_COLOR = '#3c3836';
 	const BG_COLOR = '#1d2021';
 
+	// Base move interval at 1x speed (in ms)
+	const BASE_MOVE_INTERVAL = 100;
+
 	interface Walker {
 		x: number;
 		y: number;
 		color: string;
-		trail: { x: number; y: number }[];
+		trail: { x: number; y: number; age: number }[];
 		maxTrail: number;
 		moveTimer: number;
-		moveInterval: number;
 	}
 
 	function getColors(): string[] {
@@ -50,8 +56,7 @@
 			color: colors[Math.floor(Math.random() * colors.length)],
 			trail: [],
 			maxTrail: 30 + Math.floor(Math.random() * 40),
-			moveTimer: Math.random() * currentSpeed,
-			moveInterval: currentSpeed + Math.random() * (currentSpeed * 0.5)
+			moveTimer: Math.random() * BASE_MOVE_INTERVAL
 		};
 	}
 
@@ -79,13 +84,21 @@
 		resetWalkers();
 	}
 
-	function drawGrid(width: number, height: number) {
-		ctx.fillStyle = BG_COLOR;
-		ctx.fillRect(0, 0, width, height);
+	function drawBackground(width: number, height: number, fade: boolean = false) {
+		if (fade) {
+			// Subtle fade for dimming effect
+			ctx.fillStyle = 'rgba(29, 32, 33, 0.02)';
+			ctx.fillRect(0, 0, width, height);
+		} else {
+			ctx.fillStyle = BG_COLOR;
+			ctx.fillRect(0, 0, width, height);
+		}
+	}
 
+	function drawGrid() {
 		ctx.strokeStyle = GRID_LINE_COLOR;
 		ctx.lineWidth = 0.5;
-		ctx.globalAlpha = 0.2;
+		ctx.globalAlpha = 0.15;
 
 		for (let x = 0; x <= gridWidth; x++) {
 			ctx.beginPath();
@@ -105,7 +118,7 @@
 	}
 
 	function moveWalker(walker: Walker) {
-		walker.trail.push({ x: walker.x, y: walker.y });
+		walker.trail.push({ x: walker.x, y: walker.y, age: 0 });
 		if (walker.trail.length > walker.maxTrail) {
 			walker.trail.shift();
 		}
@@ -161,16 +174,24 @@
 	}
 
 	function animate(timestamp: number) {
-		const deltaTime = timestamp - lastTime;
+		const deltaTime = Math.min(timestamp - lastTime, 50);
 		lastTime = timestamp;
 
 		const rect = canvas.getBoundingClientRect();
-		drawGrid(rect.width, rect.height);
+
+		// Apply fade effect for dimming
+		drawBackground(rect.width, rect.height, true);
+
+		// Redraw grid on top (with low opacity)
+		drawGrid();
+
+		// Calculate move interval based on speed multiplier
+		const moveInterval = BASE_MOVE_INTERVAL / speedMultiplier;
 
 		walkers.forEach((walker) => {
 			walker.moveTimer += deltaTime;
-			if (walker.moveTimer >= walker.moveInterval) {
-				walker.moveTimer = 0;
+			if (walker.moveTimer >= moveInterval) {
+				walker.moveTimer = walker.moveTimer % moveInterval;
 				moveWalker(walker);
 			}
 			drawWalker(walker);
@@ -183,22 +204,19 @@
 		ctx = canvas.getContext('2d')!;
 		resize();
 		window.addEventListener('resize', resize);
+
+		// Initial full draw
+		const rect = canvas.getBoundingClientRect();
+		drawBackground(rect.width, rect.height, false);
+		drawGrid();
+
+		lastTime = performance.now();
 		animationId = requestAnimationFrame(animate);
 
 		return () => {
 			window.removeEventListener('resize', resize);
 			cancelAnimationFrame(animationId);
 		};
-	});
-
-	// React to speed changes - update existing walker intervals
-	$effect(() => {
-		if (speed !== currentSpeed) {
-			currentSpeed = speed;
-			walkers.forEach((walker) => {
-				walker.moveInterval = currentSpeed + Math.random() * (currentSpeed * 0.5);
-			});
-		}
 	});
 
 	// React to agent count changes

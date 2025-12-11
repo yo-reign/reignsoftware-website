@@ -4,18 +4,22 @@
 
 	interface Props {
 		class?: string;
-		speed?: number;
+		speedMultiplier?: number;
 		agentCount?: number;
 		restartSignal?: number;
 	}
 
-	let { class: className = '', speed = 100, agentCount = 8, restartSignal = 0 }: Props = $props();
+	let {
+		class: className = '',
+		speedMultiplier = 1.0,
+		agentCount = 8,
+		restartSignal = 0
+	}: Props = $props();
 
 	let canvas: HTMLCanvasElement;
 	let animationId: number;
 	let ctx: CanvasRenderingContext2D;
 	let walkers: Walker[] = [];
-	let currentSpeed = speed;
 	let currentAgentCount = agentCount;
 
 	interface Walker {
@@ -23,12 +27,13 @@
 		y: number;
 		color: string;
 		angle: number;
-		walkSpeed: number;
+		baseSpeed: number;
 		life: number;
 		maxLife: number;
 		thickness: number;
-		moveTimer: number;
-		moveInterval: number;
+		// For smooth angle changes
+		targetAngle: number;
+		angleVelocity: number;
 	}
 
 	function getColors(): string[] {
@@ -38,17 +43,18 @@
 	function createWalker(fromCenter = false): Walker {
 		const rect = canvas.getBoundingClientRect();
 		const colors = getColors();
+		const angle = Math.random() * Math.PI * 2;
 		return {
 			x: fromCenter ? rect.width / 2 : Math.random() * rect.width,
 			y: fromCenter ? rect.height / 2 : Math.random() * rect.height,
 			color: colors[Math.floor(Math.random() * colors.length)],
-			angle: Math.random() * Math.PI * 2,
-			walkSpeed: 2 + Math.random() * 3,
+			angle: angle,
+			targetAngle: angle,
+			angleVelocity: 0,
+			baseSpeed: 1 + Math.random() * 2,
 			life: 0,
 			maxLife: 400 + Math.random() * 400,
-			thickness: 1 + Math.random() * 2,
-			moveTimer: Math.random() * currentSpeed,
-			moveInterval: currentSpeed + Math.random() * (currentSpeed * 0.5)
+			thickness: 1 + Math.random() * 2
 		};
 	}
 
@@ -81,29 +87,35 @@
 		resetWalkers();
 	}
 
-	function updateWalker(walker: Walker, deltaTime: number): boolean {
+	function updateWalker(walker: Walker, deltaTime: number, currentSpeedMultiplier: number) {
 		const rect = canvas.getBoundingClientRect();
 
-		walker.moveTimer += deltaTime;
-		if (walker.moveTimer < walker.moveInterval) {
-			return walker.life < walker.maxLife;
-		}
-		walker.moveTimer = 0;
+		// Normalize deltaTime to 60fps baseline (16.67ms)
+		const normalizedDelta = deltaTime / 16.67;
+		const speedFactor = currentSpeedMultiplier * normalizedDelta;
 
-		// Random angle deviation (the "walk")
-		walker.angle += (Math.random() - 0.5) * 0.5;
+		// Smoothly interpolate angle toward target
+		const angleDiff = walker.targetAngle - walker.angle;
+		walker.angle += angleDiff * 0.1 * speedFactor;
+
+		// Randomly adjust target angle for organic movement
+		if (Math.random() < 0.05 * speedFactor) {
+			walker.targetAngle += (Math.random() - 0.5) * 0.8;
+		}
 
 		// Occasionally make sharper turns
-		if (Math.random() < 0.02) {
-			walker.angle += (Math.random() - 0.5) * Math.PI;
+		if (Math.random() < 0.005 * speedFactor) {
+			walker.targetAngle += (Math.random() - 0.5) * Math.PI;
 		}
 
 		const prevX = walker.x;
 		const prevY = walker.y;
 
-		walker.x += Math.cos(walker.angle) * walker.walkSpeed;
-		walker.y += Math.sin(walker.angle) * walker.walkSpeed;
-		walker.life++;
+		// Move based on speed multiplier
+		const moveDistance = walker.baseSpeed * speedFactor;
+		walker.x += Math.cos(walker.angle) * moveDistance;
+		walker.y += Math.sin(walker.angle) * moveDistance;
+		walker.life += speedFactor;
 
 		// Wrap around edges
 		if (walker.x < 0) walker.x = rect.width;
@@ -112,7 +124,7 @@
 		if (walker.y > rect.height) walker.y = 0;
 
 		// Draw the line segment
-		const alpha = 1 - walker.life / walker.maxLife;
+		const alpha = Math.max(0, 1 - walker.life / walker.maxLife);
 		ctx.beginPath();
 		ctx.strokeStyle = walker.color;
 		ctx.globalAlpha = alpha * 0.8;
@@ -135,27 +147,26 @@
 			walker.y = Math.random() * rect.height;
 			walker.color = colors[Math.floor(Math.random() * colors.length)];
 			walker.angle = Math.random() * Math.PI * 2;
+			walker.targetAngle = walker.angle;
 			walker.life = 0;
 			walker.maxLife = 400 + Math.random() * 400;
 		}
-
-		return true;
 	}
 
 	let lastTime = 0;
 
 	function animate(timestamp: number) {
-		const deltaTime = timestamp - lastTime;
+		const deltaTime = Math.min(timestamp - lastTime, 50); // Cap delta to prevent jumps
 		lastTime = timestamp;
 
 		const rect = canvas.getBoundingClientRect();
 
-		// Very subtle fade for trail effect
+		// Subtle fade for trail effect (this creates the dimming)
 		ctx.fillStyle = 'rgba(29, 32, 33, 0.01)';
 		ctx.fillRect(0, 0, rect.width, rect.height);
 
-		// Update all walkers
-		walkers.forEach((walker) => updateWalker(walker, deltaTime));
+		// Update all walkers with current speed multiplier
+		walkers.forEach((walker) => updateWalker(walker, deltaTime, speedMultiplier));
 
 		animationId = requestAnimationFrame(animate);
 	}
@@ -164,22 +175,13 @@
 		ctx = canvas.getContext('2d')!;
 		resize();
 		window.addEventListener('resize', resize);
+		lastTime = performance.now();
 		animationId = requestAnimationFrame(animate);
 
 		return () => {
 			window.removeEventListener('resize', resize);
 			cancelAnimationFrame(animationId);
 		};
-	});
-
-	// React to speed changes
-	$effect(() => {
-		if (speed !== currentSpeed) {
-			currentSpeed = speed;
-			walkers.forEach((walker) => {
-				walker.moveInterval = currentSpeed + Math.random() * (currentSpeed * 0.5);
-			});
-		}
 	});
 
 	// React to agent count changes

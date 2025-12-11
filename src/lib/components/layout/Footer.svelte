@@ -42,7 +42,7 @@
 				</a>
 				<p class="mt-4 max-w-xs text-sm text-muted-foreground">
 					<span class="text-[var(--term-green)]">// </span>
-					Building software that's not just functional—it's exceptional. Fast, robust, and visually stunning.
+					Building software that is efficient, reliable, and beautiful.
 				</p>
 
 				<!-- Social links -->
@@ -118,9 +118,14 @@
 		</div>
 
 		<!-- Bottom bar -->
-		<div class="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 text-sm text-muted-foreground sm:flex-row">
+		<div
+			class="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 text-sm text-muted-foreground sm:flex-row"
+		>
 			<p>
-				<span class="text-primary">$</span> echo "© {currentYear} <span class="text-[var(--term-red)]">reign</span><span class="text-[var(--term-fg)]">software</span>. All rights reserved."
+				<span class="text-primary">$</span> echo "© {currentYear}
+				<span class="text-[var(--term-red)]">reign</span><span class="text-[var(--term-fg)]"
+					>software</span
+				>. All rights reserved."
 			</p>
 			<div class="flex gap-6">
 				<a href="/privacy" class="hover:text-foreground">Privacy</a>
