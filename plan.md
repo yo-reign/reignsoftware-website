@@ -2,7 +2,7 @@
 
 ## Vision
 
-**ReignSoftware** is a software company that delivers solutions which are not just functional—they're *experiences*. We build fast, robust software with obsessive attention to design: both how it *works* and how it *looks*. Our website should be a living portfolio of this philosophy—a playground where visitors can explore different visual themes, interact with stunning visualizations, and immediately understand what sets us apart.
+**<span class="text-red">reign</span>software** is a software company that delivers solutions which are not just functional—they're *experiences*. We build fast, robust software with obsessive attention to design: both how it *works* and how it *looks*. Our website embodies this philosophy with a focused terminal/TUI aesthetic that showcases our technical expertise while maintaining visual appeal.
 
 ---
 
@@ -90,307 +90,136 @@ This project uses **Svelte 5** with runes. All code must follow these patterns:
 
 ### Global State (Module-level)
 ```typescript
-// theme.svelte.ts - using class with $state
-class ThemeState {
-  current = $state<'gruvbox' | 'nord'>('gruvbox');
+// visualizer.svelte.ts - using class with $state
+class VisualizerState {
+  current = $state<'grid-walk' | 'random-walk'>('grid-walk');
 
-  set(theme: typeof this.current) {
-    this.current = theme;
+  set(visualizer: typeof this.current) {
+    this.current = visualizer;
   }
 }
 
-export const themeState = new ThemeState();
-```
-
-### Bindings
-```svelte
-<script lang="ts">
-  // Two-way binding with $bindable
-  interface Props {
-    value?: string;
-  }
-  let { value = $bindable('') }: Props = $props();
-</script>
-
-<input bind:value />
+export const visualizerState = new VisualizerState();
 ```
 
 ---
 
 ## Core Concepts
 
-### 1. The "Playground" Philosophy
+### 1. Terminal-First Design
 
-The website should feel interactive and explorable. Visitors can:
-- Toggle between completely different visual **experiences** (not just color swaps)
-- Each theme has its own layout, UI style, animations, and visualizer
-- The theme selector is a **prominent part of the design**, not hidden in a toolbar
-- Switching themes should feel like entering a new space with smooth, intentional transitions
+The website embraces a **terminal/TUI aesthetic** throughout:
+- Gruvbox Dark Hard color palette
+- JetBrains Mono font everywhere
+- Sharp corners, no border radius
+- CLI-inspired UI patterns (prompts, commands, box-drawing)
+- Authentic retro-hacker feel
 
-### 2. Theme Design Principles
+### 2. Brand Identity
 
-**Themes are experiences, not color schemes.** Each theme should:
-- Have a distinct **name based on aesthetic** (e.g., "Terminal", "Minimal"), not color palette names
-- Feature a **unique layout** and component styling
-- Include a **signature visualizer** that fits the theme's personality
-- Feel **alive and intentional** — no lifeless or generic variations
+The brand is displayed as:
+```html
+<span class="text-[var(--term-red)]">reign</span><span class="text-[var(--term-fg)]">software</span>
+```
 
-### 3. Theme Definitions
+Key characteristics:
+- "reign" in red (`#fb4934`)
+- "software" in foreground color (`#ebdbb2`)
+- Monospace font throughout
+- Often preceded by `$` prompt
 
-| Theme | Color Base | Aesthetic | Visualizer | Layout Style |
-|-------|-----------|-----------|------------|--------------|
-| **Terminal** | Gruvbox | Retro hacker, CLI-inspired | Grid-based random walk | Monospace, boxy, command prompts |
-| **Minimal** | Nord | Clean, Scandinavian, calm | Subtle aurora waves | Lots of whitespace, elegant type |
-| **Cyber** | Dracula | Neon, futuristic, bold | Particle swarm / glitch | High contrast, sharp edges |
-| **Soft** | Catppuccin | Cozy, pastel, approachable | Flowing gradient blobs | Rounded, friendly, warm |
+### 3. Background Visualizers
 
-### 4. Theme Transition System
+Instead of multiple themes, we offer different **background visualizations**:
 
-When switching themes:
-1. **Mask/reveal animation** — not just CSS variable swap
-2. **Content morphs** to new layout (e.g., cards reshape, spacing adjusts)
-3. **Visualizer crossfades** to theme-specific one
-4. **Typography animates** weight/size changes
-5. Feels like a **page transformation**, not a repaint
+| Visualizer | Description |
+|------------|-------------|
+| **Grid Walk** | Agents traverse a 16px grid, leaving colorful trails. Structured, retro feel. |
+| **Random Walk** | Organic, free-flowing paths that wind across the canvas. Smooth and flowing. |
+| *More to come* | Future visualizers can be added to this system |
 
-### 5. Theme Selector Placement
+The visualizer selector:
+- Lives in the hero section at the bottom
+- Appears in the header when scrolled past hero
+- Features boot/shutdown animations when appearing/disappearing
+- Preserves selection in localStorage
 
-The theme selector should be:
-- **Part of the hero/landing experience** — users discover it naturally
-- Possibly an interactive element in the visualizer area
-- A "portal" or "door" to other experiences
-- Always accessible but not just a dropdown in the nav
+### 4. Visualizer Controls
 
-### 6. Per-Theme Specifications
-
-#### Terminal (Gruvbox)
-- **Font:** JetBrains Mono (monospace only)
-- **UI:** Terminal window chrome, command prompts (`$`, `./`), ASCII-style borders
-- **Visualizer:** Random walk on a **visible grid** (not free-flowing)
-- **No glow effects** — flat, authentic terminal feel
-- **Layout:** Dense, information-rich, left-aligned
-- **Interactions:** Typing animations, cursor blinks, command-style CTAs
-
-#### Minimal (Nord) — *To be designed*
-- **Font:** Inter or similar clean sans-serif
-- **UI:** Extreme whitespace, subtle borders, muted accents
-- **Visualizer:** Soft aurora/northern lights gradient animation
-- **Layout:** Centered, sparse, breathing room
-- **Interactions:** Fade-ins, gentle hovers, no flashy effects
-
-#### Cyber (Dracula) — *To be designed*
-- **Font:** Bold geometric sans, maybe some glow on headers
-- **UI:** Sharp corners, neon accents, grid lines
-- **Visualizer:** Particle effects, possible glitch/noise
-- **Layout:** Asymmetric, bold sections, high visual contrast
-- **Interactions:** Glitch effects, fast transitions, scan lines
-
-#### Soft (Catppuccin) — *To be designed*
-- **Font:** Rounded sans-serif, friendly weight
-- **UI:** Pill shapes, soft shadows, pastel gradients
-- **Visualizer:** Flowing blob/lava lamp style
-- **Layout:** Card-heavy, cozy spacing, warm feel
-- **Interactions:** Bounce, squish, playful micro-animations
+Users can customize the visualizer experience:
+- **Speed** (20-300ms) - How fast agents move
+- **Agent Count** (1-20) - How many walkers
+- **Restart** - Reset the visualization
 
 ---
 
 ## Site Structure
 
 ```
-/                       → Landing page (hero + theme showcase)
+/                       → Landing page (hero + services + product teaser + CTA)
 /about                  → About ReignSoftware, philosophy, team
 /services               → What we offer (web, mobile, automation, AI)
 /products               → Our products
   /products/importdoc   → importDoc showcase
-/playground             → Interactive theme/visualization sandbox
+/playground             → Interactive visualization sandbox
 /contact                → Contact form + info
 ```
 
 ### Route Details
 
 #### `/` - Landing Page
-- Hero section with animated typography
-- Theme selector (floating or in header)
-- Background visualization that changes with theme
-- Brief "what we do" cards
-- Featured product teaser (importDoc)
-- Call-to-action
+- Hero with visualizer background and typing animation
+- Visualizer controls panel
+- Visualizer selector (grid-walk, random-walk)
+- Services section (4 TUI-style cards)
+- importDoc product teaser (expandable)
+- Terminal-style CTA
 
-#### `/about` - About Us
+#### `/about` - About Us (To Build)
 - Company story and values
 - Design philosophy breakdown
-- Future: Team section (when you expand)
+- Future: Team section
 
-#### `/services` - Services
+#### `/services` - Services (To Build)
 - Web Development
 - Mobile Applications
 - Business Automation
 - AI Integration
-- Each service card with hover effects
+- TUI-style service cards
 
-#### `/products/importdoc` - importDoc Product Page
-- Product hero with mockup/demo
+#### `/products/importdoc` - importDoc Product Page (To Build)
+- Product hero with TUI mockup
 - Problem statement (law firm mail chaos)
-- Feature breakdown:
-  - Mail intake automation
-  - AI document analysis
-  - Smart categorization
-  - Auto-filing to case folders
-  - Action triggers
+- Feature breakdown with terminal styling
 - Pricing/waitlist CTA
 - Integration showcase
 
-#### `/playground` - Theme Playground
+#### `/playground` - Visualization Playground (To Build)
 - Full-screen visualization canvas
-- Theme picker with previews
-- Controls for visualization parameters
-- "Export as wallpaper" fun feature
-- Code snippets showing how effects work
+- All visualizer options
+- Extended controls
+- Export/share features
 
 ---
 
-## Theme System Implementation
-
-### CSS Custom Properties Strategy
+## Color Palette (Gruvbox Dark Hard)
 
 ```css
-/* In src/lib/styles/themes.css */
-:root {
-  /* Base semantic tokens */
-  --color-bg-primary: var(--theme-bg-primary);
-  --color-bg-secondary: var(--theme-bg-secondary);
-  --color-text-primary: var(--theme-text-primary);
-  --color-text-secondary: var(--theme-text-secondary);
-  --color-accent: var(--theme-accent);
-  --color-accent-secondary: var(--theme-accent-secondary);
-  /* ... more tokens */
-}
-
-/* Gruvbox Dark */
-[data-theme="gruvbox"] {
-  --theme-bg-primary: #282828;
-  --theme-bg-secondary: #3c3836;
-  --theme-text-primary: #ebdbb2;
-  --theme-text-secondary: #a89984;
-  --theme-accent: #fe8019;
-  --theme-accent-secondary: #fabd2f;
-  /* Gruvbox full palette */
-  --gruvbox-red: #cc241d;
-  --gruvbox-green: #98971a;
-  --gruvbox-yellow: #d79921;
-  --gruvbox-blue: #458588;
-  --gruvbox-purple: #b16286;
-  --gruvbox-aqua: #689d6a;
-}
+--term-bg: #1d2021;      /* Background */
+--term-bg-soft: #282828; /* Card background */
+--term-bg1: #3c3836;     /* Secondary */
+--term-bg2: #504945;     /* Border */
+--term-fg: #ebdbb2;      /* Foreground text */
+--term-fg-dim: #928374;  /* Muted text */
+--term-gray: #a89984;    /* Gray accent */
+--term-red: #fb4934;     /* Red (brand) */
+--term-green: #b8bb26;   /* Green (primary) */
+--term-yellow: #fabd2f;  /* Yellow */
+--term-blue: #83a598;    /* Blue */
+--term-purple: #d3869b;  /* Purple */
+--term-aqua: #8ec07c;    /* Aqua */
+--term-orange: #fe8019;  /* Orange */
 ```
-
-### Theme Store (Svelte 5 Runes)
-
-```typescript
-// src/lib/stores/theme.svelte.ts
-import { browser } from '$app/environment';
-
-export type ThemeName = 'gruvbox' | 'nord' | 'dracula' | 'catppuccin' | 'light';
-
-class ThemeState {
-  current = $state<ThemeName>('gruvbox');
-
-  constructor() {
-    if (browser) {
-      const saved = localStorage.getItem('theme') as ThemeName;
-      if (saved) this.current = saved;
-    }
-  }
-
-  set(theme: ThemeName) {
-    this.current = theme;
-    if (browser) {
-      document.documentElement.setAttribute('data-theme', theme);
-      localStorage.setItem('theme', theme);
-    }
-  }
-}
-
-export const theme = new ThemeState();
-```
-
----
-
-## Visualizations
-
-### 1. Random Walk (Gruvbox Theme)
-
-A retro-styled random walk algorithm creating organic, growing patterns using the Gruvbox color palette.
-
-```typescript
-// src/lib/visualizers/random-walk.ts
-interface WalkConfig {
-  colors: string[];      // From theme
-  stepSize: number;
-  branchProbability: number;
-  fadeSpeed: number;
-}
-
-export function createRandomWalk(canvas: HTMLCanvasElement, config: WalkConfig) {
-  // Implementation using Canvas 2D API
-  // Multiple "walkers" that branch and fade
-  // Colors cycle through Gruvbox palette
-}
-```
-
-### 2. Planned Visualizations
-
-| Theme | Visualization | Description |
-|-------|--------------|-------------|
-| Gruvbox | Random Walk | Retro terminals meets generative art |
-| Nord | Aurora Particles | Flowing northern lights effect |
-| Dracula | Bat Swarm | Particle system with flocking behavior |
-| Catppuccin | Pastel Waves | Smooth, flowing gradient waves |
-| Light | Minimal Dots | Clean, subtle dot grid animation |
-
-### 3. Technology Options
-
-- **Canvas 2D** - Best for 2D generative art (random walk, particles)
-- **Three.js** - 3D scenes, WebGL shaders
-- **motion.dev** - DOM animations, page transitions
-
----
-
-## Animation Strategy (motion.dev)
-
-### Installation
-```bash
-pnpm add motion
-```
-
-### Usage in Svelte
-
-```svelte
-<script>
-  import { animate, stagger } from 'motion';
-  import { onMount } from 'svelte';
-
-  let items: HTMLElement[] = [];
-
-  onMount(() => {
-    animate(items,
-      { opacity: [0, 1], y: [20, 0] },
-      { delay: stagger(0.1) }
-    );
-  });
-</script>
-
-{#each services as service, i}
-  <div bind:this={items[i]} class="service-card">
-    {service.name}
-  </div>
-{/each}
-```
-
-### Animation Principles
-- **Purposeful** - Every animation should guide attention or provide feedback
-- **Fast** - Keep durations under 300ms for UI, longer only for showcases
-- **Consistent** - Same easing curves throughout (ease-out for enters, ease-in for exits)
 
 ---
 
@@ -400,65 +229,42 @@ pnpm add motion
 src/lib/
 ├── components/
 │   ├── layout/
-│   │   ├── Header.svelte
-│   │   ├── Footer.svelte
-│   │   ├── Navigation.svelte
-│   │   └── ThemeToggle.svelte
-│   ├── ui/                      # shadcn-svelte components (auto-generated)
-│   │   ├── button/
-│   │   ├── card/
-│   │   ├── input/
-│   │   ├── badge/
-│   │   └── ...
+│   │   ├── Header.svelte      # Fixed header with visualizer selector
+│   │   └── Footer.svelte      # TUI-style footer
 │   ├── visualizers/
-│   │   ├── VisualizerCanvas.svelte
-│   │   ├── RandomWalk.svelte
-│   │   ├── AuroraParticles.svelte
-│   │   └── index.ts
+│   │   ├── GridWalk.svelte    # Grid-based random walk
+│   │   └── RandomWalk.svelte  # Free-flowing random walk
 │   └── sections/
-│       ├── Hero.svelte
-│       ├── Services.svelte
-│       ├── ProductTeaser.svelte
-│       └── ContactForm.svelte
+│       ├── Hero.svelte        # Landing hero with visualizer
+│       ├── Services.svelte    # Service cards grid
+│       └── ProductTeaser.svelte  # importDoc teaser
 ├── stores/
-│   ├── theme.svelte.ts
-│   └── visualizer.svelte.ts
-├── styles/
-│   ├── themes.css
-│   └── typography.css
-├── utils/
-│   ├── cn.ts                    # shadcn class merge utility
-│   ├── canvas.ts
-│   └── math.ts
-└── visualizers/
-    ├── random-walk.ts
-    ├── aurora.ts
-    └── types.ts
+│   └── theme.svelte.ts        # Visualizer state (renamed from theme)
+├── themes/
+│   └── index.ts               # Visualizer definitions & colors
+└── utils.ts                   # cn helper for Tailwind
 ```
 
 ---
 
-## Implementation Phases
+## Implementation Progress
 
-### Phase 1: Foundation
-- [ ] Initialize shadcn-svelte and add base components
-- [ ] Set up theme system (CSS variables + store)
-- [ ] Create base layout components (Header, Footer, Navigation)
-- [ ] Implement theme toggle UI
-- [ ] Set up typography system
-- [ ] Create landing page structure
+### Phase 1: Foundation ✓ Complete
+- [x] Theme system (simplified to terminal only)
+- [x] Layout components (Header, Footer)
+- [x] Base landing page
+- [x] Brand identity styling
 
-### Phase 2: Visualizations
-- [ ] Build VisualizerCanvas component
-- [ ] Implement Random Walk for Gruvbox theme
-- [ ] Create visualizer-to-theme mapping system
-- [ ] Add canvas performance optimizations
-- [ ] Build Playground page
+### Phase 2: Visualizations ✓ Complete
+- [x] GridWalk visualizer
+- [x] RandomWalk visualizer
+- [x] Visualizer selector with animations
+- [x] Visualizer controls (speed, agents, restart)
 
-### Phase 3: Content Pages
+### Phase 3: Content Pages - In Progress
 - [ ] About page
-- [ ] Services page with service cards
-- [ ] Contact page with form + server action
+- [ ] Services page (content already on landing)
+- [ ] Contact page with form
 - [ ] Products listing page
 
 ### Phase 4: importDoc Showcase
@@ -467,36 +273,33 @@ src/lib/
 - [ ] Interactive demo/mockup
 - [ ] Waitlist signup form
 
-### Phase 5: Polish & Additional Themes
-- [ ] Add motion.dev page transitions
-- [ ] Implement Nord theme + aurora visualization
-- [ ] Add Dracula + Catppuccin themes
-- [ ] Micro-interactions and hover states
+### Phase 5: Polish & Enhancement
+- [ ] Add motion.dev animations
+- [ ] More visualizers (particles, matrix, etc.)
+- [ ] Micro-interactions
 - [ ] Performance optimization
 - [ ] SEO meta tags
 
 ### Phase 6: Testing & Launch
-- [ ] Unit tests for utilities and stores
-- [ ] Component tests for UI elements
+- [ ] Unit tests for utilities
+- [ ] Component tests
 - [ ] E2E tests for critical flows
 - [ ] Accessibility audit
-- [ ] Lighthouse performance check
+- [ ] Lighthouse check
 - [ ] Deploy to Vercel
 
 ---
 
 ## Technical Decisions
 
-### Why These Choices?
-
 | Decision | Reason |
 |----------|--------|
-| shadcn-svelte | Accessible, customizable components with Tailwind |
-| CSS Variables for themes | Native, fast, no JS needed for color changes |
-| Svelte 5 Runes for stores | Modern, reactive, built-in |
+| Single terminal theme | Focused brand identity, simpler codebase |
+| Visualizer system | Keeps visual interest without multiple themes |
+| CSS variables | Native, fast, no runtime JS for styling |
+| Svelte 5 runes | Modern, reactive, built-in |
 | Canvas for visualizations | Best performance for generative art |
-| motion.dev over GSAP | Lighter, modern API, great for Svelte |
-| Tailwind CSS | Rapid prototyping, design system ready |
+| Tailwind CSS | Rapid development, consistent design system |
 
 ### Performance Targets
 
@@ -507,13 +310,14 @@ src/lib/
 
 ---
 
-## Notes for Future
+## Future Ideas
 
-- Consider adding a blog for SEO and thought leadership
-- Dark/light mode preference detection (`prefers-color-scheme`)
-- Internationalization if expanding markets
-- CMS integration for easier content updates
-- Analytics (privacy-respecting: Plausible/Fathom)
+- **Additional Visualizers**: Matrix rain, particle swarm, perlin noise
+- **Blog**: Technical articles, case studies
+- **Playground**: Full-screen interactive visualization sandbox
+- **Dark/Light**: Could add light variant of terminal theme later
+- **Analytics**: Privacy-respecting (Plausible/Fathom)
+- **CMS**: For blog and content management
 
 ---
 
@@ -529,7 +333,6 @@ pnpm preview             # Preview production build
 pnpm test:unit           # Run unit tests (watch mode)
 pnpm test:unit --run     # Run unit tests once
 pnpm test:e2e            # Run e2e tests
-pnpm exec playwright test --ui  # Interactive test UI
 
 # Code Quality
 pnpm lint                # Check formatting + linting

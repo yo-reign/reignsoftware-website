@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { themeColors } from '$lib/themes';
+	import { visualizerColors } from '$lib/themes';
 
 	interface Props {
 		class?: string;
@@ -23,9 +23,10 @@
 	let currentSpeed = speed;
 	let currentAgentCount = agentCount;
 
-	// Grid settings
+	// Grid settings - Gruvbox Dark Hard
 	const CELL_SIZE = 16;
-	const GRID_LINE_COLOR = '#504945';
+	const GRID_LINE_COLOR = '#3c3836';
+	const BG_COLOR = '#1d2021';
 
 	interface Walker {
 		x: number;
@@ -38,7 +39,7 @@
 	}
 
 	function getColors(): string[] {
-		return themeColors.terminal;
+		return visualizerColors;
 	}
 
 	function createWalker(fromCenter = false): Walker {
@@ -79,7 +80,7 @@
 	}
 
 	function drawGrid(width: number, height: number) {
-		ctx.fillStyle = '#282828';
+		ctx.fillStyle = BG_COLOR;
 		ctx.fillRect(0, 0, width, height);
 
 		ctx.strokeStyle = GRID_LINE_COLOR;

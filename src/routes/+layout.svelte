@@ -3,7 +3,6 @@
 	import favicon from '$lib/assets/favicon.svg';
 	import Header from '$lib/components/layout/Header.svelte';
 	import Footer from '$lib/components/layout/Footer.svelte';
-	import { themeState } from '$lib/stores/theme.svelte';
 	import type { Snippet } from 'svelte';
 	import { onMount } from 'svelte';
 
@@ -15,15 +14,13 @@
 	let mounted = $state(false);
 
 	onMount(() => {
-		// Initialize theme on mount
-		document.documentElement.setAttribute('data-theme', themeState.current);
 		mounted = true;
 	});
 </script>
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
-	<title>ReignSoftware | Software that feels like magic</title>
+	<title>reignsoftware | Dev</title>
 	<meta
 		name="description"
 		content="Fast, robust, and visually stunning software solutions for businesses and consumers. We don't just write code—we craft experiences."
@@ -41,7 +38,9 @@
 	</div>
 {:else}
 	<!-- Prevent flash of unstyled content -->
-	<div class="flex min-h-screen items-center justify-center bg-[#282828]">
-		<div class="text-[#ebdbb2]">Loading...</div>
+	<div class="flex min-h-screen items-center justify-center bg-[#1d2021]">
+		<div class="font-mono text-[#ebdbb2]">
+			<span class="text-[#b8bb26]">$</span> loading...
+		</div>
 	</div>
 {/if}

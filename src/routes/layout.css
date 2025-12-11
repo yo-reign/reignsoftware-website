@@ -23,174 +23,57 @@
 }
 
 /* ============================================
-   THEME TRANSITIONS
-   ============================================ */
-.theme-transitioning * {
-	transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease !important;
-}
-
-/* Ensure Svelte transitions work during theme changes */
-.theme-transitioning [style*="opacity"],
-.theme-transitioning [style*="transform"] {
-	transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease, opacity 0.4s ease, transform 0.4s ease !important;
-}
-
-/* ============================================
-   TERMINAL THEME - CLI Retro Aesthetic
-   ============================================ */
-[data-theme='terminal'] {
-	--background: #282828;
-	--foreground: #ebdbb2;
-	--card: #3c3836;
-	--card-foreground: #ebdbb2;
-	--popover: #3c3836;
-	--popover-foreground: #ebdbb2;
-	--primary: #fe8019;
-	--primary-foreground: #282828;
-	--secondary: #504945;
-	--secondary-foreground: #ebdbb2;
-	--muted: #504945;
-	--muted-foreground: #a89984;
-	--accent: #fabd2f;
-	--accent-foreground: #282828;
-	--destructive: #cc241d;
-	--border: #504945;
-	--input: #504945;
-	--ring: #fe8019;
-
-	/* Terminal palette */
-	--term-bg: #282828;
-	--term-bg1: #3c3836;
-	--term-bg2: #504945;
-	--term-fg: #ebdbb2;
-	--term-fg-dim: #a89984;
-	--term-red: #cc241d;
-	--term-green: #98971a;
-	--term-yellow: #d79921;
-	--term-blue: #458588;
-	--term-purple: #b16286;
-	--term-aqua: #689d6a;
-	--term-orange: #fe8019;
-	--term-bright-red: #fb4934;
-	--term-bright-green: #b8bb26;
-	--term-bright-yellow: #fabd2f;
-	--term-bright-blue: #83a598;
-	--term-bright-purple: #d3869b;
-	--term-bright-aqua: #8ec07c;
-}
-
-/* ============================================
-   MINIMAL THEME - Clean Scandinavian
-   ============================================ */
-[data-theme='minimal'] {
-	--background: #2e3440;
-	--foreground: #eceff4;
-	--card: #3b4252;
-	--card-foreground: #eceff4;
-	--popover: #3b4252;
-	--popover-foreground: #eceff4;
-	--primary: #88c0d0;
-	--primary-foreground: #2e3440;
-	--secondary: #434c5e;
-	--secondary-foreground: #eceff4;
-	--muted: #434c5e;
-	--muted-foreground: #d8dee9;
-	--accent: #81a1c1;
-	--accent-foreground: #2e3440;
-	--destructive: #bf616a;
-	--border: #4c566a;
-	--input: #4c566a;
-	--ring: #88c0d0;
-}
-
-/* ============================================
-   CYBER THEME - Neon Futuristic
-   ============================================ */
-[data-theme='cyber'] {
-	--background: #282a36;
-	--foreground: #f8f8f2;
-	--card: #44475a;
-	--card-foreground: #f8f8f2;
-	--popover: #44475a;
-	--popover-foreground: #f8f8f2;
-	--primary: #bd93f9;
-	--primary-foreground: #282a36;
-	--secondary: #44475a;
-	--secondary-foreground: #f8f8f2;
-	--muted: #44475a;
-	--muted-foreground: #6272a4;
-	--accent: #ff79c6;
-	--accent-foreground: #282a36;
-	--destructive: #ff5555;
-	--border: #6272a4;
-	--input: #6272a4;
-	--ring: #bd93f9;
-
-	/* Cyber neon colors */
-	--cyber-pink: #ff79c6;
-	--cyber-purple: #bd93f9;
-	--cyber-cyan: #8be9fd;
-	--cyber-green: #50fa7b;
-}
-
-/* ============================================
-   SOFT THEME - Cozy Pastel
-   ============================================ */
-[data-theme='soft'] {
-	--background: #1e1e2e;
-	--foreground: #cdd6f4;
-	--card: #313244;
-	--card-foreground: #cdd6f4;
-	--popover: #313244;
-	--popover-foreground: #cdd6f4;
-	--primary: #cba6f7;
-	--primary-foreground: #1e1e2e;
-	--secondary: #45475a;
-	--secondary-foreground: #cdd6f4;
-	--muted: #45475a;
-	--muted-foreground: #a6adc8;
-	--accent: #f5c2e7;
-	--accent-foreground: #1e1e2e;
-	--destructive: #f38ba8;
-	--border: #585b70;
-	--input: #585b70;
-	--ring: #cba6f7;
-
-	/* Soft pastel colors */
-	--soft-pink: #f5c2e7;
-	--soft-mauve: #cba6f7;
-	--soft-peach: #fab387;
-	--soft-green: #a6e3a1;
-	--soft-teal: #94e2d5;
-}
-
-/* ============================================
-   ROOT DEFAULTS (Terminal as default)
+   TERMINAL THEME - Gruvbox Dark Hard TUI
    ============================================ */
 :root {
-	--radius: 0.5rem;
-	--font-theme: 'JetBrains Mono', monospace;
-}
-
-:root:not([data-theme]) {
-	--background: #282828;
+	/* Gruvbox Dark Hard base */
+	--background: #1d2021;
 	--foreground: #ebdbb2;
-	--card: #3c3836;
+	--card: #282828;
 	--card-foreground: #ebdbb2;
-	--popover: #3c3836;
+	--popover: #282828;
 	--popover-foreground: #ebdbb2;
-	--primary: #fe8019;
-	--primary-foreground: #282828;
-	--secondary: #504945;
+	--primary: #b8bb26;
+	--primary-foreground: #1d2021;
+	--secondary: #3c3836;
 	--secondary-foreground: #ebdbb2;
-	--muted: #504945;
-	--muted-foreground: #a89984;
-	--accent: #fabd2f;
-	--accent-foreground: #282828;
-	--destructive: #cc241d;
+	--muted: #3c3836;
+	--muted-foreground: #928374;
+	--accent: #83a598;
+	--accent-foreground: #1d2021;
+	--destructive: #fb4934;
 	--border: #504945;
-	--input: #504945;
-	--ring: #fe8019;
+	--input: #3c3836;
+	--ring: #b8bb26;
+
+	/* No border radius for TUI look */
+	--radius: 0px;
+
+	/* Terminal palette - Gruvbox Dark Hard */
+	--term-bg: #1d2021;
+	--term-bg-soft: #282828;
+	--term-bg1: #3c3836;
+	--term-bg2: #504945;
+	--term-bg3: #665c54;
+	--term-fg: #ebdbb2;
+	--term-fg-dim: #928374;
+	--term-gray: #a89984;
+	--term-red: #fb4934;
+	--term-green: #b8bb26;
+	--term-yellow: #fabd2f;
+	--term-blue: #83a598;
+	--term-purple: #d3869b;
+	--term-aqua: #8ec07c;
+	--term-orange: #fe8019;
+	/* Dark variants for backgrounds */
+	--term-red-dim: #cc241d;
+	--term-green-dim: #98971a;
+	--term-yellow-dim: #d79921;
+	--term-blue-dim: #458588;
+	--term-purple-dim: #b16286;
+	--term-aqua-dim: #689d6a;
+
+	--font-theme: 'JetBrains Mono', monospace;
 }
 
 @custom-variant dark (&:is(.dark *));
@@ -233,27 +116,44 @@
 		font-family: var(--font-theme);
 	}
 
-	/* Terminal theme - flat, no glow, authentic */
-	[data-theme='terminal'] ::selection {
-		background: var(--term-orange);
+	/* Terminal selection */
+	::selection {
+		background: var(--term-green);
 		color: var(--term-bg);
 	}
 
 	/* Terminal scrollbars */
-	[data-theme='terminal'] ::-webkit-scrollbar {
+	::-webkit-scrollbar {
 		width: 8px;
 		height: 8px;
 	}
 
-	[data-theme='terminal'] ::-webkit-scrollbar-track {
+	::-webkit-scrollbar-track {
 		background: var(--term-bg);
 	}
 
-	[data-theme='terminal'] ::-webkit-scrollbar-thumb {
+	::-webkit-scrollbar-thumb {
 		background: var(--term-bg2);
 	}
 
-	[data-theme='terminal'] ::-webkit-scrollbar-thumb:hover {
-		background: var(--term-orange);
+	::-webkit-scrollbar-thumb:hover {
+		background: var(--term-green);
+	}
+
+	/* TUI Box styling */
+	.tui-box {
+		border: 1px solid var(--term-bg2);
+		background: var(--term-bg-soft);
+	}
+
+	.tui-box-highlight {
+		border: 1px solid var(--term-green);
+		background: var(--term-bg-soft);
+	}
+
+	/* TUI-style header */
+	header {
+		background: var(--term-bg) !important;
+		border-bottom: 1px solid var(--term-bg2) !important;
 	}
 }

@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { themeState } from '$lib/stores/theme.svelte';
 	import { Github, Twitter, Linkedin, Mail } from '@lucide/svelte';
 
 	const currentYear = new Date().getFullYear();
@@ -35,16 +34,14 @@
 		<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-5">
 			<!-- Brand column -->
 			<div class="lg:col-span-2">
-				<a href="/" class="inline-block">
-					{#if themeState.current === 'terminal'}
-						<span class="text-muted-foreground">~/</span>
-					{/if}
-					<span class="text-xl font-bold text-primary">ReignSoftware</span>
+				<a href="/" class="inline-flex items-center gap-2">
+					<span class="text-muted-foreground">~/</span>
+					<span class="font-mono text-xl text-[var(--term-red)]"
+						>reign<span class="text-[var(--term-fg)]">software</span></span
+					>
 				</a>
 				<p class="mt-4 max-w-xs text-sm text-muted-foreground">
-					{#if themeState.current === 'terminal'}
-						<span class="text-[var(--gruvbox-bright-green)]">// </span>
-					{/if}
+					<span class="text-[var(--term-green)]">// </span>
 					Building software that's not just functional—it's exceptional. Fast, robust, and visually stunning.
 				</p>
 
@@ -55,7 +52,7 @@
 							href={social.href}
 							target="_blank"
 							rel="noopener noreferrer"
-							class="flex h-9 w-9 items-center justify-center rounded-lg bg-secondary text-muted-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
+							class="flex h-9 w-9 items-center justify-center border border-border bg-secondary text-muted-foreground transition-colors hover:border-[var(--term-green)] hover:text-[var(--term-green)]"
 							aria-label={social.label}
 						>
 							<social.icon class="h-4 w-4" />
@@ -67,11 +64,7 @@
 			<!-- Links columns -->
 			<div>
 				<h3 class="mb-4 text-sm font-semibold">
-					{#if themeState.current === 'terminal'}
-						<span class="text-primary">./</span>products
-					{:else}
-						Products
-					{/if}
+					<span class="text-primary">./</span>products
 				</h3>
 				<ul class="space-y-2">
 					{#each footerLinks.product as link}
@@ -89,11 +82,7 @@
 
 			<div>
 				<h3 class="mb-4 text-sm font-semibold">
-					{#if themeState.current === 'terminal'}
-						<span class="text-primary">./</span>company
-					{:else}
-						Company
-					{/if}
+					<span class="text-primary">./</span>company
 				</h3>
 				<ul class="space-y-2">
 					{#each footerLinks.company as link}
@@ -111,11 +100,7 @@
 
 			<div>
 				<h3 class="mb-4 text-sm font-semibold">
-					{#if themeState.current === 'terminal'}
-						<span class="text-primary">./</span>resources
-					{:else}
-						Resources
-					{/if}
+					<span class="text-primary">./</span>resources
 				</h3>
 				<ul class="space-y-2">
 					{#each footerLinks.resources as link}
@@ -135,11 +120,7 @@
 		<!-- Bottom bar -->
 		<div class="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 text-sm text-muted-foreground sm:flex-row">
 			<p>
-				{#if themeState.current === 'terminal'}
-					<span class="text-primary">$</span> echo "© {currentYear} ReignSoftware. All rights reserved."
-				{:else}
-					© {currentYear} ReignSoftware. All rights reserved.
-				{/if}
+				<span class="text-primary">$</span> echo "© {currentYear} <span class="text-[var(--term-red)]">reign</span><span class="text-[var(--term-fg)]">software</span>. All rights reserved."
 			</p>
 			<div class="flex gap-6">
 				<a href="/privacy" class="hover:text-foreground">Privacy</a>

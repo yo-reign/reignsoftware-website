@@ -1,13 +1,14 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { themeState } from '$lib/stores/theme.svelte';
-	import { Mail, FileSearch, FolderTree, Zap, ArrowRight, CheckCircle } from '@lucide/svelte';
+	import { Mail, FileSearch, FolderTree, Zap, ArrowRight, ChevronDown } from '@lucide/svelte';
+
+	let importDocExpanded = $state(true);
 
 	const features = [
-		{ icon: Mail, text: 'Automated mail intake' },
-		{ icon: FileSearch, text: 'AI document analysis' },
-		{ icon: FolderTree, text: 'Smart categorization' },
-		{ icon: Zap, text: 'Action triggers' }
+		{ icon: Mail, text: 'Automated mail intake', color: 'var(--term-blue)' },
+		{ icon: FileSearch, text: 'AI document analysis', color: 'var(--term-purple)' },
+		{ icon: FolderTree, text: 'Smart categorization', color: 'var(--term-aqua)' },
+		{ icon: Zap, text: 'Action triggers', color: 'var(--term-yellow)' }
 	];
 
 	let sectionEl: HTMLElement;
@@ -51,126 +52,129 @@
 </script>
 
 <section bind:this={sectionEl} class="relative overflow-hidden py-24">
-	<!-- Background accent -->
-	<div class="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-accent/5"></div>
-
 	<div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-		<div class="grid items-center gap-12 lg:grid-cols-2">
-			<!-- Content -->
-			<div data-content class="opacity-0">
-				{#if themeState.current === 'terminal'}
-					<div class="mb-4 inline-flex items-center gap-2 rounded-md border border-border bg-card px-3 py-1">
-						<span class="text-xs text-muted-foreground">~/products $</span>
-						<span class="text-xs text-primary">cat importdoc/README.md</span>
-					</div>
-				{:else}
-					<span class="mb-4 inline-block rounded-full bg-primary/10 px-3 py-1 text-sm text-primary">
-						Featured Product
-					</span>
-				{/if}
+		<!-- TUI-style section header - clickable -->
+		<div class="mb-8 border border-[var(--term-aqua)] bg-[var(--term-bg-soft)]">
+			<button
+				onclick={() => (importDocExpanded = !importDocExpanded)}
+				class="flex w-full items-center justify-between px-3 py-2 transition-colors hover:bg-[var(--term-bg1)]"
+			>
+				<div class="flex items-center gap-2">
+					<span class="text-[var(--term-aqua)]">FEATURED</span>
+					<span class="text-[var(--term-gray)]">│</span>
+					<span class="text-[var(--term-fg-dim)]">~/products/importdoc</span>
+				</div>
+				<div class="flex items-center gap-2">
+					<span class="text-xs text-[var(--term-gray)]">{importDocExpanded ? 'EXPANDED' : 'COLLAPSED'}</span>
+					<ChevronDown class="h-4 w-4 text-[var(--term-gray)] transition-transform duration-200 {importDocExpanded ? 'rotate-180' : ''}" />
+				</div>
+			</button>
+		</div>
 
-				<h2 class="mb-4 text-3xl font-bold sm:text-4xl">
-					{#if themeState.current === 'terminal'}
-						<span class="text-muted-foreground"># </span>
-					{/if}
-					importDoc
+		<!-- Collapsible wrapper -->
+		<div class="grid transition-[grid-template-rows] duration-300 ease-out {importDocExpanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}">
+			<div class="overflow-hidden">
+				<h2 class="mb-6 text-3xl font-bold sm:text-4xl">
+					<span class="text-[var(--term-green)]">$ </span><span class="text-[var(--term-fg)]">importDoc</span>
 				</h2>
 
-				<p class="mb-6 text-lg text-muted-foreground">
-					{#if themeState.current === 'terminal'}
-						<span class="text-[var(--gruvbox-bright-green)]">/**</span><br />
-						<span class="text-[var(--gruvbox-bright-green)]"> * </span>
-					{/if}
-					Mail intake automation for law firms. Transform the chaos of incoming documents
-					into organized, actionable case files—automatically.
-					{#if themeState.current === 'terminal'}
-						<br /><span class="text-[var(--gruvbox-bright-green)]"> */</span>
-					{/if}
-				</p>
-
-				<!-- Features list -->
-				<ul class="mb-8 space-y-3">
-					{#each features as feature}
-						<li class="flex items-center gap-3">
-							<div class="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
-								<feature.icon class="h-4 w-4" />
-							</div>
-							<span>
-								{#if themeState.current === 'terminal'}
-									<span class="text-muted-foreground">-></span>
-								{/if}
-								{feature.text}
-							</span>
-						</li>
-					{/each}
-				</ul>
-
-				<!-- CTA -->
-				<a
-					href="/products/importdoc"
-					class="group inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 font-medium text-primary-foreground transition-all hover:opacity-90"
-				>
-					{#if themeState.current === 'terminal'}
-						<span>./learn_more --verbose</span>
-					{:else}
-						<span>Learn More</span>
-					{/if}
-					<ArrowRight class="h-4 w-4 transition-transform group-hover:translate-x-1" />
-				</a>
-			</div>
-
-			<!-- Visual mockup -->
-			<div data-visual class="relative opacity-0">
-				<div class="rounded-xl border border-border bg-card p-4 shadow-2xl">
-					{#if themeState.current === 'terminal'}
-						<!-- Terminal-style header -->
-						<div class="mb-4 flex items-center gap-2 border-b border-border pb-3">
-							<div class="flex gap-1.5">
-								<div class="h-3 w-3 rounded-full bg-[var(--gruvbox-red)]"></div>
-								<div class="h-3 w-3 rounded-full bg-[var(--gruvbox-yellow)]"></div>
-								<div class="h-3 w-3 rounded-full bg-[var(--gruvbox-green)]"></div>
-							</div>
-							<span class="ml-2 text-xs text-muted-foreground">importdoc --process</span>
-						</div>
-					{/if}
-
-					<!-- Mock dashboard content -->
-					<div class="space-y-3">
-						<!-- Stats row -->
-						<div class="grid grid-cols-3 gap-3">
-							{#each [{ label: 'Processed', value: '1,247' }, { label: 'Pending', value: '23' }, { label: 'Cases', value: '89' }] as stat}
-								<div class="rounded-lg bg-secondary p-3 text-center">
-									<div class="text-2xl font-bold text-primary">{stat.value}</div>
-									<div class="text-xs text-muted-foreground">{stat.label}</div>
-								</div>
-							{/each}
+				<div class="grid items-start gap-8 lg:grid-cols-2 lg:gap-12">
+					<!-- Content -->
+					<div data-content class="opacity-0">
+						<!-- TUI description box -->
+						<div class="mb-6 border border-border bg-[var(--term-bg-soft)] p-4">
+							<div class="mb-2 text-[var(--term-gray)]">/* README.md */</div>
+							<p class="text-[var(--term-fg)]">
+								Mail intake automation for law firms. Transform the chaos of incoming documents
+								into organized, actionable case files—automatically.
+							</p>
 						</div>
 
-						<!-- Recent items -->
-						<div class="rounded-lg bg-secondary p-3">
-							<div class="mb-2 text-xs text-muted-foreground">
-								{#if themeState.current === 'terminal'}
-									$ tail -3 ./recent_docs.log
-								{:else}
-									Recent Documents
-								{/if}
+						<!-- Features list -->
+						<div class="mb-8 border border-border bg-[var(--term-bg-soft)]">
+							<div class="border-b border-border bg-secondary px-3 py-1 text-xs text-[var(--term-gray)]">
+								FEATURES
 							</div>
-							{#each [{ name: 'Motion_Response.pdf', case: 'Smith v. Jones', status: 'Filed' }, { name: 'Discovery_Request.docx', case: 'Estate of Williams', status: 'Pending' }, { name: 'Settlement_Agreement.pdf', case: 'Garcia Corp', status: 'Review' }] as doc}
-								<div class="flex items-center justify-between border-b border-border py-2 last:border-0">
-									<div class="flex items-center gap-2">
-										<CheckCircle class="h-4 w-4 text-[var(--gruvbox-green,#98971a)]" />
-										<span class="text-sm">{doc.name}</span>
+							<div class="p-3">
+								{#each features as feature, i}
+									<div class="flex items-center gap-3 py-1">
+										<span class="text-[var(--term-gray)]">{String(i + 1).padStart(2, '0')}</span>
+										<span class="text-[var(--term-gray)]">│</span>
+										<div class="flex h-6 w-6 items-center justify-center" style="color: {feature.color}">
+											<feature.icon class="h-4 w-4" />
+										</div>
+										<span style="color: {feature.color}">{feature.text}</span>
 									</div>
-									<span class="text-xs text-muted-foreground">{doc.case}</span>
+								{/each}
+							</div>
+						</div>
+
+						<!-- CTA -->
+						<a
+							href="/products/importdoc"
+							class="group inline-flex items-center gap-2 border border-[var(--term-green)] bg-[var(--term-bg-soft)] px-4 py-2 text-[var(--term-green)] transition-colors hover:bg-[var(--term-green)] hover:text-[var(--term-bg)]"
+						>
+							<span>[ LEARN MORE ]</span>
+							<ArrowRight class="h-4 w-4 transition-transform group-hover:translate-x-1" />
+						</a>
+					</div>
+
+					<!-- Visual mockup -->
+					<div data-visual class="relative opacity-0">
+						<!-- TUI-style dashboard mockup -->
+						<div class="border border-border bg-[var(--term-bg-soft)]">
+							<!-- Window title bar -->
+							<div class="flex items-center justify-between border-b border-border bg-secondary px-3 py-2">
+								<div class="flex items-center gap-2">
+									<span class="text-[var(--term-red)]">■</span>
+									<span class="text-[var(--term-yellow)]">■</span>
+									<span class="text-[var(--term-green)]">■</span>
 								</div>
-							{/each}
+								<span class="text-xs text-[var(--term-gray)]">importdoc v2.1.0</span>
+								<span class="text-[var(--term-gray)]">─</span>
+							</div>
+
+							<!-- Stats row -->
+							<div class="grid grid-cols-3 border-b border-border">
+								{#each [{ label: 'PROCESSED', value: '1,247', color: 'var(--term-green)' }, { label: 'PENDING', value: '23', color: 'var(--term-yellow)' }, { label: 'CASES', value: '89', color: 'var(--term-blue)' }] as stat}
+									<div class="border-r border-border p-4 text-center last:border-r-0">
+										<div class="text-2xl font-bold" style="color: {stat.color}">{stat.value}</div>
+										<div class="text-xs text-[var(--term-gray)]">{stat.label}</div>
+									</div>
+								{/each}
+							</div>
+
+							<!-- Recent items table -->
+							<div class="p-3">
+								<div class="mb-2 flex items-center gap-2 text-xs">
+									<span class="text-[var(--term-green)]">$</span>
+									<span class="text-[var(--term-gray)]">tail -f ./logs/recent.log</span>
+								</div>
+								<div class="border border-border">
+									<!-- Table header -->
+									<div class="grid grid-cols-3 border-b border-border bg-secondary text-xs text-[var(--term-gray)]">
+										<div class="border-r border-border px-2 py-1">FILE</div>
+										<div class="border-r border-border px-2 py-1">CASE</div>
+										<div class="px-2 py-1">STATUS</div>
+									</div>
+									<!-- Table rows -->
+									{#each [{ name: 'Motion_Response.pdf', case: 'Smith v. Jones', status: 'FILED', statusColor: 'var(--term-green)' }, { name: 'Discovery_Req.docx', case: 'Estate Williams', status: 'PENDING', statusColor: 'var(--term-yellow)' }, { name: 'Settlement.pdf', case: 'Garcia Corp', status: 'REVIEW', statusColor: 'var(--term-blue)' }] as doc}
+										<div class="grid grid-cols-3 border-b border-border text-sm last:border-b-0">
+											<div class="border-r border-border px-2 py-2 text-[var(--term-fg)]">{doc.name}</div>
+											<div class="border-r border-border px-2 py-2 text-[var(--term-fg-dim)]">{doc.case}</div>
+											<div class="px-2 py-2" style="color: {doc.statusColor}">{doc.status}</div>
+										</div>
+									{/each}
+								</div>
+							</div>
+
+							<!-- Footer -->
+							<div class="border-t border-border bg-secondary px-3 py-1 text-xs text-[var(--term-gray)]">
+								<span class="text-[var(--term-green)]">●</span> Connected │ Last sync: 2m ago
+							</div>
 						</div>
 					</div>
 				</div>
-
-				<!-- Decorative elements -->
-				<div class="absolute -right-4 -top-4 h-24 w-24 rounded-full bg-primary/20 blur-2xl"></div>
-				<div class="absolute -bottom-4 -left-4 h-32 w-32 rounded-full bg-accent/20 blur-2xl"></div>
 			</div>
 		</div>
 	</div>
