@@ -27,7 +27,7 @@
 	let lastTime = 0;
 	let centerX = 0;
 	let centerY = 0;
-	let currentAgentCount = agentCount;
+	let currentAgentCount = $derived(agentCount);
 
 	// Grid settings - Gruvbox Dark Hard
 	const CELL_SIZE = 16;

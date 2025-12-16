@@ -22,7 +22,7 @@
 	let animationId: number;
 	let ctx: CanvasRenderingContext2D;
 	let walkers: Walker[] = [];
-	let currentAgentCount = agentCount;
+	let currentAgentCount = $derived(agentCount);
 
 	interface Walker {
 		x: number;

@@ -11,12 +11,11 @@
 | Aspect | Details |
 |--------|---------|
 | Framework | SvelteKit 2.x with Svelte 5 |
-| UI Components | shadcn-svelte |
 | Styling | Tailwind CSS 4.x |
-| Animations | motion.dev |
-| 3D (optional) | Three.js |
+| Icons | Lucide Svelte |
+| Animations | CSS transitions + Canvas API |
 | Deployment | Vercel |
-| Testing | Vitest (unit) + Playwright (e2e) |
+| Quality | TypeScript + svelte-check |
 | Package Manager | pnpm |
 
 ---
@@ -239,10 +238,9 @@ src/lib/
 │       ├── Services.svelte    # Service cards grid
 │       └── ProductTeaser.svelte  # importDoc teaser
 ├── stores/
-│   └── theme.svelte.ts        # Visualizer state (renamed from theme)
-├── themes/
-│   └── index.ts               # Visualizer definitions & colors
-└── utils.ts                   # cn helper for Tailwind
+│   └── theme.svelte.ts        # Visualizer state
+└── themes/
+    └── index.ts               # Visualizer definitions & colors
 ```
 
 ---
@@ -274,18 +272,16 @@ src/lib/
 - [ ] Waitlist signup form
 
 ### Phase 5: Polish & Enhancement
-- [ ] Add motion.dev animations
+- [ ] Enhanced CSS animations
 - [ ] More visualizers (particles, matrix, etc.)
 - [ ] Micro-interactions
 - [ ] Performance optimization
 - [ ] SEO meta tags
 
-### Phase 6: Testing & Launch
-- [ ] Unit tests for utilities
-- [ ] Component tests
-- [ ] E2E tests for critical flows
+### Phase 6: Launch
 - [ ] Accessibility audit
-- [ ] Lighthouse check
+- [ ] Lighthouse performance check
+- [ ] SEO meta tags finalization
 - [ ] Deploy to Vercel
 
 ---
@@ -329,15 +325,10 @@ pnpm dev                 # Start dev server (localhost:5173)
 pnpm build               # Production build
 pnpm preview             # Preview production build
 
-# Testing
-pnpm test:unit           # Run unit tests (watch mode)
-pnpm test:unit --run     # Run unit tests once
-pnpm test:e2e            # Run e2e tests
-
 # Code Quality
 pnpm lint                # Check formatting + linting
 pnpm format              # Auto-format code
-pnpm check               # TypeScript type checking
+pnpm check               # TypeScript + Svelte type checking
 ```
 
 ---
