@@ -51,7 +51,7 @@
 	});
 </script>
 
-<section bind:this={sectionEl} class="relative overflow-hidden py-24">
+<section bind:this={sectionEl} class="relative overflow-hidden pb-24">
 	<div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 		<!-- TUI-style section header - clickable -->
 		<div class="mb-8 border border-[var(--term-aqua)] bg-[var(--term-bg-soft)]">
@@ -65,17 +65,29 @@
 					<span class="text-[var(--term-fg-dim)]">~/products/importdoc</span>
 				</div>
 				<div class="flex items-center gap-2">
-					<span class="text-xs text-[var(--term-gray)]">{importDocExpanded ? 'EXPANDED' : 'COLLAPSED'}</span>
-					<ChevronDown class="h-4 w-4 text-[var(--term-gray)] transition-transform duration-200 {importDocExpanded ? 'rotate-180' : ''}" />
+					<span class="text-xs text-[var(--term-gray)]"
+						>{importDocExpanded ? 'EXPANDED' : 'COLLAPSED'}</span
+					>
+					<ChevronDown
+						class="h-4 w-4 text-[var(--term-gray)] transition-transform duration-200 {importDocExpanded
+							? 'rotate-180'
+							: ''}"
+					/>
 				</div>
 			</button>
 		</div>
 
 		<!-- Collapsible wrapper -->
-		<div class="grid transition-[grid-template-rows] duration-300 ease-out {importDocExpanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}">
+		<div
+			class="grid transition-[grid-template-rows] duration-300 ease-out {importDocExpanded
+				? 'grid-rows-[1fr]'
+				: 'grid-rows-[0fr]'}"
+		>
 			<div class="overflow-hidden">
 				<h2 class="mb-6 text-3xl font-bold sm:text-4xl">
-					<span class="text-[var(--term-green)]">$ </span><span class="text-[var(--term-fg)]">importDoc</span>
+					<span class="text-[var(--term-green)]">$&nbsp;</span><span class="text-[var(--term-fg)]"
+						>importDoc</span
+					>
 				</h2>
 
 				<div class="grid items-start gap-8 lg:grid-cols-2 lg:gap-12">
@@ -85,14 +97,16 @@
 						<div class="mb-6 border border-border bg-[var(--term-bg-soft)] p-4">
 							<div class="mb-2 text-[var(--term-gray)]">/* README.md */</div>
 							<p class="text-[var(--term-fg)]">
-								Mail intake automation for law firms. Transform the chaos of incoming documents
-								into organized, actionable case files—automatically.
+								Mail intake automation for law firms. Transform the chaos of incoming documents into
+								organized, actionable case files—automatically.
 							</p>
 						</div>
 
 						<!-- Features list -->
 						<div class="mb-8 border border-border bg-[var(--term-bg-soft)]">
-							<div class="border-b border-border bg-secondary px-3 py-1 text-xs text-[var(--term-gray)]">
+							<div
+								class="border-b border-border bg-secondary px-3 py-1 text-xs text-[var(--term-gray)]"
+							>
 								FEATURES
 							</div>
 							<div class="p-3">
@@ -100,7 +114,10 @@
 									<div class="flex items-center gap-3 py-1">
 										<span class="text-[var(--term-gray)]">{String(i + 1).padStart(2, '0')}</span>
 										<span class="text-[var(--term-gray)]">│</span>
-										<div class="flex h-6 w-6 items-center justify-center" style="color: {feature.color}">
+										<div
+											class="flex h-6 w-6 items-center justify-center"
+											style="color: {feature.color}"
+										>
 											<feature.icon class="h-4 w-4" />
 										</div>
 										<span style="color: {feature.color}">{feature.text}</span>
@@ -124,7 +141,9 @@
 						<!-- TUI-style dashboard mockup -->
 						<div class="border border-border bg-[var(--term-bg-soft)]">
 							<!-- Window title bar -->
-							<div class="flex items-center justify-between border-b border-border bg-secondary px-3 py-2">
+							<div
+								class="flex items-center justify-between border-b border-border bg-secondary px-3 py-2"
+							>
 								<div class="flex items-center gap-2">
 									<span class="text-[var(--term-red)]">■</span>
 									<span class="text-[var(--term-yellow)]">■</span>
@@ -152,7 +171,9 @@
 								</div>
 								<div class="border border-border">
 									<!-- Table header -->
-									<div class="grid grid-cols-3 border-b border-border bg-secondary text-xs text-[var(--term-gray)]">
+									<div
+										class="grid grid-cols-3 border-b border-border bg-secondary text-xs text-[var(--term-gray)]"
+									>
 										<div class="border-r border-border px-2 py-1">FILE</div>
 										<div class="border-r border-border px-2 py-1">CASE</div>
 										<div class="px-2 py-1">STATUS</div>
@@ -160,8 +181,12 @@
 									<!-- Table rows -->
 									{#each [{ name: 'Motion_Response.pdf', case: 'Smith v. Jones', status: 'FILED', statusColor: 'var(--term-green)' }, { name: 'Discovery_Req.docx', case: 'Estate Williams', status: 'PENDING', statusColor: 'var(--term-yellow)' }, { name: 'Settlement.pdf', case: 'Garcia Corp', status: 'REVIEW', statusColor: 'var(--term-blue)' }] as doc}
 										<div class="grid grid-cols-3 border-b border-border text-sm last:border-b-0">
-											<div class="border-r border-border px-2 py-2 text-[var(--term-fg)]">{doc.name}</div>
-											<div class="border-r border-border px-2 py-2 text-[var(--term-fg-dim)]">{doc.case}</div>
+											<div class="border-r border-border px-2 py-2 text-[var(--term-fg)]">
+												{doc.name}
+											</div>
+											<div class="border-r border-border px-2 py-2 text-[var(--term-fg-dim)]">
+												{doc.case}
+											</div>
 											<div class="px-2 py-2" style="color: {doc.statusColor}">{doc.status}</div>
 										</div>
 									{/each}
@@ -169,7 +194,9 @@
 							</div>
 
 							<!-- Footer -->
-							<div class="border-t border-border bg-secondary px-3 py-1 text-xs text-[var(--term-gray)]">
+							<div
+								class="border-t border-border bg-secondary px-3 py-1 text-xs text-[var(--term-gray)]"
+							>
 								<span class="text-[var(--term-green)]">●</span> Connected │ Last sync: 2m ago
 							</div>
 						</div>

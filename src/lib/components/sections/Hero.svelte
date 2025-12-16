@@ -19,7 +19,7 @@
 
 	// Terminal typing effect
 	let typedText = $state('');
-	const fullText = 'Better software, done right';
+	const fullText = '# Better software, done right';
 	let typeIndex = $state(0);
 
 	// Track which param input is focused

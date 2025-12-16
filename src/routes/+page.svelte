@@ -1,8 +1,8 @@
 <script lang="ts">
 	import Hero from '$lib/components/sections/Hero.svelte';
-	import Services from '$lib/components/sections/Services.svelte';
 	import ProductTeaser from '$lib/components/sections/ProductTeaser.svelte';
 	import { ArrowRight } from '@lucide/svelte';
+	import SectionHeader from '$lib/components/ui/SectionHeader.svelte';
 </script>
 
 <svelte:head>
@@ -12,10 +12,9 @@
 <!-- Hero Section -->
 <Hero />
 
-<!-- Services Section -->
-<Services />
-
-<!-- Product Teaser (importDoc) -->
+<!-- Product Teaser Section -->
+<SectionHeader sectionName="Products" mainTitle="Software currently in production" />
+<!-- importDoc -->
 <ProductTeaser />
 
 <!-- CTA Section -->
@@ -25,7 +24,11 @@
 		<div class="mx-auto max-w-2xl border border-border bg-[var(--term-bg-soft)]">
 			<div class="flex items-center gap-2 border-b border-border bg-secondary px-3 py-2 text-sm">
 				<span class="text-[var(--term-green)]">$</span>
-				<span class="text-[var(--term-gray)]">./start_project --with-<span class="text-[var(--term-red)]">reign</span><span class="text-[var(--term-fg)]">software</span></span>
+				<span class="text-[var(--term-gray)]"
+					>./start_project --with-<span class="text-[var(--term-red)]">reign</span><span
+						class="text-[var(--term-fg)]">software</span
+					></span
+				>
 				<span class="animate-pulse text-[var(--term-green)]">_</span>
 			</div>
 			<div class="p-8">
