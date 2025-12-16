@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { visualizerColors } from '$lib/themes';
+	import { visualizerColors } from './config';
 
 	interface Props {
 		class?: string;
@@ -52,7 +52,7 @@
 			vy: (Math.random() - 0.5) * 2,
 			size: 1 + Math.random() * 3,
 			color: visualizerColors[Math.floor(Math.random() * visualizerColors.length)],
-			baseSpeed: 0.5 + Math.random() * 1.5
+			baseSpeed: 0.5 + Math.random() * 9.5
 		};
 	}
 

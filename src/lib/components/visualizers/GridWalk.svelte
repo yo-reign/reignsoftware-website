@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { visualizerColors } from '$lib/themes';
+	import { visualizerColors } from './config';
 
 	interface Props {
 		class?: string;
@@ -27,7 +27,6 @@
 	let lastTime = 0;
 	let centerX = 0;
 	let centerY = 0;
-	let currentAgentCount = $derived(agentCount);
 
 	// Grid settings - Gruvbox Dark Hard
 	const CELL_SIZE = 16;
@@ -67,7 +66,7 @@
 
 	function resetWalkers() {
 		walkers = [];
-		for (let i = 0; i < currentAgentCount; i++) {
+		for (let i = 0; i < agentCount; i++) {
 			walkers.push(createWalker(true));
 		}
 	}
@@ -226,14 +225,12 @@
 
 	// React to agent count changes
 	$effect(() => {
-		if (agentCount !== currentAgentCount) {
-			currentAgentCount = agentCount;
-			if (walkers.length > currentAgentCount) {
-				walkers = walkers.slice(0, currentAgentCount);
-			} else {
-				while (walkers.length < currentAgentCount) {
-					walkers.push(createWalker(true));
-				}
+		const targetCount = agentCount;
+		if (walkers.length > targetCount) {
+			walkers = walkers.slice(0, targetCount);
+		} else {
+			while (walkers.length < targetCount) {
+				walkers.push(createWalker(true));
 			}
 		}
 	});
@@ -243,6 +240,19 @@
 		if (restartSignal > 0) {
 			resetWalkers();
 		}
+	});
+
+	// React to trailLength changes - update existing walkers
+	$effect(() => {
+		const newTrailLength = trailLength;
+		walkers.forEach((walker) => {
+			const variance = Math.floor(newTrailLength * 0.3);
+			walker.maxTrail = newTrailLength - variance + Math.floor(Math.random() * variance * 2);
+			// Trim trail if it exceeds new max
+			if (walker.trail.length > walker.maxTrail) {
+				walker.trail = walker.trail.slice(-walker.maxTrail);
+			}
+		});
 	});
 </script>
 

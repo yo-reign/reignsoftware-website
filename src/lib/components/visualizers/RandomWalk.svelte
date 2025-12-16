@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { visualizerColors } from '$lib/themes';
+	import { visualizerColors } from './config';
 
 	interface Props {
 		class?: string;
@@ -22,7 +22,6 @@
 	let animationId: number;
 	let ctx: CanvasRenderingContext2D;
 	let walkers: Walker[] = [];
-	let currentAgentCount = $derived(agentCount);
 
 	interface Walker {
 		x: number;
@@ -64,7 +63,7 @@
 
 	function resetWalkers() {
 		walkers = [];
-		for (let i = 0; i < currentAgentCount; i++) {
+		for (let i = 0; i < agentCount; i++) {
 			walkers.push(createWalker(true));
 		}
 		// Clear canvas
@@ -190,14 +189,12 @@
 
 	// React to agent count changes
 	$effect(() => {
-		if (agentCount !== currentAgentCount) {
-			currentAgentCount = agentCount;
-			if (walkers.length > currentAgentCount) {
-				walkers = walkers.slice(0, currentAgentCount);
-			} else {
-				while (walkers.length < currentAgentCount) {
-					walkers.push(createWalker(false));
-				}
+		const targetCount = agentCount;
+		if (walkers.length > targetCount) {
+			walkers = walkers.slice(0, targetCount);
+		} else {
+			while (walkers.length < targetCount) {
+				walkers.push(createWalker(false));
 			}
 		}
 	});
@@ -207,6 +204,15 @@
 		if (restartSignal > 0) {
 			resetWalkers();
 		}
+	});
+
+	// React to thickness changes - update existing walkers
+	$effect(() => {
+		const newThickness = baseThickness;
+		walkers.forEach((walker) => {
+			const thicknessVariance = newThickness * 0.5;
+			walker.thickness = newThickness - thicknessVariance / 2 + Math.random() * thicknessVariance;
+		});
 	});
 </script>
 

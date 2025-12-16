@@ -5,7 +5,7 @@
 		class?: string;
 		speedMultiplier?: number;
 		stars?: number;
-		depth?: number;
+		spread?: number;
 		restartSignal?: number;
 	}
 
@@ -13,7 +13,7 @@
 		class: className = '',
 		speedMultiplier = 1.0,
 		stars: starCount = 400,
-		depth = 5,
+		spread = 5,
 		restartSignal = 0
 	}: Props = $props();
 
@@ -28,8 +28,8 @@
 	const BG_COLOR = '#1d2021';
 	const STAR_COLORS = ['#ebdbb2', '#d5c4a1', '#bdae93', '#a89984', '#83a598', '#b8bb26'];
 
-	const MAX_DEPTH = 1000;
-	const BASE_SPEED = 2;
+	const MAX_Z = 1000;
+	const BASE_SPEED = 1;
 
 	interface Star {
 		x: number;
@@ -40,11 +40,17 @@
 		prevY: number;
 	}
 
+	// Spread controls the field of view - higher = wider star field
+	function getSpreadRange(): number {
+		return 500 + spread * 200; // Range from 700 to 2500 based on spread 1-10
+	}
+
 	function createStar(randomZ = true): Star {
+		const range = getSpreadRange();
 		return {
-			x: (Math.random() - 0.5) * 2000,
-			y: (Math.random() - 0.5) * 2000,
-			z: randomZ ? Math.random() * MAX_DEPTH : MAX_DEPTH,
+			x: (Math.random() - 0.5) * range,
+			y: (Math.random() - 0.5) * range,
+			z: randomZ ? Math.random() * MAX_Z : MAX_Z,
 			color: STAR_COLORS[Math.floor(Math.random() * STAR_COLORS.length)],
 			prevX: 0,
 			prevY: 0
@@ -82,9 +88,7 @@
 		ctx.fillStyle = BG_COLOR;
 		ctx.fillRect(0, 0, rect.width, rect.height);
 
-		// Speed based on depth setting (1-10)
-		const depthSpeed = BASE_SPEED * (depth / 5);
-		const moveSpeed = depthSpeed * speedMultiplier * normalizedDelta;
+		const moveSpeed = BASE_SPEED * speedMultiplier * normalizedDelta;
 
 		starList.forEach((star, index) => {
 			// Store previous projected position for trail
@@ -112,9 +116,9 @@
 				return;
 			}
 
-			// Calculate size based on depth
-			const size = Math.max(0.5, (1 - star.z / MAX_DEPTH) * 3);
-			const alpha = Math.max(0.2, 1 - star.z / MAX_DEPTH);
+			// Calculate size based on z-distance
+			const size = Math.max(0.5, (1 - star.z / MAX_Z) * 3);
+			const alpha = Math.max(0.2, 1 - star.z / MAX_Z);
 
 			// Draw trail (line from prev position)
 			if (moveSpeed > 0.5) {
@@ -136,7 +140,7 @@
 			ctx.fill();
 
 			// Add glow for close stars
-			if (star.z < MAX_DEPTH * 0.3) {
+			if (star.z < MAX_Z * 0.3) {
 				ctx.beginPath();
 				ctx.arc(projX, projY, size * 2, 0, Math.PI * 2);
 				ctx.fillStyle = star.color;

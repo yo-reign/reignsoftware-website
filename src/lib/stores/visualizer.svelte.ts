@@ -1,5 +1,5 @@
 import { browser } from '$app/environment';
-import { visualizers, visualizerOrder, getDefaultParams, type VisualizerName } from '$lib/themes';
+import { visualizers, visualizerOrder, getDefaultParams, type VisualizerName } from '$lib/components/visualizers/config';
 
 // Speed multiplier options
 export const speedOptions = [0.1, 0.25, 0.5, 1.0, 2.0, 4.0] as const;

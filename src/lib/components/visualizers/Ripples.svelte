@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { visualizerColors } from '$lib/themes';
+	import { visualizerColors } from './config';
 
 	interface Props {
 		class?: string;
 		speedMultiplier?: number;
 		decay?: number;
-		maxRipples?: number;
+		frequency?: number;
 		restartSignal?: number;
 	}
 
@@ -14,7 +14,7 @@
 		class: className = '',
 		speedMultiplier = 1.0,
 		decay = 5,
-		maxRipples = 20,
+		frequency = 5,
 		restartSignal = 0
 	}: Props = $props();
 
@@ -51,7 +51,8 @@
 	}
 
 	function addRipple(x: number, y: number) {
-		if (rippleList.length >= maxRipples) {
+		// Cap at 50 ripples to prevent performance issues
+		if (rippleList.length >= 50) {
 			rippleList.shift();
 		}
 		rippleList.push(createRipple(x, y));
@@ -87,9 +88,10 @@
 		const decayRate = (decay / 5) * 0.01;
 		const expansionSpeed = BASE_EXPANSION_SPEED * speedMultiplier * normalizedDelta;
 
-		// Auto-generate ripples occasionally
+		// Auto-generate ripples based on frequency (1-10, higher = more frequent)
 		autoRippleTimer += deltaTime * speedMultiplier;
-		if (autoRippleTimer > 2000 && rippleList.length < maxRipples / 2) {
+		const spawnInterval = 3000 / frequency; // Range: 3000ms (freq=1) to 300ms (freq=10)
+		if (autoRippleTimer > spawnInterval) {
 			autoRippleTimer = 0;
 			addRipple(Math.random() * rect.width, Math.random() * rect.height);
 		}

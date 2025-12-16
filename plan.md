@@ -231,16 +231,20 @@ src/lib/
 │   │   ├── Header.svelte      # Fixed header with visualizer selector
 │   │   └── Footer.svelte      # TUI-style footer
 │   ├── visualizers/
+│   │   ├── config.ts          # Visualizer definitions, colors & params
 │   │   ├── GridWalk.svelte    # Grid-based random walk
-│   │   └── RandomWalk.svelte  # Free-flowing random walk
+│   │   ├── RandomWalk.svelte  # Free-flowing random walk
+│   │   ├── MatrixRain.svelte  # Digital rain effect
+│   │   ├── ParticleSwarm.svelte # Mouse-following particles
+│   │   ├── Starfield.svelte   # Warp speed stars
+│   │   ├── Ripples.svelte     # Click-to-create ripples
+│   │   └── VisualizerBackground.svelte  # Visualizer wrapper
 │   └── sections/
 │       ├── Hero.svelte        # Landing hero with visualizer
 │       ├── Services.svelte    # Service cards grid
 │       └── ProductTeaser.svelte  # importDoc teaser
-├── stores/
-│   └── theme.svelte.ts        # Visualizer state
-└── themes/
-    └── index.ts               # Visualizer definitions & colors
+└── stores/
+    └── visualizer.svelte.ts   # Visualizer state management
 ```
 
 ---
@@ -273,7 +277,7 @@ src/lib/
 
 ### Phase 5: Polish & Enhancement
 - [ ] Enhanced CSS animations
-- [ ] More visualizers (particles, matrix, etc.)
+- [x] More visualizers (matrix rain, particle swarm, starfield, ripples)
 - [ ] Micro-interactions
 - [ ] Performance optimization
 - [ ] SEO meta tags
@@ -308,7 +312,7 @@ src/lib/
 
 ## Future Ideas
 
-- **Additional Visualizers**: Matrix rain, particle swarm, perlin noise
+- **Additional Visualizers**: Perlin noise, Conway's Game of Life
 - **Blog**: Technical articles, case studies
 - **Playground**: Full-screen interactive visualization sandbox
 - **Dark/Light**: Could add light variant of terminal theme later

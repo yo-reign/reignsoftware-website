@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { visualizerState } from '$lib/stores/theme.svelte';
-	import { visualizers, visualizerOrder, type VisualizerName } from '$lib/themes';
+	import { visualizerState } from '$lib/stores/visualizer.svelte';
+	import { visualizers, visualizerOrder, type VisualizerName } from '$lib/components/visualizers/config';
 	import { Menu, X, Layers } from '@lucide/svelte';
 
 	let mobileMenuOpen = $state(false);

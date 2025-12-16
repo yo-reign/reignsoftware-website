@@ -1,8 +1,12 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { fly } from 'svelte/transition';
-	import { visualizerState, speedOptions } from '$lib/stores/theme.svelte';
-	import { visualizers, visualizerOrder, type VisualizerName } from '$lib/themes';
+	import { visualizerState, speedOptions } from '$lib/stores/visualizer.svelte';
+	import {
+		visualizers,
+		visualizerOrder,
+		type VisualizerName
+	} from '$lib/components/visualizers/config';
 	import { ChevronRight, ChevronDown, Minus, Plus, RotateCcw } from '@lucide/svelte';
 
 	let heroContent: HTMLElement;
@@ -71,7 +75,7 @@
 	function getVisualizerColor(name: VisualizerName): string {
 		switch (name) {
 			case 'grid-walk':
-				return 'var(--term-green)';
+				return 'var(--term-red)';
 			case 'random-walk':
 				return 'var(--term-blue)';
 			case 'matrix-rain':
@@ -267,9 +271,7 @@
 												>
 													<Minus class="h-3 w-3" />
 												</button>
-												<span
-													class="w-16 text-center font-mono text-sm text-[var(--term-purple)]"
-												>
+												<span class="w-16 text-center font-mono text-sm text-[var(--term-purple)]">
 													{formatSpeed(visualizerState.speedMultiplier)}
 												</span>
 												<button
@@ -292,8 +294,7 @@
 														disabled={visualizerState.currentParams[key] <= config.min}
 														class="flex h-7 w-7 items-center justify-center border border-border transition-colors disabled:opacity-30 disabled:hover:border-border disabled:hover:text-current"
 														style="--hover-color: {config.color}"
-														onmouseenter={(e) =>
-															(e.currentTarget.style.borderColor = config.color)}
+														onmouseenter={(e) => (e.currentTarget.style.borderColor = config.color)}
 														onmouseleave={(e) => (e.currentTarget.style.borderColor = '')}
 													>
 														<Minus class="h-3 w-3" />
@@ -316,8 +317,7 @@
 														disabled={visualizerState.currentParams[key] >= config.max}
 														class="flex h-7 w-7 items-center justify-center border border-border transition-colors disabled:opacity-30 disabled:hover:border-border disabled:hover:text-current"
 														style="--hover-color: {config.color}"
-														onmouseenter={(e) =>
-															(e.currentTarget.style.borderColor = config.color)}
+														onmouseenter={(e) => (e.currentTarget.style.borderColor = config.color)}
 														onmouseleave={(e) => (e.currentTarget.style.borderColor = '')}
 													>
 														<Plus class="h-3 w-3" />

@@ -48,7 +48,7 @@ export const visualizers: Record<VisualizerName, VisualizerConfig> = {
 				max: 100,
 				step: 5,
 				default: 40,
-				color: 'var(--term-purple)'
+				color: 'var(--term-green)'
 			}
 		}
 	},
@@ -64,15 +64,15 @@ export const visualizers: Record<VisualizerName, VisualizerConfig> = {
 				min: 1,
 				max: 100,
 				step: 1,
-				default: 8,
+				default: 32,
 				color: 'var(--term-blue)'
 			},
 			thickness: {
 				label: '--thickness',
 				min: 1,
-				max: 8,
+				max: 10,
 				step: 1,
-				default: 2,
+				default: 5,
 				color: 'var(--term-aqua)'
 			}
 		}
@@ -142,8 +142,8 @@ export const visualizers: Record<VisualizerName, VisualizerConfig> = {
 				default: 400,
 				color: 'var(--term-blue)'
 			},
-			depth: {
-				label: '--depth',
+			spread: {
+				label: '--spread',
 				min: 1,
 				max: 10,
 				step: 1,
@@ -167,12 +167,12 @@ export const visualizers: Record<VisualizerName, VisualizerConfig> = {
 				default: 5,
 				color: 'var(--term-aqua)'
 			},
-			maxRipples: {
-				label: '--max',
-				min: 5,
-				max: 50,
-				step: 5,
-				default: 20,
+			frequency: {
+				label: '--freq',
+				min: 1,
+				max: 10,
+				step: 1,
+				default: 5,
 				color: 'var(--term-yellow)'
 			}
 		}

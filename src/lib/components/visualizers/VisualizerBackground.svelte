@@ -5,7 +5,7 @@
 	import ParticleSwarm from './ParticleSwarm.svelte';
 	import Starfield from './Starfield.svelte';
 	import Ripples from './Ripples.svelte';
-	import { visualizerState } from '$lib/stores/theme.svelte';
+	import { visualizerState } from '$lib/stores/visualizer.svelte';
 </script>
 
 <!-- Fixed background visualizer layer -->
@@ -48,14 +48,14 @@
 		<Starfield
 			speedMultiplier={visualizerState.speedMultiplier}
 			stars={visualizerState.currentParams.stars}
-			depth={visualizerState.currentParams.depth}
+			spread={visualizerState.currentParams.spread}
 			restartSignal={visualizerState.restartSignal}
 		/>
 	{:else if visualizerState.current === 'ripples'}
 		<Ripples
 			speedMultiplier={visualizerState.speedMultiplier}
 			decay={visualizerState.currentParams.decay}
-			maxRipples={visualizerState.currentParams.maxRipples}
+			frequency={visualizerState.currentParams.frequency}
 			restartSignal={visualizerState.restartSignal}
 		/>
 	{/if}
