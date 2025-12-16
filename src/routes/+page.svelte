@@ -37,7 +37,7 @@
 				</h2>
 				<p class="mb-6 text-[var(--term-fg-dim)]">
 					<span class="text-[var(--term-aqua)]"># </span>
-					Let's discuss your project and create something exceptional together.
+					Let's discuss your project and create something together.
 				</p>
 				<a
 					href="/contact"

@@ -161,10 +161,10 @@
 				<!-- Description -->
 				<div class="mb-8 border-l-2 border-[var(--term-blue)] pl-4">
 					<p class="text-lg text-[var(--term-fg-dim)]">
-						<span class="text-[var(--term-aqua)]"># </span>
+						<span class="text-[var(--term-aqua)]">## </span>
 						Fast, robust, and visually stunning solutions.<br />
-						<span class="text-[var(--term-aqua)]"># </span>
-						We don't just write code — we craft experiences.
+						<span class="text-[var(--term-aqua)]">## </span>
+						Code written by nerds.
 					</p>
 				</div>
 

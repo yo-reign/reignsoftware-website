@@ -24,7 +24,7 @@
 	<title>reignsoftware | Dev</title>
 	<meta
 		name="description"
-		content="Fast, robust, and visually stunning software solutions for businesses and consumers. We don't just write code—we craft experiences."
+		content="Fast, robust, and visually stunning software solutions for businesses and consumers."
 	/>
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
 </svelte:head>
