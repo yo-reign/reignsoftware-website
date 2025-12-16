@@ -14,7 +14,7 @@
 		<span class="text-[var(--term-gray)]"> ls -la ./{sectionName}/</span>
 	</div>
 	<h2 class="text-3xl font-bold sm:text-4xl">
-		<span class="text-[var(--term-gray)]"># {mainTitle}</span>
+		<span class="text-[var(--term-fg)]"># {mainTitle}</span>
 	</h2>
 	{#if subTitle}
 		<p class="mx-auto mt-4 max-w-2xl text-muted-foreground">
