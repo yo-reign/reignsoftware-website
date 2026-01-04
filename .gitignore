@@ -27,4 +27,3 @@ vite.config.ts.timestamp-*
 Session.vim
 *.swp
 *.swo
-CLAUDE.md
