@@ -3,11 +3,18 @@
 	import { visualizerState } from '$lib/stores/visualizer.svelte';
 	import { themeState } from '$lib/stores/theme.svelte';
 	import { visualizers, visualizerOrder, type VisualizerName } from '$lib/components/visualizers/config';
-	import { Menu, X, Layers, Sun, Moon } from '@lucide/svelte';
+	import { Menu, X, Layers, Sun, Moon, Monitor } from '@lucide/svelte';
 
 	let mobileMenuOpen = $state(false);
 	let showVisualSelector = $state(false);
 	let visualDropdownOpen = $state(false);
+	let themeDropdownOpen = $state(false);
+
+	const themeOptions = [
+		{ mode: 'auto' as const, label: 'Auto', icon: Monitor },
+		{ mode: 'dark' as const, label: 'Dark', icon: Moon },
+		{ mode: 'light' as const, label: 'Light', icon: Sun }
+	];
 
 	// Terminal boot animation state
 	let bootPhase = $state<'hidden' | 'booting' | 'ready' | 'shutdown'>('hidden');
@@ -145,6 +152,7 @@
 	function handleKeydown(e: KeyboardEvent) {
 		if (e.key === 'Escape') {
 			visualDropdownOpen = false;
+			themeDropdownOpen = false;
 		}
 	}
 
@@ -186,7 +194,7 @@
 			{#each navItems as item}
 				<a
 					href={item.href}
-					class="px-3 py-2 text-sm text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground"
+					class="flex w-24 items-center justify-center border border-border/30 bg-card/50 py-2 text-sm text-foreground/80 transition-all hover:border-border/50 hover:bg-card hover:text-foreground"
 				>
 					<span class="text-muted-foreground">./</span>{item.label}
 				</a>
@@ -212,7 +220,7 @@
 						<div class="absolute inset-0 flex items-center justify-end">
 							<button
 								onclick={() => (visualDropdownOpen = !visualDropdownOpen)}
-								class="theme-button flex items-center gap-2 border border-border bg-card px-3 py-2 text-sm transition-all hover:border-primary hover:bg-card/80"
+								class="theme-button flex h-10 items-center gap-2 border border-border/50 bg-card/80 px-3 text-sm transition-all hover:border-primary hover:bg-card"
 								aria-label="Toggle visualizer selector"
 							>
 								<div
@@ -235,14 +243,14 @@
 
 						<!-- Dropdown -->
 						<div
-							class="absolute right-0 top-full z-50 mt-2 min-w-[220px] overflow-hidden border border-border bg-card shadow-xl dropdown-enter"
+							class="absolute right-0 top-full z-50 mt-2 min-w-[220px] overflow-hidden border border-border/50 bg-background/70 shadow-xl backdrop-blur-xl dropdown-enter"
 						>
 							<div
-								class="border-b border-border bg-card/50 px-3 py-2 text-xs text-muted-foreground"
+								class="border-b border-border/50 bg-secondary/30 px-3 py-2 text-xs text-muted-foreground"
 							>
 								<span class="text-primary">$</span> select --visual
 							</div>
-							<div class="p-2">
+							<div class="bg-card/50 p-2">
 								{#each visualizerOrder as visualizerName, i}
 									{@const visualizer = visualizers[visualizerName]}
 									<button
@@ -273,17 +281,61 @@
 			</div>
 
 			<!-- Theme Toggle -->
-			<button
-				onclick={() => themeState.toggle()}
-				class="flex h-10 w-10 items-center justify-center border border-border bg-card text-foreground transition-all hover:border-primary hover:bg-card/80"
-				aria-label="Toggle theme"
-			>
-				{#if themeState.isDark}
-					<Sun class="h-4 w-4" />
-				{:else}
-					<Moon class="h-4 w-4" />
+			<div class="relative">
+				<button
+					onclick={() => (themeDropdownOpen = !themeDropdownOpen)}
+					class="flex h-10 w-10 items-center justify-center border border-border/50 bg-card/80 text-foreground transition-all hover:border-primary hover:bg-card"
+					aria-label="Toggle theme menu"
+				>
+					{#if themeState.mode === 'dark'}
+						<Moon class="h-4 w-4" />
+					{:else if themeState.mode === 'light'}
+						<Sun class="h-4 w-4" />
+					{:else}
+						<Monitor class="h-4 w-4" />
+					{/if}
+				</button>
+
+				{#if themeDropdownOpen}
+					<!-- Backdrop -->
+					<button
+						class="fixed inset-0 z-40"
+						onclick={() => (themeDropdownOpen = false)}
+						aria-label="Close menu"
+					></button>
+
+					<!-- Dropdown -->
+					<div
+						class="absolute right-0 top-full z-50 mt-2 min-w-[140px] overflow-hidden border border-border/50 bg-background/70 shadow-xl backdrop-blur-xl dropdown-enter"
+					>
+						<div
+							class="border-b border-border/50 bg-secondary/30 px-3 py-2 text-xs text-muted-foreground"
+						>
+							<span class="text-primary">$</span> set --theme
+						</div>
+						<div class="bg-card/50 p-1">
+							{#each themeOptions as option, i}
+								<button
+									onclick={() => {
+										themeState.setMode(option.mode);
+										themeDropdownOpen = false;
+									}}
+									class="dropdown-item flex w-full items-center gap-3 px-3 py-2 text-left text-sm transition-colors hover:bg-secondary {themeState.mode === option.mode
+										? 'bg-secondary text-primary'
+										: ''}"
+									style="animation-delay: {i * 50}ms"
+								>
+									<option.icon class="h-4 w-4" />
+									<span>{option.label}</span>
+									{#if themeState.mode === option.mode}
+										<span class="ml-auto text-xs text-primary">*</span>
+									{/if}
+								</button>
+							{/each}
+						</div>
+					</div>
 				{/if}
-			</button>
+			</div>
 
 			<!-- Mobile menu button -->
 			<button
@@ -302,12 +354,12 @@
 
 	<!-- Mobile Navigation -->
 	{#if mobileMenuOpen}
-		<div class="border-t border-border bg-background md:hidden">
+		<div class="border-t border-border/50 bg-card/95 backdrop-blur-sm md:hidden">
 			<div class="space-y-1 px-4 py-3">
 				{#each navItems as item}
 					<a
 						href={item.href}
-						class="block px-3 py-2 text-foreground/80 transition-colors hover:bg-secondary"
+						class="block px-3 py-2 text-foreground/80 transition-colors hover:bg-secondary/50"
 						onclick={() => (mobileMenuOpen = false)}
 					>
 						{item.label}

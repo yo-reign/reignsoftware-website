@@ -209,3 +209,45 @@
 		border-bottom: 1px solid var(--term-bg2) !important;
 	}
 }
+
+/* ============================================
+   LIGHT MODE ENHANCEMENTS
+   ============================================ */
+:root.light {
+	/* Stronger borders in light mode for better contrast */
+	--border: #bdae93;
+
+	/* Cards use transparent bg for depth */
+	--card: rgba(235, 219, 178, 0.6);
+	--secondary: rgba(213, 196, 161, 0.5);
+}
+
+/* Light mode specific styles */
+:root.light .tui-box,
+:root.light [class*="bg-[var(--term-bg-soft)]"],
+:root.light [class*="bg-secondary"] {
+	box-shadow: 0 1px 3px rgba(60, 56, 54, 0.08);
+}
+
+:root.light header {
+	box-shadow: 0 1px 3px rgba(60, 56, 54, 0.05);
+}
+
+/* ============================================
+   DARK MODE ENHANCEMENTS
+   ============================================ */
+:root:not(.light) {
+	/* Cards use transparent bg for depth */
+	--card: rgba(40, 40, 40, 0.7);
+	--secondary: rgba(60, 56, 54, 0.6);
+}
+
+/* Dark mode specific styles */
+:root:not(.light) .tui-box,
+:root:not(.light) [class*="bg-card"] {
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+:root:not(.light) header {
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}

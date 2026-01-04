@@ -29,7 +29,7 @@
 	];
 </script>
 
-<footer class="border-t border-border bg-card">
+<footer class="border-t border-border/50 bg-card/80 backdrop-blur-sm">
 	<div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
 		<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-5">
 			<!-- Brand column -->
@@ -52,7 +52,7 @@
 							href={social.href}
 							target="_blank"
 							rel="noopener noreferrer"
-							class="flex h-9 w-9 items-center justify-center border border-border bg-secondary text-muted-foreground transition-colors hover:border-[var(--term-green)] hover:text-[var(--term-green)]"
+							class="flex h-9 w-9 items-center justify-center border border-border/50 bg-secondary/50 text-muted-foreground transition-all hover:border-[var(--term-green)] hover:bg-secondary hover:text-[var(--term-green)]"
 							aria-label={social.label}
 						>
 							<social.icon class="h-4 w-4" />
@@ -119,7 +119,7 @@
 
 		<!-- Bottom bar -->
 		<div
-			class="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 text-sm text-muted-foreground sm:flex-row"
+			class="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border/50 pt-8 text-sm text-muted-foreground sm:flex-row"
 		>
 			<p>
 				<span class="text-primary">$</span> echo "© {currentYear}

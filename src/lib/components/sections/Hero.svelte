@@ -172,14 +172,14 @@
 				<div class="flex flex-col gap-3 sm:flex-row">
 					<a
 						href="/contact"
-						class="group inline-flex items-center gap-2 border border-[var(--term-green)] bg-[var(--term-bg-soft)] px-4 py-2 font-mono text-sm text-[var(--term-green)] transition-colors hover:bg-[var(--term-green)] hover:text-[var(--term-bg)]"
+						class="group inline-flex items-center gap-2 border-2 border-[var(--term-green)] px-4 py-2 font-mono text-sm text-[var(--term-green)] transition-all hover:bg-[var(--term-green)] hover:text-[var(--term-bg)]"
 					>
 						<span>[ START PROJECT ]</span>
 						<ChevronRight class="h-4 w-4 transition-transform group-hover:translate-x-1" />
 					</a>
 					<a
 						href="/products/importdoc"
-						class="inline-flex items-center gap-2 border border-border bg-[var(--term-bg-soft)] px-4 py-2 font-mono text-sm text-[var(--term-fg-dim)] transition-colors hover:border-[var(--term-blue)] hover:text-[var(--term-blue)]"
+						class="inline-flex items-center gap-2 border border-border/50 bg-card/50 px-4 py-2 font-mono text-sm text-[var(--term-fg-dim)] transition-all hover:border-[var(--term-blue)] hover:text-[var(--term-blue)]"
 					>
 						<span>view ./products/importdoc</span>
 					</a>
@@ -189,11 +189,11 @@
 
 		<!-- Combined Visualizer Panel - anchored to bottom -->
 		<div bind:this={visualPanelEl} class="pb-8">
-			<div class="border border-border bg-[var(--term-bg-soft)]">
+			<div class="border border-border/50 bg-card/80 backdrop-blur-sm">
 				<!-- Header - clickable to collapse -->
 				<button
 					onclick={() => (panelExpanded = !panelExpanded)}
-					class="flex w-full items-center justify-between bg-secondary px-3 py-2 text-sm transition-colors hover:bg-[var(--term-bg1)]"
+					class="flex w-full items-center justify-between bg-secondary/50 px-3 py-2 text-sm transition-colors hover:bg-secondary"
 				>
 					<div class="flex items-center gap-2">
 						<span class="text-[var(--term-green)]">$</span>
@@ -218,11 +218,11 @@
 						: 'grid-rows-[0fr]'}"
 				>
 					<div class="overflow-hidden">
-						<div class="border-t border-border">
+						<div class="border-t border-border/50">
 							<!-- Two column layout: selector on left, controls on right -->
 							<div class="grid md:grid-cols-2">
 								<!-- Visualizer Selector -->
-								<div class="border-b border-border p-3 md:border-b-0 md:border-r">
+								<div class="border-b border-border/50 p-3 md:border-b-0 md:border-r">
 									<div class="mb-2 text-xs text-[var(--term-gray)]"># Select visualizer</div>
 									<div class="grid gap-2 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2">
 										{#each visualizerOrder as visualizerName}
@@ -233,8 +233,8 @@
 												disabled={visualizerState.isTransitioning}
 												class="group flex items-center gap-3 border px-3 py-2 text-left transition-all disabled:opacity-50 {visualizerState.current ===
 												visualizerName
-													? 'border-[var(--term-green)] bg-[var(--term-bg1)]'
-													: 'border-border hover:border-[var(--term-gray)]'}"
+													? 'border-[var(--term-green)] bg-secondary/50'
+													: 'border-border/30 hover:border-border hover:bg-secondary/30'}"
 											>
 												<span style="color: {visualizerColor}"></span>
 												<div class="flex-1">
@@ -267,7 +267,7 @@
 												<button
 													onclick={() => visualizerState.cycleSpeed(-1)}
 													disabled={!canDecreaseSpeed()}
-													class="flex h-7 w-7 items-center justify-center border border-border transition-colors hover:border-[var(--term-purple)] hover:text-[var(--term-purple)] disabled:opacity-30 disabled:hover:border-border disabled:hover:text-current"
+													class="flex h-7 w-7 items-center justify-center border border-border/50 transition-colors hover:border-[var(--term-purple)] hover:text-[var(--term-purple)] disabled:opacity-30 disabled:hover:border-border/50 disabled:hover:text-current"
 												>
 													<Minus class="h-3 w-3" />
 												</button>
@@ -277,7 +277,7 @@
 												<button
 													onclick={() => visualizerState.cycleSpeed(1)}
 													disabled={!canIncreaseSpeed()}
-													class="flex h-7 w-7 items-center justify-center border border-border transition-colors hover:border-[var(--term-purple)] hover:text-[var(--term-purple)] disabled:opacity-30 disabled:hover:border-border disabled:hover:text-current"
+													class="flex h-7 w-7 items-center justify-center border border-border/50 transition-colors hover:border-[var(--term-purple)] hover:text-[var(--term-purple)] disabled:opacity-30 disabled:hover:border-border/50 disabled:hover:text-current"
 												>
 													<Plus class="h-3 w-3" />
 												</button>
@@ -292,7 +292,7 @@
 													<button
 														onclick={() => visualizerState.adjustParam(key, -config.step)}
 														disabled={visualizerState.currentParams[key] <= config.min}
-														class="flex h-7 w-7 items-center justify-center border border-border transition-colors disabled:opacity-30 disabled:hover:border-border disabled:hover:text-current"
+														class="flex h-7 w-7 items-center justify-center border border-border/50 transition-colors disabled:opacity-30 disabled:hover:border-border/50 disabled:hover:text-current"
 														style="--hover-color: {config.color}"
 														onmouseenter={(e) => (e.currentTarget.style.borderColor = config.color)}
 														onmouseleave={(e) => (e.currentTarget.style.borderColor = '')}
@@ -309,13 +309,13 @@
 														onblur={(e) => handleParamBlur(e, key)}
 														onkeydown={(e) => handleParamKeydown(e, key)}
 														oninput={(e) => handleParamInput(e, key)}
-														class="w-16 border border-border bg-transparent text-center font-mono text-sm transition-colors focus:border-[var(--term-fg)] focus:outline-none"
+														class="w-16 border border-border/50 bg-transparent text-center font-mono text-sm transition-colors focus:border-[var(--term-fg)] focus:outline-none"
 														style="color: {config.color}"
 													/>
 													<button
 														onclick={() => visualizerState.adjustParam(key, config.step)}
 														disabled={visualizerState.currentParams[key] >= config.max}
-														class="flex h-7 w-7 items-center justify-center border border-border transition-colors disabled:opacity-30 disabled:hover:border-border disabled:hover:text-current"
+														class="flex h-7 w-7 items-center justify-center border border-border/50 transition-colors disabled:opacity-30 disabled:hover:border-border/50 disabled:hover:text-current"
 														style="--hover-color: {config.color}"
 														onmouseenter={(e) => (e.currentTarget.style.borderColor = config.color)}
 														onmouseleave={(e) => (e.currentTarget.style.borderColor = '')}

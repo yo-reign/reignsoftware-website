@@ -1,33 +1,50 @@
 import { browser } from '$app/environment';
 
+export type ThemeMode = 'dark' | 'light' | 'auto';
 export type Theme = 'dark' | 'light';
 
 class ThemeState {
+	// The user's preference (dark, light, or auto)
+	mode = $state<ThemeMode>('auto');
+	// The actual applied theme (dark or light)
 	current = $state<Theme>('dark');
 
 	constructor() {
 		if (browser) {
-			// Check localStorage first
-			const saved = localStorage.getItem('rs-theme') as Theme | null;
-			if (saved && (saved === 'dark' || saved === 'light')) {
-				this.current = saved;
+			// Check localStorage for saved preference
+			const saved = localStorage.getItem('rs-theme-mode') as ThemeMode | null;
+			if (saved && (saved === 'dark' || saved === 'light' || saved === 'auto')) {
+				this.mode = saved;
 			} else {
-				// Check system preference
-				const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-				this.current = prefersDark ? 'dark' : 'dark'; // Default to dark regardless
+				this.mode = 'auto';
 			}
+
+			// Determine actual theme based on mode
+			this.updateCurrentTheme();
 
 			// Apply theme to document
 			this.applyTheme();
 
 			// Listen for system preference changes
-			window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-				// Only auto-switch if user hasn't explicitly set a preference
-				if (!localStorage.getItem('rs-theme')) {
-					this.current = e.matches ? 'dark' : 'light';
+			window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+				if (this.mode === 'auto') {
+					this.updateCurrentTheme();
 					this.applyTheme();
 				}
 			});
+		}
+	}
+
+	private getSystemTheme(): Theme {
+		if (!browser) return 'dark';
+		return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+	}
+
+	private updateCurrentTheme() {
+		if (this.mode === 'auto') {
+			this.current = this.getSystemTheme();
+		} else {
+			this.current = this.mode;
 		}
 	}
 
@@ -49,17 +66,27 @@ class ThemeState {
 	}
 
 	toggle() {
-		this.current = this.current === 'dark' ? 'light' : 'dark';
+		// Cycle through: dark -> light -> auto -> dark
+		if (this.mode === 'dark') {
+			this.mode = 'light';
+		} else if (this.mode === 'light') {
+			this.mode = 'auto';
+		} else {
+			this.mode = 'dark';
+		}
+
 		if (browser) {
-			localStorage.setItem('rs-theme', this.current);
+			localStorage.setItem('rs-theme-mode', this.mode);
+			this.updateCurrentTheme();
 			this.applyTheme();
 		}
 	}
 
-	set(theme: Theme) {
-		this.current = theme;
+	setMode(mode: ThemeMode) {
+		this.mode = mode;
 		if (browser) {
-			localStorage.setItem('rs-theme', theme);
+			localStorage.setItem('rs-theme-mode', mode);
+			this.updateCurrentTheme();
 			this.applyTheme();
 		}
 	}
@@ -70,6 +97,10 @@ class ThemeState {
 
 	get isLight() {
 		return this.current === 'light';
+	}
+
+	get isAuto() {
+		return this.mode === 'auto';
 	}
 }
 
