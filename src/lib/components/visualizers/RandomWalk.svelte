@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { visualizerColors } from './config';
+	import { visualizerColors, visualizerColorsLight, themeColors } from './config';
+	import { themeState } from '$lib/stores/theme.svelte';
 
 	interface Props {
 		class?: string;
@@ -23,6 +24,10 @@
 	let ctx: CanvasRenderingContext2D;
 	let walkers: Walker[] = [];
 
+	// Theme-reactive colors
+	let colors = $derived(themeState.isDark ? themeColors.dark : themeColors.light);
+	let walkerColors = $derived(themeState.isDark ? visualizerColors : visualizerColorsLight);
+
 	interface Walker {
 		x: number;
 		y: number;
@@ -38,7 +43,7 @@
 	}
 
 	function getColors(): string[] {
-		return visualizerColors;
+		return walkerColors;
 	}
 
 	function createWalker(fromCenter = false): Walker {
@@ -69,7 +74,7 @@
 		// Clear canvas
 		if (ctx && canvas) {
 			const rect = canvas.getBoundingClientRect();
-			ctx.fillStyle = '#1d2021';
+			ctx.fillStyle = colors.bg0;
 			ctx.fillRect(0, 0, rect.width, rect.height);
 		}
 	}
@@ -84,7 +89,7 @@
 		ctx.scale(dpr, dpr);
 
 		// Initial background
-		ctx.fillStyle = '#1d2021';
+		ctx.fillStyle = colors.bg0;
 		ctx.fillRect(0, 0, rect.width, rect.height);
 
 		resetWalkers();
@@ -165,7 +170,7 @@
 		const rect = canvas.getBoundingClientRect();
 
 		// Subtle fade for trail effect (this creates the dimming)
-		ctx.fillStyle = 'rgba(29, 32, 33, 0.01)';
+		ctx.fillStyle = colors.bgRgba;
 		ctx.fillRect(0, 0, rect.width, rect.height);
 
 		// Update all walkers with current speed multiplier
@@ -213,6 +218,16 @@
 			const thicknessVariance = newThickness * 0.5;
 			walker.thickness = newThickness - thicknessVariance / 2 + Math.random() * thicknessVariance;
 		});
+	});
+
+	// React to theme changes - redraw background
+	$effect(() => {
+		const _ = themeState.current;
+		if (ctx && canvas) {
+			const rect = canvas.getBoundingClientRect();
+			ctx.fillStyle = colors.bg0;
+			ctx.fillRect(0, 0, rect.width, rect.height);
+		}
 	});
 </script>
 

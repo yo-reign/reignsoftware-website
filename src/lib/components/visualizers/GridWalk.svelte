@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { visualizerColors } from './config';
+	import { visualizerColors, visualizerColorsLight, themeColors } from './config';
+	import { themeState } from '$lib/stores/theme.svelte';
 
 	interface Props {
 		class?: string;
@@ -28,10 +29,12 @@
 	let centerX = 0;
 	let centerY = 0;
 
-	// Grid settings - Gruvbox Dark Hard
+	// Grid settings
 	const CELL_SIZE = 16;
-	const GRID_LINE_COLOR = '#3c3836';
-	const BG_COLOR = '#1d2021';
+
+	// Theme-reactive colors
+	let colors = $derived(themeState.isDark ? themeColors.dark : themeColors.light);
+	let walkerColors = $derived(themeState.isDark ? visualizerColors : visualizerColorsLight);
 
 	// Base move interval at 1x speed (in ms)
 	const BASE_MOVE_INTERVAL = 100;
@@ -46,7 +49,7 @@
 	}
 
 	function getColors(): string[] {
-		return visualizerColors;
+		return walkerColors;
 	}
 
 	function createWalker(fromCenter = false): Walker {
@@ -91,16 +94,16 @@
 	function drawBackground(width: number, height: number, fade: boolean = false) {
 		if (fade) {
 			// Subtle fade for dimming effect
-			ctx.fillStyle = 'rgba(29, 32, 33, 0.02)';
+			ctx.fillStyle = colors.bgRgba;
 			ctx.fillRect(0, 0, width, height);
 		} else {
-			ctx.fillStyle = BG_COLOR;
+			ctx.fillStyle = colors.bg0;
 			ctx.fillRect(0, 0, width, height);
 		}
 	}
 
 	function drawGrid() {
-		ctx.strokeStyle = GRID_LINE_COLOR;
+		ctx.strokeStyle = colors.bg1;
 		ctx.lineWidth = 0.5;
 		ctx.globalAlpha = 0.15;
 
@@ -253,6 +256,16 @@
 				walker.trail = walker.trail.slice(-walker.maxTrail);
 			}
 		});
+	});
+
+	// React to theme changes - redraw background
+	$effect(() => {
+		const _ = themeState.current; // Track theme
+		if (ctx && canvas) {
+			const rect = canvas.getBoundingClientRect();
+			drawBackground(rect.width, rect.height, false);
+			drawGrid();
+		}
 	});
 </script>
 

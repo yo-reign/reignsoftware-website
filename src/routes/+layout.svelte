@@ -1,9 +1,9 @@
 <script lang="ts">
 	import './layout.css';
-	import favicon from '$lib/assets/favicon.svg';
 	import Header from '$lib/components/layout/Header.svelte';
 	import Footer from '$lib/components/layout/Footer.svelte';
 	import VisualizerBackground from '$lib/components/visualizers/VisualizerBackground.svelte';
+	import { themeState } from '$lib/stores/theme.svelte';
 	import type { Snippet } from 'svelte';
 	import { onMount } from 'svelte';
 
@@ -16,11 +16,11 @@
 
 	onMount(() => {
 		mounted = true;
+		// Theme is auto-initialized in the store constructor
 	});
 </script>
 
 <svelte:head>
-	<link rel="icon" href={favicon} />
 	<title>reignsoftware | Dev</title>
 	<meta
 		name="description"

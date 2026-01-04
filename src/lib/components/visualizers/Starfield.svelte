@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { themeColors } from './config';
+	import { themeState } from '$lib/stores/theme.svelte';
 
 	interface Props {
 		class?: string;
@@ -25,8 +27,11 @@
 	let centerX = 0;
 	let centerY = 0;
 
-	const BG_COLOR = '#1d2021';
-	const STAR_COLORS = ['#ebdbb2', '#d5c4a1', '#bdae93', '#a89984', '#83a598', '#b8bb26'];
+	// Theme-reactive colors
+	let bgColors = $derived(themeState.isDark ? themeColors.dark : themeColors.light);
+	const STAR_COLORS_DARK = ['#ebdbb2', '#d5c4a1', '#bdae93', '#a89984', '#83a598', '#b8bb26'];
+	const STAR_COLORS_LIGHT = ['#3c3836', '#504945', '#665c54', '#7c6f64', '#458588', '#98971a'];
+	let starColors = $derived(themeState.isDark ? STAR_COLORS_DARK : STAR_COLORS_LIGHT);
 
 	const MAX_Z = 1000;
 	const BASE_SPEED = 1;
@@ -51,7 +56,7 @@
 			x: (Math.random() - 0.5) * range,
 			y: (Math.random() - 0.5) * range,
 			z: randomZ ? Math.random() * MAX_Z : MAX_Z,
-			color: STAR_COLORS[Math.floor(Math.random() * STAR_COLORS.length)],
+			color: starColors[Math.floor(Math.random() * starColors.length)],
 			prevX: 0,
 			prevY: 0
 		};
@@ -85,7 +90,7 @@
 		const rect = canvas.getBoundingClientRect();
 
 		// Clear with solid background
-		ctx.fillStyle = BG_COLOR;
+		ctx.fillStyle = bgColors.bg0;
 		ctx.fillRect(0, 0, rect.width, rect.height);
 
 		const moveSpeed = BASE_SPEED * speedMultiplier * normalizedDelta;
@@ -160,7 +165,7 @@
 
 		// Initial clear
 		const rect = canvas.getBoundingClientRect();
-		ctx.fillStyle = BG_COLOR;
+		ctx.fillStyle = bgColors.bg0;
 		ctx.fillRect(0, 0, rect.width, rect.height);
 
 		lastTime = performance.now();
@@ -188,6 +193,15 @@
 		if (starList.length > starCount) {
 			starList = starList.slice(0, starCount);
 		}
+	});
+
+	// React to theme changes
+	$effect(() => {
+		const _ = themeState.current;
+		// Re-assign colors to existing stars
+		starList.forEach((star) => {
+			star.color = starColors[Math.floor(Math.random() * starColors.length)];
+		});
 	});
 </script>
 

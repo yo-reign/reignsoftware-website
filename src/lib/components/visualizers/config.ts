@@ -190,6 +190,37 @@ export const visualizerColors: string[] = [
 	'#928374' // gray
 ];
 
+// Light mode colors
+export const visualizerColorsLight: string[] = [
+	'#cc241d', // red
+	'#98971a', // green
+	'#d79921', // yellow
+	'#458588', // blue
+	'#b16286', // purple
+	'#689d6a', // aqua
+	'#928374' // gray
+];
+
+// Theme-aware background colors (Gruvbox Hard)
+export const themeColors = {
+	dark: {
+		bg0: '#1d2021', // bg0_h (hard)
+		bg1: '#3c3836',
+		bg2: '#504945',
+		bgRgba: 'rgba(29, 32, 33, 0.02)',
+		fg1: '#ebdbb2',
+		gray: '#928374'
+	},
+	light: {
+		bg0: '#f9f5d7', // bg0_h (hard)
+		bg1: '#ebdbb2',
+		bg2: '#d5c4a1',
+		bgRgba: 'rgba(249, 245, 215, 0.02)',
+		fg1: '#3c3836',
+		gray: '#928374'
+	}
+};
+
 // Visualizer order for UI
 export const visualizerOrder: VisualizerName[] = [
 	'grid-walk',

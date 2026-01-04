@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { visualizerColors } from './config';
+	import { visualizerColors, visualizerColorsLight, themeColors } from './config';
+	import { themeState } from '$lib/stores/theme.svelte';
 
 	interface Props {
 		class?: string;
@@ -25,7 +26,9 @@
 	let lastTime = 0;
 	let autoRippleTimer = 0;
 
-	const BG_COLOR = '#1d2021';
+	// Theme-reactive colors
+	let colors = $derived(themeState.isDark ? themeColors.dark : themeColors.light);
+	let rippleColors = $derived(themeState.isDark ? visualizerColors : visualizerColorsLight);
 	const BASE_EXPANSION_SPEED = 2;
 
 	interface Ripple {
@@ -44,7 +47,7 @@
 			y,
 			radius: 0,
 			maxRadius: 150 + Math.random() * 200,
-			color: visualizerColors[Math.floor(Math.random() * visualizerColors.length)],
+			color: rippleColors[Math.floor(Math.random() * rippleColors.length)],
 			lineWidth: 1 + Math.random() * 2,
 			alpha: 0.8
 		};
@@ -81,7 +84,8 @@
 		const rect = canvas.getBoundingClientRect();
 
 		// Clear with fade
-		ctx.fillStyle = 'rgba(29, 32, 33, 0.08)';
+		const fadeColor = themeState.isDark ? 'rgba(29, 32, 33, 0.08)' : 'rgba(249, 245, 215, 0.08)';
+		ctx.fillStyle = fadeColor;
 		ctx.fillRect(0, 0, rect.width, rect.height);
 
 		// Decay factor (1-10, higher = faster fade)
@@ -138,7 +142,7 @@
 
 		// Initial clear
 		const rect = canvas.getBoundingClientRect();
-		ctx.fillStyle = BG_COLOR;
+		ctx.fillStyle = colors.bg0;
 		ctx.fillRect(0, 0, rect.width, rect.height);
 
 		// Add some initial ripples
@@ -166,6 +170,20 @@
 					addRipple(Math.random() * rect.width, Math.random() * rect.height);
 				}
 			}
+		}
+	});
+
+	// React to theme changes
+	$effect(() => {
+		const _ = themeState.current;
+		if (ctx && canvas) {
+			const rect = canvas.getBoundingClientRect();
+			ctx.fillStyle = colors.bg0;
+			ctx.fillRect(0, 0, rect.width, rect.height);
+			// Re-assign colors to existing ripples
+			rippleList.forEach((ripple) => {
+				ripple.color = rippleColors[Math.floor(Math.random() * rippleColors.length)];
+			});
 		}
 	});
 </script>

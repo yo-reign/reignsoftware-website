@@ -48,15 +48,18 @@
 	/* No border radius for TUI look */
 	--radius: 0px;
 
-	/* Terminal palette - Gruvbox Dark Hard */
-	--term-bg: #1d2021;
-	--term-bg-soft: #282828;
+	/* Terminal palette - Gruvbox Dark Hard (morhetz) */
+	--term-bg0: #1d2021;
 	--term-bg1: #3c3836;
 	--term-bg2: #504945;
 	--term-bg3: #665c54;
-	--term-fg: #ebdbb2;
-	--term-fg-dim: #928374;
-	--term-gray: #a89984;
+	--term-bg4: #7c6f64;
+	--term-fg0: #fbf1c7;
+	--term-fg1: #ebdbb2;
+	--term-fg2: #d5c4a1;
+	--term-fg3: #bdae93;
+	--term-fg4: #a89984;
+	--term-gray: #928374;
 	--term-red: #fb4934;
 	--term-green: #b8bb26;
 	--term-yellow: #fabd2f;
@@ -64,15 +67,65 @@
 	--term-purple: #d3869b;
 	--term-aqua: #8ec07c;
 	--term-orange: #fe8019;
-	/* Dark variants for backgrounds */
-	--term-red-dim: #cc241d;
-	--term-green-dim: #98971a;
-	--term-yellow-dim: #d79921;
-	--term-blue-dim: #458588;
-	--term-purple-dim: #b16286;
-	--term-aqua-dim: #689d6a;
+
+	/* Convenience aliases */
+	--term-bg: var(--term-bg0);
+	--term-bg-soft: var(--term-bg1);
+	--term-fg: var(--term-fg1);
+	--term-fg-dim: var(--term-gray);
 
 	--font-theme: 'JetBrains Mono', monospace;
+}
+
+/* ============================================
+   LIGHT THEME - Gruvbox Light Hard
+   ============================================ */
+:root.light {
+	/* Gruvbox Light Hard base */
+	--background: #f9f5d7;
+	--foreground: #3c3836;
+	--card: #f2e5bc;
+	--card-foreground: #3c3836;
+	--popover: #f2e5bc;
+	--popover-foreground: #3c3836;
+	--primary: #98971a;
+	--primary-foreground: #f9f5d7;
+	--secondary: #ebdbb2;
+	--secondary-foreground: #3c3836;
+	--muted: #ebdbb2;
+	--muted-foreground: #7c6f64;
+	--accent: #458588;
+	--accent-foreground: #f9f5d7;
+	--destructive: #cc241d;
+	--border: #d5c4a1;
+	--input: #ebdbb2;
+	--ring: #98971a;
+
+	/* Terminal palette - Gruvbox Light Hard (morhetz) */
+	--term-bg0: #f9f5d7;
+	--term-bg1: #ebdbb2;
+	--term-bg2: #d5c4a1;
+	--term-bg3: #bdae93;
+	--term-bg4: #a89984;
+	--term-fg0: #282828;
+	--term-fg1: #3c3836;
+	--term-fg2: #504945;
+	--term-fg3: #665c54;
+	--term-fg4: #7c6f64;
+	--term-gray: #928374;
+	--term-red: #cc241d;
+	--term-green: #98971a;
+	--term-yellow: #d79921;
+	--term-blue: #458588;
+	--term-purple: #b16286;
+	--term-aqua: #689d6a;
+	--term-orange: #d65d0e;
+
+	/* Convenience aliases */
+	--term-bg: var(--term-bg0);
+	--term-bg-soft: var(--term-bg1);
+	--term-fg: var(--term-fg1);
+	--term-fg-dim: var(--term-gray);
 }
 
 @custom-variant dark (&:is(.dark *));

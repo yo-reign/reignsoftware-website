@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { themeColors } from './config';
+	import { themeState } from '$lib/stores/theme.svelte';
 
 	interface Props {
 		class?: string;
@@ -23,9 +25,12 @@
 	let columns: Column[] = [];
 	let lastTime = 0;
 
-	// Gruvbox colors
-	const BG_COLOR = '#1d2021';
-	const COLORS = ['#b8bb26', '#8ec07c', '#83a598']; // green, aqua, blue
+	// Theme-reactive colors
+	let bgColors = $derived(themeState.isDark ? themeColors.dark : themeColors.light);
+	const COLORS_DARK = ['#b8bb26', '#8ec07c', '#83a598']; // green, aqua, blue
+	const COLORS_LIGHT = ['#98971a', '#689d6a', '#458588']; // green, aqua, blue
+	let matrixColors = $derived(themeState.isDark ? COLORS_DARK : COLORS_LIGHT);
+	let headColor = $derived(themeState.isDark ? '#ebdbb2' : '#3c3836');
 
 	// Character sets
 	const CHARSETS = [
@@ -67,7 +72,7 @@
 			speed: BASE_DROP_SPEED + Math.random() * 0.1,
 			chars,
 			length,
-			color: COLORS[Math.floor(Math.random() * COLORS.length)]
+			color: matrixColors[Math.floor(Math.random() * matrixColors.length)]
 		};
 	}
 
@@ -103,7 +108,8 @@
 		const rect = canvas.getBoundingClientRect();
 
 		// Fade effect - higher opacity for sharper text
-		ctx.fillStyle = 'rgba(29, 32, 33, 0.15)';
+		const fadeColor = themeState.isDark ? 'rgba(29, 32, 33, 0.15)' : 'rgba(249, 245, 215, 0.15)';
+		ctx.fillStyle = fadeColor;
 		ctx.fillRect(0, 0, rect.width, rect.height);
 
 		ctx.font = `${FONT_SIZE}px monospace`;
@@ -122,9 +128,9 @@
 				const alpha = i === 0 ? 1 : Math.max(0.1, 1 - i / col.chars.length);
 				ctx.globalAlpha = alpha;
 
-				// First char is brightest (white-ish)
+				// First char is brightest
 				if (i === 0) {
-					ctx.fillStyle = '#ebdbb2';
+					ctx.fillStyle = headColor;
 				} else {
 					ctx.fillStyle = col.color;
 				}
@@ -165,7 +171,7 @@
 
 		// Initial clear
 		const rect = canvas.getBoundingClientRect();
-		ctx.fillStyle = BG_COLOR;
+		ctx.fillStyle = bgColors.bg0;
 		ctx.fillRect(0, 0, rect.width, rect.height);
 
 		lastTime = performance.now();
@@ -189,6 +195,20 @@
 		// Re-init when density changes significantly
 		const _ = density;
 		initColumns();
+	});
+
+	// React to theme changes
+	$effect(() => {
+		const _ = themeState.current;
+		if (ctx && canvas) {
+			const rect = canvas.getBoundingClientRect();
+			ctx.fillStyle = bgColors.bg0;
+			ctx.fillRect(0, 0, rect.width, rect.height);
+			// Re-assign colors to existing columns
+			columns.forEach((col) => {
+				col.color = matrixColors[Math.floor(Math.random() * matrixColors.length)];
+			});
+		}
 	});
 </script>
 

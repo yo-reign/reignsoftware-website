@@ -116,16 +116,20 @@ The website embraces a **terminal/TUI aesthetic** throughout:
 
 ### 2. Brand Identity
 
-The brand is displayed as:
+**Full logo:** `$ reignsoftware_`
+
 ```html
-<span class="text-[var(--term-red)]">reign</span><span class="text-[var(--term-fg)]">software</span>
+<span class="text-[var(--term-fg-dim)]">$</span>
+<span class="text-[var(--term-red)] italic">reign</span><span class="text-[var(--term-fg)]">software</span>
+<span class="text-[var(--term-green)]">_</span>
 ```
 
 Key characteristics:
-- "reign" in red (`#fb4934`)
+- `$` prompt in dim gray (`#928374`)
+- "*reign*" in red, **always italic** (`#fb4934`)
 - "software" in foreground color (`#ebdbb2`)
-- Monospace font throughout
-- Often preceded by `$` prompt
+- `_` cursor in green (`#b8bb26`)
+- JetBrains Mono font throughout
 
 ### 3. Background Visualizers
 
@@ -201,13 +205,16 @@ Users can customize the visualizer experience:
 
 ---
 
-## Color Palette (Gruvbox Dark Hard)
+## Color Palettes
+
+### Gruvbox Dark Hard (Primary)
 
 ```css
 --term-bg: #1d2021;      /* Background */
 --term-bg-soft: #282828; /* Card background */
 --term-bg1: #3c3836;     /* Secondary */
 --term-bg2: #504945;     /* Border */
+--term-bg3: #665c54;     /* Hover states */
 --term-fg: #ebdbb2;      /* Foreground text */
 --term-fg-dim: #928374;  /* Muted text */
 --term-gray: #a89984;    /* Gray accent */
@@ -218,6 +225,26 @@ Users can customize the visualizer experience:
 --term-purple: #d3869b;  /* Purple */
 --term-aqua: #8ec07c;    /* Aqua */
 --term-orange: #fe8019;  /* Orange */
+```
+
+### Gruvbox Light Hard (Light Mode)
+
+```css
+--term-bg: #f9f5d7;      /* Background */
+--term-bg-soft: #f2e5bc; /* Card background */
+--term-bg1: #ebdbb2;     /* Secondary */
+--term-bg2: #d5c4a1;     /* Border */
+--term-bg3: #bdae93;     /* Hover states */
+--term-fg: #3c3836;      /* Foreground text */
+--term-fg-dim: #7c6f64;  /* Muted text */
+--term-gray: #928374;    /* Gray accent */
+--term-red: #cc241d;     /* Red (brand) */
+--term-green: #98971a;   /* Green (primary) */
+--term-yellow: #d79921;  /* Yellow */
+--term-blue: #458588;    /* Blue */
+--term-purple: #b16286;  /* Purple */
+--term-aqua: #689d6a;    /* Aqua */
+--term-orange: #d65d0e;  /* Orange */
 ```
 
 ---

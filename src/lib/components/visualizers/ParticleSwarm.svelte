@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { visualizerColors } from './config';
+	import { visualizerColors, visualizerColorsLight, themeColors } from './config';
+	import { themeState } from '$lib/stores/theme.svelte';
 
 	interface Props {
 		class?: string;
@@ -32,7 +33,10 @@
 	let centerX = 0;
 	let centerY = 0;
 
-	const BG_COLOR = '#1d2021';
+	// Theme-reactive colors
+	let colors = $derived(themeState.isDark ? themeColors.dark : themeColors.light);
+	let particleColors = $derived(themeState.isDark ? visualizerColors : visualizerColorsLight);
+	let targetIndicatorColor = $derived(themeState.isDark ? '#ebdbb2' : '#3c3836');
 
 	interface Particle {
 		x: number;
@@ -51,7 +55,7 @@
 			vx: (Math.random() - 0.5) * 2,
 			vy: (Math.random() - 0.5) * 2,
 			size: 1 + Math.random() * 3,
-			color: visualizerColors[Math.floor(Math.random() * visualizerColors.length)],
+			color: particleColors[Math.floor(Math.random() * particleColors.length)],
 			baseSpeed: 0.5 + Math.random() * 9.5
 		};
 	}
@@ -88,7 +92,8 @@
 		const rect = canvas.getBoundingClientRect();
 
 		// Fade effect
-		ctx.fillStyle = 'rgba(29, 32, 33, 0.1)';
+		const fadeColor = themeState.isDark ? 'rgba(29, 32, 33, 0.1)' : 'rgba(249, 245, 215, 0.1)';
+		ctx.fillStyle = fadeColor;
 		ctx.fillRect(0, 0, rect.width, rect.height);
 
 		// Target point (mouse or center)
@@ -158,7 +163,7 @@
 		if (mouseActive) {
 			ctx.beginPath();
 			ctx.arc(targetX, targetY, 8, 0, Math.PI * 2);
-			ctx.strokeStyle = '#ebdbb2';
+			ctx.strokeStyle = targetIndicatorColor;
 			ctx.globalAlpha = 0.3;
 			ctx.lineWidth = 1;
 			ctx.stroke();
@@ -175,7 +180,7 @@
 
 		// Initial clear
 		const rect = canvas.getBoundingClientRect();
-		ctx.fillStyle = BG_COLOR;
+		ctx.fillStyle = colors.bg0;
 		ctx.fillRect(0, 0, rect.width, rect.height);
 
 		lastTime = performance.now();
@@ -205,6 +210,20 @@
 			if (particleList.length > particleCount) {
 				particleList = particleList.slice(0, particleCount);
 			}
+		}
+	});
+
+	// React to theme changes
+	$effect(() => {
+		const _ = themeState.current;
+		if (ctx && canvas) {
+			const rect = canvas.getBoundingClientRect();
+			ctx.fillStyle = colors.bg0;
+			ctx.fillRect(0, 0, rect.width, rect.height);
+			// Re-assign colors to existing particles
+			particleList.forEach((p) => {
+				p.color = particleColors[Math.floor(Math.random() * particleColors.length)];
+			});
 		}
 	});
 </script>

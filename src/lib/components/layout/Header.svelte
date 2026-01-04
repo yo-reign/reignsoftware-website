@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { visualizerState } from '$lib/stores/visualizer.svelte';
+	import { themeState } from '$lib/stores/theme.svelte';
 	import { visualizers, visualizerOrder, type VisualizerName } from '$lib/components/visualizers/config';
-	import { Menu, X, Layers } from '@lucide/svelte';
+	import { Menu, X, Layers, Sun, Moon } from '@lucide/svelte';
 
 	let mobileMenuOpen = $state(false);
 	let showVisualSelector = $state(false);
@@ -270,6 +271,19 @@
 					{/if}
 				{/if}
 			</div>
+
+			<!-- Theme Toggle -->
+			<button
+				onclick={() => themeState.toggle()}
+				class="flex h-10 w-10 items-center justify-center border border-border bg-card text-foreground transition-all hover:border-primary hover:bg-card/80"
+				aria-label="Toggle theme"
+			>
+				{#if themeState.isDark}
+					<Sun class="h-4 w-4" />
+				{:else}
+					<Moon class="h-4 w-4" />
+				{/if}
+			</button>
 
 			<!-- Mobile menu button -->
 			<button
