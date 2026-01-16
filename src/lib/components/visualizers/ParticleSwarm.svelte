@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { visualizerColors, visualizerColorsLight, themeColors } from './config';
 	import { themeState } from '$lib/stores/theme.svelte';
+	import { createCanvasResizeHandler } from '$lib/utils/canvasResize';
 
 	interface Props {
 		class?: string;
@@ -63,26 +64,24 @@
 	function initParticles() {
 		if (!canvas) return;
 		const rect = canvas.getBoundingClientRect();
-		centerX = rect.width / 2;
-		centerY = rect.height / 2;
 		particleList = [];
 		for (let i = 0; i < particleCount; i++) {
 			particleList.push(createParticle(rect.width, rect.height));
 		}
 	}
 
-	function resize() {
-		if (!canvas || !ctx) return;
-		const dpr = window.devicePixelRatio || 1;
-		const rect = canvas.getBoundingClientRect();
-		canvas.width = rect.width * dpr;
-		canvas.height = rect.height * dpr;
-		ctx.setTransform(1, 0, 0, 1, 0, 0);
-		ctx.scale(dpr, dpr);
-		centerX = rect.width / 2;
-		centerY = rect.height / 2;
-		initParticles();
+	function updateCenter(width: number, height: number) {
+		centerX = width / 2;
+		centerY = height / 2;
 	}
+
+	// Resize handler that prevents restarts on minor height changes (mobile browser chrome)
+	const resizeHandler = createCanvasResizeHandler(
+		() => canvas,
+		() => ctx,
+		updateCenter, // Update center on every resize for correct particle attraction
+		initParticles
+	);
 
 	function animate(timestamp: number) {
 		const deltaTime = Math.min(timestamp - lastTime, 50);
@@ -175,8 +174,8 @@
 
 	onMount(() => {
 		ctx = canvas.getContext('2d')!;
-		resize();
-		window.addEventListener('resize', resize);
+		resizeHandler.init();
+		window.addEventListener('resize', resizeHandler.handleResize);
 
 		// Initial clear
 		const rect = canvas.getBoundingClientRect();
@@ -187,7 +186,8 @@
 		animationId = requestAnimationFrame(animate);
 
 		return () => {
-			window.removeEventListener('resize', resize);
+			window.removeEventListener('resize', resizeHandler.handleResize);
+			resizeHandler.destroy();
 			cancelAnimationFrame(animationId);
 		};
 	});

@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { visualizerColors, visualizerColorsLight, themeColors } from './config';
 	import { themeState } from '$lib/stores/theme.svelte';
+	import { createCanvasResizeHandler } from '$lib/utils/canvasResize';
 
 	interface Props {
 		class?: string;
@@ -61,15 +62,14 @@
 		rippleList.push(createRipple(x, y));
 	}
 
-	function resize() {
-		if (!canvas || !ctx) return;
-		const dpr = window.devicePixelRatio || 1;
-		const rect = canvas.getBoundingClientRect();
-		canvas.width = rect.width * dpr;
-		canvas.height = rect.height * dpr;
-		ctx.setTransform(1, 0, 0, 1, 0, 0);
-		ctx.scale(dpr, dpr);
-	}
+	// Resize handler that prevents restarts on minor height changes (mobile browser chrome)
+	// Ripples don't need reinitialization - they're position-independent
+	const resizeHandler = createCanvasResizeHandler(
+		() => canvas,
+		() => ctx,
+		() => {}, // No dimension-dependent state
+		() => {} // No reinitialization needed - ripples continue naturally
+	);
 
 	function handleClick(e: MouseEvent) {
 		// Use clientX/Y directly since canvas is full viewport
@@ -135,8 +135,8 @@
 
 	onMount(() => {
 		ctx = canvas.getContext('2d')!;
-		resize();
-		window.addEventListener('resize', resize);
+		resizeHandler.init();
+		window.addEventListener('resize', resizeHandler.handleResize);
 		// Listen on window so clicks work through content layer
 		window.addEventListener('click', handleClick);
 
@@ -154,7 +154,8 @@
 		animationId = requestAnimationFrame(animate);
 
 		return () => {
-			window.removeEventListener('resize', resize);
+			window.removeEventListener('resize', resizeHandler.handleResize);
+			resizeHandler.destroy();
 			window.removeEventListener('click', handleClick);
 			cancelAnimationFrame(animationId);
 		};

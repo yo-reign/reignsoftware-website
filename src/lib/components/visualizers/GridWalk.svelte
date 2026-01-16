@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { visualizerColors, visualizerColorsLight, themeColors } from './config';
 	import { themeState } from '$lib/stores/theme.svelte';
+	import { createCanvasResizeHandler } from '$lib/utils/canvasResize';
 
 	interface Props {
 		class?: string;
@@ -74,22 +75,20 @@
 		}
 	}
 
-	function resize() {
-		if (!canvas || !ctx) return;
-		const dpr = window.devicePixelRatio || 1;
-		const rect = canvas.getBoundingClientRect();
-		canvas.width = rect.width * dpr;
-		canvas.height = rect.height * dpr;
-		ctx.setTransform(1, 0, 0, 1, 0, 0);
-		ctx.scale(dpr, dpr);
-
-		gridWidth = Math.floor(rect.width / CELL_SIZE);
-		gridHeight = Math.floor(rect.height / CELL_SIZE);
+	function updateGridDimensions(width: number, height: number) {
+		gridWidth = Math.floor(width / CELL_SIZE);
+		gridHeight = Math.floor(height / CELL_SIZE);
 		centerX = Math.floor(gridWidth / 2);
 		centerY = Math.floor(gridHeight / 2);
-
-		resetWalkers();
 	}
+
+	// Resize handler that prevents restarts on minor height changes (mobile browser chrome)
+	const resizeHandler = createCanvasResizeHandler(
+		() => canvas,
+		() => ctx,
+		updateGridDimensions,
+		resetWalkers
+	);
 
 	function drawBackground(width: number, height: number, fade: boolean = false) {
 		if (fade) {
@@ -209,8 +208,8 @@
 
 	onMount(() => {
 		ctx = canvas.getContext('2d')!;
-		resize();
-		window.addEventListener('resize', resize);
+		resizeHandler.init();
+		window.addEventListener('resize', resizeHandler.handleResize);
 
 		// Initial full draw
 		const rect = canvas.getBoundingClientRect();
@@ -221,7 +220,8 @@
 		animationId = requestAnimationFrame(animate);
 
 		return () => {
-			window.removeEventListener('resize', resize);
+			window.removeEventListener('resize', resizeHandler.handleResize);
+			resizeHandler.destroy();
 			cancelAnimationFrame(animationId);
 		};
 	});

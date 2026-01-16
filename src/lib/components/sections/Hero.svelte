@@ -12,7 +12,7 @@
 	let heroContent: HTMLElement;
 	let visualPanelEl: HTMLElement;
 	let mounted = $state(false);
-	let panelExpanded = $state(false);
+	let panelExpanded = $state(true);
 
 	// Scroll tracking for visual panel
 	let visualPanelVisible = $state(true);
@@ -32,6 +32,17 @@
 		}
 	});
 
+	// Dispatch custom event for header to listen to when visual panel visibility changes
+	$effect(() => {
+		if (mounted) {
+			window.dispatchEvent(
+				new CustomEvent('visual-selector-visibility', {
+					detail: { visible: visualPanelVisible }
+				})
+			);
+		}
+	});
+
 	onMount(() => {
 		mounted = true;
 
@@ -48,19 +59,6 @@
 		if (visualPanelEl) {
 			observer.observe(visualPanelEl);
 		}
-
-		// Dispatch custom event for header to listen to
-		const updateHeaderState = () => {
-			window.dispatchEvent(
-				new CustomEvent('visual-selector-visibility', {
-					detail: { visible: visualPanelVisible }
-				})
-			);
-		};
-
-		$effect(() => {
-			updateHeaderState();
-		});
 
 		return () => observer.disconnect();
 	});

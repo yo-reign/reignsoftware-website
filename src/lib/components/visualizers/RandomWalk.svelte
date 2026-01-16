@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { visualizerColors, visualizerColorsLight, themeColors } from './config';
 	import { themeState } from '$lib/stores/theme.svelte';
+	import { createCanvasResizeHandler } from '$lib/utils/canvasResize';
 
 	interface Props {
 		class?: string;
@@ -79,21 +80,13 @@
 		}
 	}
 
-	function resize() {
-		if (!canvas || !ctx) return;
-		const dpr = window.devicePixelRatio || 1;
-		const rect = canvas.getBoundingClientRect();
-		canvas.width = rect.width * dpr;
-		canvas.height = rect.height * dpr;
-		ctx.setTransform(1, 0, 0, 1, 0, 0);
-		ctx.scale(dpr, dpr);
-
-		// Initial background
-		ctx.fillStyle = colors.bg0;
-		ctx.fillRect(0, 0, rect.width, rect.height);
-
-		resetWalkers();
-	}
+	// Resize handler that prevents restarts on minor height changes (mobile browser chrome)
+	const resizeHandler = createCanvasResizeHandler(
+		() => canvas,
+		() => ctx,
+		() => {}, // No dimension-dependent state to update
+		resetWalkers
+	);
 
 	function updateWalker(walker: Walker, deltaTime: number, currentSpeedMultiplier: number) {
 		const rect = canvas.getBoundingClientRect();
@@ -181,13 +174,14 @@
 
 	onMount(() => {
 		ctx = canvas.getContext('2d')!;
-		resize();
-		window.addEventListener('resize', resize);
+		resizeHandler.init();
+		window.addEventListener('resize', resizeHandler.handleResize);
 		lastTime = performance.now();
 		animationId = requestAnimationFrame(animate);
 
 		return () => {
-			window.removeEventListener('resize', resize);
+			window.removeEventListener('resize', resizeHandler.handleResize);
+			resizeHandler.destroy();
 			cancelAnimationFrame(animationId);
 		};
 	});
