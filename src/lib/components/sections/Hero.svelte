@@ -182,16 +182,14 @@
 							<div class="flex gap-2 overflow-x-auto p-2 scrollbar-hide">
 								{#each visualizerOrder as visualizerName (visualizerName)}
 									{@const visualizerColor = getVisualizerColor(visualizerName)}
+									{@const isSelected = visualizerState.current === visualizerName}
 									<button
 										onclick={() => selectVisualizer(visualizerName)}
 										disabled={visualizerState.isTransitioning}
-										class="shrink-0 px-4 py-2 text-sm transition-all disabled:opacity-50 {visualizerState.current ===
-										visualizerName
-											? 'border border-(--term-green) bg-secondary/50'
-											: 'border border-border/30 hover:border-border hover:bg-secondary/30'}"
-										style="color: {visualizerState.current === visualizerName
-											? 'var(--term-green)'
-											: visualizerColor}"
+										class="visualizer-btn shrink-0 border px-4 py-2 text-sm transition-all disabled:opacity-50 {isSelected
+											? 'border-current bg-secondary/50'
+											: 'border-border/30'}"
+										style="--btn-color: {visualizerColor}; color: {visualizerColor}"
 									>
 										{visualizers[visualizerName].displayName}
 									</button>
@@ -219,7 +217,7 @@
 									<div class="flex shrink-0 items-center">
 										<button
 											onclick={() => visualizerState.cycleSpeed(-1)}
-											class="flex h-9 w-8 items-center justify-center border border-border/30 text-(--term-purple) transition-colors hover:border-(--term-purple) hover:bg-secondary/30 disabled:opacity-30"
+											class="flex h-9 w-9 items-center justify-center border border-border/30 text-(--term-purple) transition-colors hover:border-(--term-purple) hover:bg-secondary/30 disabled:opacity-30"
 											disabled={speedOptions.indexOf(visualizerState.speedMultiplier) === 0}
 										>
 											−
@@ -234,7 +232,7 @@
 										</div>
 										<button
 											onclick={() => visualizerState.cycleSpeed(1)}
-											class="flex h-9 w-8 items-center justify-center border border-border/30 text-(--term-purple) transition-colors hover:border-(--term-purple) hover:bg-secondary/30 disabled:opacity-30"
+											class="flex h-9 w-9 items-center justify-center border border-border/30 text-(--term-purple) transition-colors hover:border-(--term-purple) hover:bg-secondary/30 disabled:opacity-30"
 											disabled={speedOptions.indexOf(visualizerState.speedMultiplier) ===
 												speedOptions.length - 1}
 										>
@@ -247,7 +245,7 @@
 										<div class="flex shrink-0 items-center">
 											<button
 												onclick={() => cycleParam(key, -1)}
-												class="flex h-9 w-8 items-center justify-center border border-border/30 transition-colors hover:bg-secondary/30 disabled:opacity-30"
+												class="flex h-9 w-9 items-center justify-center border border-border/30 transition-colors hover:bg-secondary/30 disabled:opacity-30"
 												style="color: {config.color}"
 												disabled={visualizerState.currentParams[key] <= config.min}
 											>
@@ -263,7 +261,7 @@
 											</div>
 											<button
 												onclick={() => cycleParam(key, 1)}
-												class="flex h-9 w-8 items-center justify-center border border-border/30 transition-colors hover:bg-secondary/30 disabled:opacity-30"
+												class="flex h-9 w-9 items-center justify-center border border-border/30 transition-colors hover:bg-secondary/30 disabled:opacity-30"
 												style="color: {config.color}"
 												disabled={visualizerState.currentParams[key] >= config.max}
 											>
@@ -289,5 +287,12 @@
 	}
 	.scrollbar-hide::-webkit-scrollbar {
 		display: none;
+	}
+
+	/* Visualizer button hover effect - invert colors */
+	.visualizer-btn:not(:disabled):hover {
+		background-color: var(--btn-color);
+		color: var(--term-bg) !important;
+		border-color: var(--btn-color);
 	}
 </style>

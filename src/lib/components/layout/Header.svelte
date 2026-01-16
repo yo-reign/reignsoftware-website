@@ -290,23 +290,25 @@
 							<div class="bg-card/50 p-2">
 								{#each visualizerOrder as visualizerName, i (visualizerName)}
 									{@const visualizer = visualizers[visualizerName]}
+									{@const visualizerColor = getVisualizerColor(visualizerName)}
+									{@const isSelected = visualizerState.current === visualizerName}
 									<button
 										onclick={() => selectVisualizer(visualizerName)}
 										disabled={visualizerState.isTransitioning}
-										class="dropdown-item flex w-full items-center gap-3 px-3 py-2 text-left text-sm transition-colors hover:bg-secondary disabled:opacity-50 {visualizerState.current ===
-										visualizerName
-											? 'bg-secondary text-primary'
+										class="visualizer-dropdown-item dropdown-item flex w-full items-center gap-3 px-3 py-2 text-left text-sm transition-colors disabled:opacity-50 {isSelected
+											? 'bg-secondary'
 											: ''}"
-										style="animation-delay: {i * 50}ms"
+										style="--btn-color: {visualizerColor}; color: {isSelected
+											? visualizerColor
+											: 'inherit'}; animation-delay: {i * 50}ms"
 									>
-										<span class="h-3 w-3" style="background: {getVisualizerColor(visualizerName)}"
-										></span>
+										<span class="h-3 w-3" style="background: {visualizerColor}"></span>
 										<div class="flex-1">
 											<div class="font-medium">{visualizer.displayName}</div>
 											<div class="text-xs text-muted-foreground">{visualizer.tagline}</div>
 										</div>
-										{#if visualizerState.current === visualizerName}
-											<span class="text-xs text-primary">[active]</span>
+										{#if isSelected}
+											<span class="text-xs" style="color: {visualizerColor}">[active]</span>
 										{/if}
 									</button>
 								{/each}
@@ -508,5 +510,16 @@
 			opacity: 1;
 			transform: translateX(0);
 		}
+	}
+
+	/* Visualizer dropdown hover effect - invert colors */
+	.visualizer-dropdown-item:not(:disabled):hover {
+		background-color: var(--btn-color);
+		color: var(--term-bg) !important;
+	}
+
+	.visualizer-dropdown-item:not(:disabled):hover :global(.text-muted-foreground) {
+		color: var(--term-bg) !important;
+		opacity: 0.8;
 	}
 </style>
