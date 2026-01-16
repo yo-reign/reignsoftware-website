@@ -137,10 +137,10 @@
 						<ChevronRight class="h-4 w-4 transition-transform group-hover:translate-x-1" />
 					</a>
 					<a
-						href="/products/import-doc"
+						href="/products/importdoc"
 						class="inline-flex items-center gap-2 border border-border/50 bg-card/50 px-4 py-2 font-mono text-sm text-(--term-fg-dim) transition-all hover:border-(--term-blue) hover:text-(--term-blue)"
 					>
-						<span>view ./products/import-doc</span>
+						<span>view ./products/importdoc</span>
 					</a>
 				</div>
 			</div>

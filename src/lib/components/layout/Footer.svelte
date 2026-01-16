@@ -5,9 +5,8 @@
 
 	const footerLinks = {
 		product: [
-			{ href: '/products/import-doc', label: 'importDoc' },
 			{ href: '/products', label: 'All Products' },
-			{ href: '/pricing', label: 'Pricing' }
+			{ href: '/products/importdoc', label: 'importDoc' }
 		],
 		company: [
 			{ href: '/about', label: 'About' },
@@ -16,8 +15,7 @@
 		],
 		resources: [
 			{ href: '/playground', label: 'Playground' },
-			{ href: '/blog', label: 'Blog' },
-			{ href: '/docs', label: 'Documentation' }
+			{ href: '/blog', label: 'Blog' }
 		]
 	};
 

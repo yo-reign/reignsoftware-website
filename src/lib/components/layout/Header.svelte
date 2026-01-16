@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
 	import { visualizerState } from '$lib/stores/visualizer.svelte';
 	import { themeState } from '$lib/stores/theme.svelte';
 	import {
@@ -8,6 +9,10 @@
 		type VisualizerName
 	} from '$lib/components/visualizers/config';
 	import { Menu, X, Layers, Sun, Moon, Monitor } from '@lucide/svelte';
+
+	// Track if we're on the homepage (where Hero controls visibility)
+	let isHomePage = $derived($page.url.pathname === '/');
+	let previousIsHomePage = $state(true); // Track route changes
 
 	let mobileMenuOpen = $state(false);
 	let showVisualSelector = $state(false);
@@ -120,6 +125,26 @@
 		return new Promise((resolve) => setTimeout(resolve, ms));
 	}
 
+	// Show visualizer selector on non-homepage routes (only on route change)
+	$effect(() => {
+		// Only act when route actually changes
+		if (isHomePage === previousIsHomePage) return;
+
+		const navigatedAway = previousIsHomePage && !isHomePage;
+		const navigatedHome = !previousIsHomePage && isHomePage;
+
+		previousIsHomePage = isHomePage;
+
+		if (navigatedAway && bootPhase === 'hidden') {
+			// Left homepage - show selector
+			showVisualSelector = true;
+			runBootAnimation();
+		} else if (navigatedHome && bootPhase === 'ready') {
+			// Returned to homepage - hide selector (Hero will control it)
+			runShutdownAnimation();
+		}
+	});
+
 	onMount(() => {
 		// Cursor blink
 		const cursorInterval = setInterval(() => {
@@ -128,8 +153,10 @@
 			}
 		}, 530);
 
-		// Listen for visual selector visibility from hero
+		// Listen for visual selector visibility from hero (only relevant on homepage)
 		const handleVisibility = (e: CustomEvent<{ visible: boolean }>) => {
+			if (!isHomePage) return; // Ignore on non-homepage routes
+
 			const shouldShow = !e.detail.visible;
 
 			if (shouldShow && !showVisualSelector && bootPhase === 'hidden') {

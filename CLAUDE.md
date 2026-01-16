@@ -177,6 +177,6 @@ Selection persisted in localStorage.
 /about                  → About ReignSoftware, philosophy
 /services               → What we offer
 /products               → Products listing
-  /products/import-doc   → importDoc showcase
+  /products/importdoc   → importDoc showcase
 /contact                → Contact form + info
 ```

@@ -62,7 +62,7 @@
 				<div class="flex items-center gap-3">
 					<span class="text-(--term-aqua) font-medium text-sm">FEATURED</span>
 					<span class="text-(--term-gray)">│</span>
-					<span class="text-(--term-gray)">~/products/import-doc</span>
+					<span class="text-(--term-gray)">~/products/importdoc</span>
 				</div>
 				<div class="flex items-center gap-2">
 					<span class="text-xs text-(--term-gray)"
