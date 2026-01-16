@@ -1,7 +1,7 @@
 ---
 title: Hello World
 description: Welcome to the reignsoftware blog. This is our first post where we share our vision and what you can expect from us.
-date: '2025-01-15'
+date: '2026-01-15'
 published: true
 tags:
   - announcement
