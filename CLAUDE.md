@@ -7,6 +7,7 @@ A SvelteKit website with a distinctive terminal/TUI aesthetic using the Gruvbox 
 - **Framework**: SvelteKit 2.x with Svelte 5 (runes)
 - **Styling**: Tailwind CSS 4.x
 - **Icons**: Lucide Svelte
+- **Markdown**: mdsvex with Shiki syntax highlighting
 - **Package Manager**: pnpm
 
 ## Commands
@@ -88,38 +89,84 @@ This project uses Svelte 5 runes. Follow these patterns:
 
 ### UI Components
 
+- `SectionHeader` - Page section headers with title and optional subtitle
+- `ContentCard` - Translucent card with prose styling for text content
 - Transparent backgrounds with `bg-card/80 backdrop-blur-sm`
 - Lighter border opacity: `border-border/50`
 - Theme toggle dropdown (Auto/Dark/Light)
-- Visualizer selector with boot/shutdown animations
+- Visualizer selector with invert hover effects
 
 ## Project Structure
 
 ```
 src/
+├── content/
+│   └── blog/                # Markdown blog posts
 ├── lib/
 │   ├── components/
 │   │   ├── layout/          # Header, Footer
 │   │   ├── visualizers/     # Canvas background effects
 │   │   ├── sections/        # Hero, ProductTeaser
-│   │   └── ui/              # Reusable components
-│   └── stores/
-│       ├── theme.svelte.ts  # Theme state (auto/dark/light)
-│       └── visualizer.svelte.ts
+│   │   └── ui/              # SectionHeader, ContentCard
+│   ├── stores/
+│   │   ├── theme.svelte.ts  # Theme state (auto/dark/light)
+│   │   └── visualizer.svelte.ts
+│   └── types/
+│       └── blog.ts          # Blog post types
 └── routes/
     ├── +layout.svelte
     ├── +page.svelte         # Landing page
-    └── layout.css           # Global styles, Gruvbox palette
+    ├── layout.css           # Global styles, Gruvbox palette
+    ├── about/
+    ├── services/
+    ├── contact/             # Temporary email contact
+    ├── products/
+    │   └── importdoc/
+    ├── blog/                # Blog listing and posts
+    │   └── [slug]/
+    ├── privacy/             # Privacy policy
+    ├── terms/               # Terms of service
+    └── playground/
 ```
 
 ## Background Visualizers
 
 Interactive canvas backgrounds selectable by user:
 
+- Off (disable visualizer)
 - Grid Walk, Random Walk, Matrix Rain
 - Particle Swarm, Starfield, Ripples
 
-Selection persisted in localStorage.
+Each visualizer has its own accent color. Selection persisted in localStorage. Default for new users: grid-walk.
+
+### Visualizer Button Styling
+
+- Buttons show in their visualizer's color
+- Hover effect: fills with color, inverts text (like START PROJECT button)
+- Selected state uses visualizer's own color (not green)
+
+## Blog System
+
+Blog posts are written in Markdown in `src/content/blog/`. Syntax highlighting uses Shiki with dual theme support (gruvbox-dark-hard / gruvbox-light-hard).
+
+### Creating a Blog Post
+
+Create a `.md` file in `src/content/blog/`:
+
+```markdown
+---
+title: Post Title
+description: Brief description
+date: '2025-01-14'
+author: Author Name
+tags:
+  - tag1
+  - tag2
+published: true
+---
+
+Post content here...
+```
 
 ## Implementation Phases
 
@@ -140,13 +187,17 @@ Selection persisted in localStorage.
 - [x] Ripples visualizer
 - [x] Visualizer selector with animations
 - [x] Visualizer controls (speed, params, restart)
+- [x] Off option to disable visualizer
 
-### Phase 3: Content Pages 🔄
+### Phase 3: Content Pages (IN PROGRESS)
 
-- [ ] About page
-- [ ] Services page
-- [ ] Contact page with form
-- [ ] Products listing page
+- [ ] About page (placeholder)
+- [ ] Services page (placeholder)
+- [x] Contact page (temporary email)
+- [ ] Products listing page (placeholder)
+- [x] Privacy policy page
+- [x] Terms of service page
+- [x] Blog system with syntax highlighting
 
 ### Phase 4: importDoc Showcase
 
@@ -159,6 +210,7 @@ Selection persisted in localStorage.
 
 - [x] Theme toggle (Auto/Dark/Light dropdown)
 - [x] Glassmorphism UI effects
+- [x] Visualizer button hover effects
 - [ ] Micro-interactions
 - [ ] Performance optimization
 - [ ] SEO meta tags
@@ -178,5 +230,10 @@ Selection persisted in localStorage.
 /services               → What we offer
 /products               → Products listing
   /products/importdoc   → importDoc showcase
-/contact                → Contact form + info
+/contact                → Contact (temporary email)
+/blog                   → Blog listing
+  /blog/[slug]          → Individual blog posts
+/privacy                → Privacy policy
+/terms                  → Terms of service
+/playground             → Playground (coming soon)
 ```
