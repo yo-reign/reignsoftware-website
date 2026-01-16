@@ -251,3 +251,38 @@
 :root:not(.light) header {
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
+
+/* ============================================
+   SYNTAX HIGHLIGHTING - Shiki Dual Theme
+   ============================================ */
+
+/* Code block container styling */
+.shiki {
+	margin: 1.5rem 0;
+	padding: 1rem !important;
+	border: 1px solid var(--term-bg2);
+	font-family: var(--font-theme) !important;
+	font-size: 0.875rem;
+	line-height: 1.6;
+	overflow-x: auto;
+	tab-size: 2;
+}
+
+.shiki code {
+	font-family: var(--font-theme) !important;
+	background: transparent !important;
+}
+
+/* Dark mode (default): use dark theme colors */
+.shiki,
+.shiki span {
+	color: var(--shiki-dark) !important;
+	background-color: var(--shiki-dark-bg) !important;
+}
+
+/* Light mode: switch to light theme colors */
+:root.light .shiki,
+:root.light .shiki span {
+	color: var(--shiki-light) !important;
+	background-color: var(--shiki-light-bg) !important;
+}
