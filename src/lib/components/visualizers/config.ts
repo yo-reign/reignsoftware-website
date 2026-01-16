@@ -1,5 +1,6 @@
 // Visualizer definitions - different background visual experiences
 export type VisualizerName =
+	| 'off'
 	| 'grid-walk'
 	| 'random-walk'
 	| 'matrix-rain'
@@ -27,6 +28,14 @@ export interface VisualizerConfig {
 }
 
 export const visualizers: Record<VisualizerName, VisualizerConfig> = {
+	off: {
+		name: 'off',
+		displayName: 'Off',
+		tagline: 'No animation',
+		description: 'Disable background visualizer for a cleaner reading experience.',
+		interactive: false,
+		params: {}
+	},
 	'grid-walk': {
 		name: 'grid-walk',
 		displayName: 'Grid Walk',
@@ -223,6 +232,7 @@ export const themeColors = {
 
 // Visualizer order for UI
 export const visualizerOrder: VisualizerName[] = [
+	'off',
 	'grid-walk',
 	'random-walk',
 	'matrix-rain',

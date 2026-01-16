@@ -189,8 +189,10 @@
 
 	function getVisualizerColor(name: VisualizerName): string {
 		switch (name) {
+			case 'off':
+				return '#928374'; // gray
 			case 'grid-walk':
-				return '#b8bb26'; // green
+				return '#fb4934'; // red
 			case 'random-walk':
 				return '#83a598'; // blue
 			case 'matrix-rain':

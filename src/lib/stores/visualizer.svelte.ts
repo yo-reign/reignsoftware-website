@@ -20,6 +20,7 @@ class VisualizerState {
 
 	// Per-visualizer params
 	params = $state<Record<VisualizerName, Record<string, number>>>({
+		off: getDefaultParams('off'),
 		'grid-walk': getDefaultParams('grid-walk'),
 		'random-walk': getDefaultParams('random-walk'),
 		'matrix-rain': getDefaultParams('matrix-rain'),

@@ -13,7 +13,9 @@
 	class="pointer-events-none fixed inset-0 z-0 opacity-40"
 	class:pointer-events-auto={visualizerState.config.interactive}
 >
-	{#if visualizerState.current === 'grid-walk'}
+	{#if visualizerState.current === 'off'}
+		<!-- No visualizer -->
+	{:else if visualizerState.current === 'grid-walk'}
 		<GridWalk
 			speedMultiplier={visualizerState.speedMultiplier}
 			agentCount={visualizerState.currentParams.agents}

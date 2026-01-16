@@ -69,6 +69,8 @@
 
 	function getVisualizerColor(name: VisualizerName): string {
 		switch (name) {
+			case 'off':
+				return 'var(--term-gray)';
 			case 'grid-walk':
 				return 'var(--term-red)';
 			case 'random-walk':
@@ -196,79 +198,81 @@
 								{/each}
 							</div>
 
-							<!-- Controls row - horizontal scroll like visualizers -->
-							<div
-								class="flex items-center gap-2 overflow-x-auto border-t border-border/50 px-2 py-2 scrollbar-hide"
-							>
-								<!-- Reset button at front for stability -->
-								<button
-									onclick={() => {
-										visualizerState.resetParams();
-										visualizerState.restart();
-									}}
-									class="flex h-9 w-9 shrink-0 items-center justify-center border border-border/30 text-(--term-red) transition-colors hover:border-(--term-red) hover:bg-(--term-red)/10"
-									title="Reset"
+							<!-- Controls row - hidden when 'off' is selected -->
+							{#if visualizerState.current !== 'off'}
+								<div
+									class="flex items-center gap-2 overflow-x-auto border-t border-border/50 px-2 py-2 scrollbar-hide"
 								>
-									<RotateCcw class="h-4 w-4" />
-								</button>
-
-								<!-- Speed control with -/+ buttons -->
-								<div class="flex shrink-0 items-center">
+									<!-- Reset button at front for stability -->
 									<button
-										onclick={() => visualizerState.cycleSpeed(-1)}
-										class="flex h-9 w-8 items-center justify-center border border-border/30 text-(--term-purple) transition-colors hover:border-(--term-purple) hover:bg-secondary/30 disabled:opacity-30"
-										disabled={speedOptions.indexOf(visualizerState.speedMultiplier) === 0}
+										onclick={() => {
+											visualizerState.resetParams();
+											visualizerState.restart();
+										}}
+										class="flex h-9 w-9 shrink-0 items-center justify-center border border-border/30 text-(--term-red) transition-colors hover:border-(--term-red) hover:bg-(--term-red)/10"
+										title="Reset"
 									>
-										−
+										<RotateCcw class="h-4 w-4" />
 									</button>
-									<div class="grid h-9 place-items-center border-y border-border/30 px-2">
-										<span class="text-xs">
-											<span class="text-(--term-gray)">speed</span>
-											<span class="ml-1.5 font-mono text-(--term-purple)"
-												>{formatSpeed(visualizerState.speedMultiplier)}</span
-											>
-										</span>
-									</div>
-									<button
-										onclick={() => visualizerState.cycleSpeed(1)}
-										class="flex h-9 w-8 items-center justify-center border border-border/30 text-(--term-purple) transition-colors hover:border-(--term-purple) hover:bg-secondary/30 disabled:opacity-30"
-										disabled={speedOptions.indexOf(visualizerState.speedMultiplier) ===
-											speedOptions.length - 1}
-									>
-										+
-									</button>
-								</div>
 
-								<!-- Dynamic params with -/+ buttons -->
-								{#each Object.entries(visualizers[visualizerState.current].params) as [key, config] (key)}
+									<!-- Speed control with -/+ buttons -->
 									<div class="flex shrink-0 items-center">
 										<button
-											onclick={() => cycleParam(key, -1)}
-											class="flex h-9 w-8 items-center justify-center border border-border/30 transition-colors hover:bg-secondary/30 disabled:opacity-30"
-											style="color: {config.color}"
-											disabled={visualizerState.currentParams[key] <= config.min}
+											onclick={() => visualizerState.cycleSpeed(-1)}
+											class="flex h-9 w-8 items-center justify-center border border-border/30 text-(--term-purple) transition-colors hover:border-(--term-purple) hover:bg-secondary/30 disabled:opacity-30"
+											disabled={speedOptions.indexOf(visualizerState.speedMultiplier) === 0}
 										>
 											−
 										</button>
 										<div class="grid h-9 place-items-center border-y border-border/30 px-2">
 											<span class="text-xs">
-												<span class="text-(--term-gray)">{config.label.replace('--', '')}</span>
-												<span class="ml-1.5 font-mono" style="color: {config.color}"
-													>{visualizerState.currentParams[key]}</span
+												<span class="text-(--term-gray)">speed</span>
+												<span class="ml-1.5 font-mono text-(--term-purple)"
+													>{formatSpeed(visualizerState.speedMultiplier)}</span
 												>
 											</span>
 										</div>
 										<button
-											onclick={() => cycleParam(key, 1)}
-											class="flex h-9 w-8 items-center justify-center border border-border/30 transition-colors hover:bg-secondary/30 disabled:opacity-30"
-											style="color: {config.color}"
-											disabled={visualizerState.currentParams[key] >= config.max}
+											onclick={() => visualizerState.cycleSpeed(1)}
+											class="flex h-9 w-8 items-center justify-center border border-border/30 text-(--term-purple) transition-colors hover:border-(--term-purple) hover:bg-secondary/30 disabled:opacity-30"
+											disabled={speedOptions.indexOf(visualizerState.speedMultiplier) ===
+												speedOptions.length - 1}
 										>
 											+
 										</button>
 									</div>
-								{/each}
-							</div>
+
+									<!-- Dynamic params with -/+ buttons -->
+									{#each Object.entries(visualizers[visualizerState.current].params) as [key, config] (key)}
+										<div class="flex shrink-0 items-center">
+											<button
+												onclick={() => cycleParam(key, -1)}
+												class="flex h-9 w-8 items-center justify-center border border-border/30 transition-colors hover:bg-secondary/30 disabled:opacity-30"
+												style="color: {config.color}"
+												disabled={visualizerState.currentParams[key] <= config.min}
+											>
+												−
+											</button>
+											<div class="grid h-9 place-items-center border-y border-border/30 px-2">
+												<span class="text-xs">
+													<span class="text-(--term-gray)">{config.label.replace('--', '')}</span>
+													<span class="ml-1.5 font-mono" style="color: {config.color}"
+														>{visualizerState.currentParams[key]}</span
+													>
+												</span>
+											</div>
+											<button
+												onclick={() => cycleParam(key, 1)}
+												class="flex h-9 w-8 items-center justify-center border border-border/30 transition-colors hover:bg-secondary/30 disabled:opacity-30"
+												style="color: {config.color}"
+												disabled={visualizerState.currentParams[key] >= config.max}
+											>
+												+
+											</button>
+										</div>
+									{/each}
+								</div>
+							{/if}
 						</div>
 					</div>
 				</div>
