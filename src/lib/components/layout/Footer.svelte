@@ -5,7 +5,7 @@
 
 	const footerLinks = {
 		product: [
-			{ href: '/products/importdoc', label: 'importDoc' },
+			{ href: '/products/import-doc', label: 'importDoc' },
 			{ href: '/products', label: 'All Products' },
 			{ href: '/pricing', label: 'Pricing' }
 		],
@@ -36,23 +36,23 @@
 			<div class="lg:col-span-2">
 				<a href="/" class="inline-flex items-center gap-2">
 					<span class="text-muted-foreground">~/</span>
-					<span class="font-mono text-xl text-[var(--term-red)]"
-						>reign<span class="text-[var(--term-fg)]">software</span></span
+					<span class="font-mono text-xl text-(--term-red)"
+						>reign<span class="text-(--term-fg)">software</span></span
 					>
 				</a>
 				<p class="mt-4 max-w-xs text-sm text-muted-foreground">
-					<span class="text-[var(--term-green)]">// </span>
+					<span class="text-(--term-green)">// </span>
 					Building software that is efficient, reliable, and beautiful.
 				</p>
 
 				<!-- Social links -->
 				<div class="mt-6 flex gap-4">
-					{#each socials as social}
+					{#each socials as social (social.label)}
 						<a
 							href={social.href}
 							target="_blank"
 							rel="noopener noreferrer"
-							class="flex h-9 w-9 items-center justify-center border border-border/50 bg-secondary/50 text-muted-foreground transition-all hover:border-[var(--term-green)] hover:bg-secondary hover:text-[var(--term-green)]"
+							class="flex h-9 w-9 items-center justify-center border border-border/50 bg-secondary/50 text-muted-foreground transition-all hover:border-(--term-green) hover:bg-secondary hover:text-(--term-green)"
 							aria-label={social.label}
 						>
 							<social.icon class="h-4 w-4" />
@@ -67,7 +67,7 @@
 					<span class="text-primary">./</span>products
 				</h3>
 				<ul class="space-y-2">
-					{#each footerLinks.product as link}
+					{#each footerLinks.product as link (link.href)}
 						<li>
 							<a
 								href={link.href}
@@ -85,7 +85,7 @@
 					<span class="text-primary">./</span>company
 				</h3>
 				<ul class="space-y-2">
-					{#each footerLinks.company as link}
+					{#each footerLinks.company as link (link.href)}
 						<li>
 							<a
 								href={link.href}
@@ -103,7 +103,7 @@
 					<span class="text-primary">./</span>resources
 				</h3>
 				<ul class="space-y-2">
-					{#each footerLinks.resources as link}
+					{#each footerLinks.resources as link (link.href)}
 						<li>
 							<a
 								href={link.href}
@@ -123,9 +123,8 @@
 		>
 			<p>
 				<span class="text-primary">$</span> echo "© {currentYear}
-				<span class="text-[var(--term-red)]">reign</span><span class="text-[var(--term-fg)]"
-					>software</span
-				>. All rights reserved."
+				<span class="text-(--term-red)">reign</span><span class="text-(--term-fg)">software</span>.
+				All rights reserved."
 			</p>
 			<div class="flex gap-6">
 				<a href="/privacy" class="hover:text-foreground">Privacy</a>

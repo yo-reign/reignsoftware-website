@@ -175,7 +175,7 @@
 
 	// React to theme changes
 	$effect(() => {
-		const _ = themeState.current;
+		void themeState.current;
 		if (ctx && canvas) {
 			const rect = canvas.getBoundingClientRect();
 			ctx.fillStyle = colors.bg0;

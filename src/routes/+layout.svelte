@@ -3,7 +3,6 @@
 	import Header from '$lib/components/layout/Header.svelte';
 	import Footer from '$lib/components/layout/Footer.svelte';
 	import VisualizerBackground from '$lib/components/visualizers/VisualizerBackground.svelte';
-	import { themeState } from '$lib/stores/theme.svelte';
 	import type { Snippet } from 'svelte';
 	import { onMount } from 'svelte';
 
@@ -21,7 +20,7 @@
 </script>
 
 <svelte:head>
-	<title>reignsoftware | Dev</title>
+	<title>reignsoftware_</title>
 	<meta
 		name="description"
 		content="Fast, robust, and visually stunning software solutions for businesses and consumers."

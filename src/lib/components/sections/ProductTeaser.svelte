@@ -5,9 +5,9 @@
 	let importDocExpanded = $state(true);
 
 	const features = [
-		{ icon: Mail, text: 'Automated mail intake', color: 'var(--term-blue)' },
+		{ icon: Mail, text: 'Automated mail intake pipeline', color: 'var(--term-blue)' },
 		{ icon: FileSearch, text: 'AI document analysis', color: 'var(--term-purple)' },
-		{ icon: FolderTree, text: 'Smart categorization', color: 'var(--term-aqua)' },
+		{ icon: FolderTree, text: 'Smart categorization flows', color: 'var(--term-aqua)' },
 		{ icon: Zap, text: 'Action triggers', color: 'var(--term-yellow)' }
 	];
 
@@ -57,19 +57,19 @@
 		<div class="mb-8">
 			<button
 				onclick={() => (importDocExpanded = !importDocExpanded)}
-				class="flex w-full items-center justify-between px-4 py-3 border-l-2 border-[var(--term-aqua)] bg-card/50 transition-colors hover:bg-card"
+				class="flex w-full items-center justify-between px-4 py-3 border-l-2 border-(--term-aqua) bg-card/50 transition-colors hover:bg-card"
 			>
 				<div class="flex items-center gap-3">
-					<span class="text-[var(--term-aqua)] font-medium text-sm">FEATURED</span>
-					<span class="text-[var(--term-gray)]">│</span>
-					<span class="text-[var(--term-gray)]">~/products/importdoc</span>
+					<span class="text-(--term-aqua) font-medium text-sm">FEATURED</span>
+					<span class="text-(--term-gray)">│</span>
+					<span class="text-(--term-gray)">~/products/import-doc</span>
 				</div>
 				<div class="flex items-center gap-2">
-					<span class="text-xs text-[var(--term-gray)]"
+					<span class="text-xs text-(--term-gray)"
 						>{importDocExpanded ? 'EXPANDED' : 'COLLAPSED'}</span
 					>
 					<ChevronDown
-						class="h-4 w-4 text-[var(--term-gray)] transition-transform duration-200 {importDocExpanded
+						class="h-4 w-4 text-(--term-gray) transition-transform duration-200 {importDocExpanded
 							? 'rotate-180'
 							: ''}"
 					/>
@@ -85,7 +85,7 @@
 		>
 			<div class="overflow-hidden">
 				<h2 class="mb-6 text-3xl font-bold sm:text-4xl">
-					<span class="text-[var(--term-green)]">$&nbsp;</span><span class="text-[var(--term-fg)]"
+					<span class="text-(--term-green)">$&nbsp;</span><span class="text-(--term-fg)"
 						>importDoc</span
 					>
 				</h2>
@@ -94,9 +94,9 @@
 					<!-- Content -->
 					<div data-content class="opacity-0">
 						<!-- TUI description box -->
-						<div class="mb-6 border-l-2 border-[var(--term-gray)] pl-4">
-							<div class="mb-2 text-sm text-[var(--term-gray)]">/* README.md */</div>
-							<p class="text-[var(--term-fg)] leading-relaxed">
+						<div class="mb-6 border-l-2 border-(--term-gray) pl-4">
+							<div class="mb-2 text-sm text-(--term-gray)">/* README.md */</div>
+							<p class="text-(--term-fg) leading-relaxed">
 								Mail intake automation for law firms. Transform the chaos of incoming documents into
 								organized, actionable case files—automatically.
 							</p>
@@ -104,19 +104,19 @@
 
 						<!-- Features list -->
 						<div class="mb-8 space-y-2">
-							<div class="text-xs text-[var(--term-gray)] uppercase tracking-wider mb-3">
-								Features
-							</div>
-							{#each features as feature, i}
+							<div class="text-xs text-(--term-gray) uppercase tracking-wider mb-3">Features</div>
+							{#each features as feature, i (feature.text)}
 								<div class="flex items-center gap-3 py-2 border-b border-border/50 last:border-b-0">
-									<span class="text-[var(--term-gray)] text-sm font-mono">{String(i + 1).padStart(2, '0')}</span>
+									<span class="text-(--term-gray) text-sm font-mono"
+										>{String(i + 1).padStart(2, '0')}</span
+									>
 									<div
 										class="flex h-7 w-7 items-center justify-center rounded-sm"
 										style="color: {feature.color}; background: color-mix(in srgb, {feature.color} 15%, transparent)"
 									>
 										<feature.icon class="h-4 w-4" />
 									</div>
-									<span class="text-[var(--term-fg)]">{feature.text}</span>
+									<span class="text-(--term-fg)">{feature.text}</span>
 								</div>
 							{/each}
 						</div>
@@ -124,7 +124,7 @@
 						<!-- CTA -->
 						<a
 							href="/products/importdoc"
-							class="group inline-flex items-center gap-2 border-2 border-[var(--term-green)] px-5 py-2.5 text-[var(--term-green)] font-medium transition-all hover:bg-[var(--term-green)] hover:text-[var(--term-bg)]"
+							class="group inline-flex items-center gap-2 border-2 border-(--term-green) px-5 py-2.5 text-(--term-green) font-medium transition-all hover:bg-(--term-green) hover:text-(--term-bg)"
 						>
 							<span>[ LEARN MORE ]</span>
 							<ArrowRight class="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -136,24 +136,22 @@
 						<!-- TUI-style dashboard mockup -->
 						<div class="border border-border bg-card/80 backdrop-blur-sm overflow-hidden">
 							<!-- Window title bar -->
-							<div
-								class="flex items-center justify-between border-b border-border/50 px-3 py-2"
-							>
+							<div class="flex items-center justify-between border-b border-border/50 px-3 py-2">
 								<div class="flex items-center gap-1.5">
-									<span class="w-3 h-3 rounded-full bg-[var(--term-red)]"></span>
-									<span class="w-3 h-3 rounded-full bg-[var(--term-yellow)]"></span>
-									<span class="w-3 h-3 rounded-full bg-[var(--term-green)]"></span>
+									<span class="w-3 h-3 rounded-full bg-(--term-red)"></span>
+									<span class="w-3 h-3 rounded-full bg-(--term-yellow)"></span>
+									<span class="w-3 h-3 rounded-full bg-(--term-green)"></span>
 								</div>
-								<span class="text-xs text-[var(--term-gray)]">importdoc v2.1.0</span>
-								<span class="text-[var(--term-gray)]">─</span>
+								<span class="text-xs text-(--term-gray)">importdoc v2.1.0</span>
+								<span class="text-(--term-gray)">─</span>
 							</div>
 
 							<!-- Stats row -->
 							<div class="grid grid-cols-3">
-								{#each [{ label: 'PROCESSED', value: '1,247', color: 'var(--term-green)' }, { label: 'PENDING', value: '23', color: 'var(--term-yellow)' }, { label: 'CASES', value: '89', color: 'var(--term-blue)' }] as stat, i}
+								{#each [{ label: 'PROCESSED', value: '1,247', color: 'var(--term-green)' }, { label: 'PENDING', value: '23', color: 'var(--term-yellow)' }, { label: 'CASES', value: '89', color: 'var(--term-blue)' }] as stat, i (stat.label)}
 									<div class="p-4 text-center {i < 2 ? 'border-r border-border/30' : ''}">
 										<div class="text-2xl font-bold" style="color: {stat.color}">{stat.value}</div>
-										<div class="text-xs text-[var(--term-gray)] mt-1">{stat.label}</div>
+										<div class="text-xs text-(--term-gray) mt-1">{stat.label}</div>
 									</div>
 								{/each}
 							</div>
@@ -161,21 +159,25 @@
 							<!-- Recent items table -->
 							<div class="p-4 border-t border-border/30">
 								<div class="mb-3 flex items-center gap-2 text-xs">
-									<span class="text-[var(--term-green)]">$</span>
-									<span class="text-[var(--term-gray)]">tail -f ./logs/recent.log</span>
+									<span class="text-(--term-green)">$</span>
+									<span class="text-(--term-gray)">tail -f ./logs/recent.log</span>
 								</div>
 								<div class="space-y-1">
 									<!-- Table header -->
-									<div class="grid grid-cols-3 text-xs text-[var(--term-gray)] pb-2 border-b border-border/30">
+									<div
+										class="grid grid-cols-3 text-xs text-(--term-gray) pb-2 border-b border-border/30"
+									>
 										<div>FILE</div>
 										<div>CASE</div>
 										<div>STATUS</div>
 									</div>
 									<!-- Table rows -->
-									{#each [{ name: 'Motion_Response.pdf', case: 'Smith v. Jones', status: 'FILED', statusColor: 'var(--term-green)' }, { name: 'Discovery_Req.docx', case: 'Estate Williams', status: 'PENDING', statusColor: 'var(--term-yellow)' }, { name: 'Settlement.pdf', case: 'Garcia Corp', status: 'REVIEW', statusColor: 'var(--term-blue)' }] as doc}
-										<div class="grid grid-cols-3 text-sm py-2 border-b border-border/20 last:border-b-0">
-											<div class="text-[var(--term-fg)] truncate pr-2">{doc.name}</div>
-											<div class="text-[var(--term-gray)] truncate pr-2">{doc.case}</div>
+									{#each [{ name: 'Motion_Response.pdf', case: 'Smith v. Jones', status: 'FILED', statusColor: 'var(--term-green)' }, { name: 'Discovery_Req.docx', case: 'Estate Williams', status: 'PENDING', statusColor: 'var(--term-yellow)' }, { name: 'Settlement.pdf', case: 'Garcia Corp', status: 'REVIEW', statusColor: 'var(--term-blue)' }] as doc (doc.name)}
+										<div
+											class="grid grid-cols-3 text-sm py-2 border-b border-border/20 last:border-b-0"
+										>
+											<div class="text-(--term-fg) truncate pr-2">{doc.name}</div>
+											<div class="text-(--term-gray) truncate pr-2">{doc.case}</div>
 											<div style="color: {doc.statusColor}">{doc.status}</div>
 										</div>
 									{/each}
@@ -183,8 +185,8 @@
 							</div>
 
 							<!-- Footer -->
-							<div class="border-t border-border/30 px-4 py-2 text-xs text-[var(--term-gray)]">
-								<span class="text-[var(--term-green)]">●</span> Connected │ Last sync: 2m ago
+							<div class="border-t border-border/30 px-4 py-2 text-xs text-(--term-gray)">
+								<span class="text-(--term-green)">●</span> Connected │ Last sync: 2m ago
 							</div>
 						</div>
 					</div>

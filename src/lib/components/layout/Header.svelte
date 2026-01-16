@@ -2,7 +2,11 @@
 	import { onMount } from 'svelte';
 	import { visualizerState } from '$lib/stores/visualizer.svelte';
 	import { themeState } from '$lib/stores/theme.svelte';
-	import { visualizers, visualizerOrder, type VisualizerName } from '$lib/components/visualizers/config';
+	import {
+		visualizers,
+		visualizerOrder,
+		type VisualizerName
+	} from '$lib/components/visualizers/config';
 	import { Menu, X, Layers, Sun, Moon, Monitor } from '@lucide/svelte';
 
 	let mobileMenuOpen = $state(false);
@@ -178,25 +182,27 @@
 
 <svelte:window onkeydown={handleKeydown} />
 
-<header class="fixed left-0 right-0 top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
+<header
+	class="fixed left-0 right-0 top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md"
+>
 	<nav class="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
 		<!-- Logo -->
 		<a href="/" class="flex items-center gap-2">
-			<span class="font-mono text-[var(--term-gray)]">$</span>
-			<span class="font-mono text-lg text-[var(--term-red)]"
-				>reign<span class="text-[var(--term-fg)]">software</span></span
+			<span class="font-mono text-(--term-gray)">$</span>
+			<span class="font-mono text-lg text-(--term-red)"
+				>reign<span class="text-(--term-fg)">software</span></span
 			>
-			<span class="animate-pulse font-mono text-[var(--term-green)]">_</span>
+			<span class="animate-pulse font-mono text-(--term-green)">_</span>
 		</a>
 
 		<!-- Desktop Navigation -->
 		<div class="hidden items-center gap-1 md:flex">
-			{#each navItems as item}
+			{#each navItems as item (item.href)}
 				<a
 					href={item.href}
 					class="flex w-24 items-center justify-center border border-border/30 bg-card/50 py-2 text-sm text-foreground/80 transition-all hover:border-border/50 hover:bg-card hover:text-foreground"
 				>
-					<span class="text-muted-foreground">./</span>{item.label}
+					{item.label}
 				</a>
 			{/each}
 		</div>
@@ -227,7 +233,9 @@
 									class="theme-dot h-3 w-3"
 									style="background: {getVisualizerColor(visualizerState.current)}"
 								></div>
-								<span class="hidden sm:inline">{visualizers[visualizerState.current].displayName}</span>
+								<span class="hidden sm:inline"
+									>{visualizers[visualizerState.current].displayName}</span
+								>
 								<Layers class="h-4 w-4 sm:hidden" />
 							</button>
 						</div>
@@ -251,19 +259,18 @@
 								<span class="text-primary">$</span> select --visual
 							</div>
 							<div class="bg-card/50 p-2">
-								{#each visualizerOrder as visualizerName, i}
+								{#each visualizerOrder as visualizerName, i (visualizerName)}
 									{@const visualizer = visualizers[visualizerName]}
 									<button
 										onclick={() => selectVisualizer(visualizerName)}
 										disabled={visualizerState.isTransitioning}
-										class="dropdown-item flex w-full items-center gap-3 px-3 py-2 text-left text-sm transition-colors hover:bg-secondary disabled:opacity-50 {visualizerState.current === visualizerName
+										class="dropdown-item flex w-full items-center gap-3 px-3 py-2 text-left text-sm transition-colors hover:bg-secondary disabled:opacity-50 {visualizerState.current ===
+										visualizerName
 											? 'bg-secondary text-primary'
 											: ''}"
 										style="animation-delay: {i * 50}ms"
 									>
-										<span
-											class="h-3 w-3"
-											style="background: {getVisualizerColor(visualizerName)}"
+										<span class="h-3 w-3" style="background: {getVisualizerColor(visualizerName)}"
 										></span>
 										<div class="flex-1">
 											<div class="font-medium">{visualizer.displayName}</div>
@@ -314,13 +321,14 @@
 							<span class="text-primary">$</span> set --theme
 						</div>
 						<div class="bg-card/50 p-1">
-							{#each themeOptions as option, i}
+							{#each themeOptions as option, i (option.mode)}
 								<button
 									onclick={() => {
 										themeState.setMode(option.mode);
 										themeDropdownOpen = false;
 									}}
-									class="dropdown-item flex w-full items-center gap-3 px-3 py-2 text-left text-sm transition-colors hover:bg-secondary {themeState.mode === option.mode
+									class="dropdown-item flex w-full items-center gap-3 px-3 py-2 text-left text-sm transition-colors hover:bg-secondary {themeState.mode ===
+									option.mode
 										? 'bg-secondary text-primary'
 										: ''}"
 									style="animation-delay: {i * 50}ms"
@@ -356,7 +364,7 @@
 	{#if mobileMenuOpen}
 		<div class="border-t border-border/50 bg-card/95 backdrop-blur-sm md:hidden">
 			<div class="space-y-1 px-4 py-3">
-				{#each navItems as item}
+				{#each navItems as item (item.href)}
 					<a
 						href={item.href}
 						class="block px-3 py-2 text-foreground/80 transition-colors hover:bg-secondary/50"

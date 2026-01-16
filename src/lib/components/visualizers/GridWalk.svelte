@@ -260,7 +260,7 @@
 
 	// React to theme changes - redraw background
 	$effect(() => {
-		const _ = themeState.current; // Track theme
+		void themeState.current; // Track theme
 		if (ctx && canvas) {
 			const rect = canvas.getBoundingClientRect();
 			drawBackground(rect.width, rect.height, false);

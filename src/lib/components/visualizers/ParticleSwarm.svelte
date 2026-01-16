@@ -201,7 +201,7 @@
 
 	// React to particle count changes
 	$effect(() => {
-		const _ = particleCount;
+		void particleCount;
 		if (canvas) {
 			const rect = canvas.getBoundingClientRect();
 			while (particleList.length < particleCount) {
@@ -215,7 +215,7 @@
 
 	// React to theme changes
 	$effect(() => {
-		const _ = themeState.current;
+		void themeState.current;
 		if (ctx && canvas) {
 			const rect = canvas.getBoundingClientRect();
 			ctx.fillStyle = colors.bg0;

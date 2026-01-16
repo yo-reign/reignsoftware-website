@@ -192,14 +192,13 @@
 
 	// React to density changes
 	$effect(() => {
-		// Re-init when density changes significantly
-		const _ = density;
+		void density; // Track density changes
 		initColumns();
 	});
 
 	// React to theme changes
 	$effect(() => {
-		const _ = themeState.current;
+		void themeState.current;
 		if (ctx && canvas) {
 			const rect = canvas.getBoundingClientRect();
 			ctx.fillStyle = bgColors.bg0;

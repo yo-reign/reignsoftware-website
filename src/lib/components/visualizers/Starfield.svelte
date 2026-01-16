@@ -186,7 +186,7 @@
 
 	// React to star count changes
 	$effect(() => {
-		const _ = starCount;
+		void starCount;
 		while (starList.length < starCount) {
 			starList.push(createStar());
 		}
@@ -197,7 +197,7 @@
 
 	// React to theme changes
 	$effect(() => {
-		const _ = themeState.current;
+		void themeState.current;
 		// Re-assign colors to existing stars
 		starList.forEach((star) => {
 			star.color = starColors[Math.floor(Math.random() * starColors.length)];

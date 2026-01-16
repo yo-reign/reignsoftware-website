@@ -224,8 +224,8 @@
 
 /* Light mode specific styles */
 :root.light .tui-box,
-:root.light [class*="bg-[var(--term-bg-soft)]"],
-:root.light [class*="bg-secondary"] {
+:root.light [class*='bg-(--term-bg-soft)'],
+:root.light [class*='bg-secondary'] {
 	box-shadow: 0 1px 3px rgba(60, 56, 54, 0.08);
 }
 
@@ -244,7 +244,7 @@
 
 /* Dark mode specific styles */
 :root:not(.light) .tui-box,
-:root:not(.light) [class*="bg-card"] {
+:root:not(.light) [class*='bg-card'] {
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 

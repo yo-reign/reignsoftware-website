@@ -57,6 +57,7 @@ This project uses Svelte 5 runes. Follow these patterns:
 ### Brand Identity
 
 **Logo**: `$ reignsoftware_`
+
 - `$` prompt in gray (#928374)
 - "reign" in red (#fb4934), italic
 - "software" in foreground (#ebdbb2)
@@ -73,12 +74,14 @@ This project uses Svelte 5 runes. Follow these patterns:
 ### Color Palette (Gruvbox)
 
 **Dark Mode**:
+
 - Background: #1d2021
 - Foreground: #ebdbb2
 - Primary (green): #b8bb26
 - Accent colors: red (#fb4934), blue (#83a598), yellow (#fabd2f), purple (#d3869b), aqua (#8ec07c)
 
 **Light Mode**:
+
 - Background: #f9f5d7
 - Foreground: #3c3836
 - Uses muted versions of accent colors
@@ -112,6 +115,7 @@ src/
 ## Background Visualizers
 
 Interactive canvas backgrounds selectable by user:
+
 - Grid Walk, Random Walk, Matrix Rain
 - Particle Swarm, Starfield, Ripples
 
@@ -119,13 +123,15 @@ Selection persisted in localStorage.
 
 ## Implementation Phases
 
-### Phase 1: Foundation ✅
+### Phase 1: Foundation (DONE)
+
 - [x] Theme system (Gruvbox dark/light)
 - [x] Layout components (Header, Footer)
 - [x] Base landing page
 - [x] Brand identity styling
 
-### Phase 2: Visualizations ✅
+### Phase 2: Visualizations (DONE)
+
 - [x] GridWalk visualizer
 - [x] RandomWalk visualizer
 - [x] MatrixRain visualizer
@@ -136,18 +142,21 @@ Selection persisted in localStorage.
 - [x] Visualizer controls (speed, params, restart)
 
 ### Phase 3: Content Pages 🔄
+
 - [ ] About page
 - [ ] Services page
 - [ ] Contact page with form
 - [ ] Products listing page
 
 ### Phase 4: importDoc Showcase
+
 - [ ] Product page design
 - [ ] Feature breakdown sections
 - [ ] Interactive demo/mockup
 - [ ] Waitlist signup form
 
 ### Phase 5: Polish & Enhancement
+
 - [x] Theme toggle (Auto/Dark/Light dropdown)
 - [x] Glassmorphism UI effects
 - [ ] Micro-interactions
@@ -155,6 +164,7 @@ Selection persisted in localStorage.
 - [ ] SEO meta tags
 
 ### Phase 6: Launch
+
 - [ ] Accessibility audit
 - [ ] Lighthouse performance check
 - [ ] SEO meta tags finalization
@@ -167,6 +177,6 @@ Selection persisted in localStorage.
 /about                  → About ReignSoftware, philosophy
 /services               → What we offer
 /products               → Products listing
-  /products/importdoc   → importDoc showcase
+  /products/import-doc   → importDoc showcase
 /contact                → Contact form + info
 ```

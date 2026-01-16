@@ -12,7 +12,7 @@
 	let heroContent: HTMLElement;
 	let visualPanelEl: HTMLElement;
 	let mounted = $state(false);
-	let panelExpanded = $state(true);
+	let panelExpanded = $state(false);
 
 	// Scroll tracking for visual panel
 	let visualPanelVisible = $state(true);
@@ -21,9 +21,6 @@
 	let typedText = $state('');
 	const fullText = '# Better software, done right';
 	let typeIndex = $state(0);
-
-	// Track which param input is focused
-	let focusedParam = $state<string | null>(null);
 
 	$effect(() => {
 		if (mounted && typeIndex < fullText.length) {
@@ -126,8 +123,7 @@
 		}
 	}
 
-	function handleParamBlur(e: Event, key: string) {
-		focusedParam = null;
+	function handleParamBlur(_e: Event, key: string) {
 		// Ensure value is clamped on blur
 		const config = visualizers[visualizerState.current].params[key];
 		if (config) {
@@ -148,23 +144,21 @@
 			<div class="max-w-4xl" in:fly={{ y: 30, duration: 400, delay: 100 }}>
 				<!-- Main headline -->
 				<div class="mb-6">
-					<div class="mb-2 text-sm text-[var(--term-gray)]">
-						<span class="text-[var(--term-green)]">$</span> cat ./mission.txt
+					<div class="mb-2 text-sm text-(--term-gray)">
+						<span class="text-(--term-green)">$</span> cat ./mission.txt
 					</div>
-					<h1
-						class="text-3xl font-bold leading-tight text-[var(--term-fg)] sm:text-4xl md:text-5xl"
-					>
-						{typedText}<span class="animate-pulse text-[var(--term-green)]"></span>
+					<h1 class="text-3xl font-bold leading-tight text-(--term-fg) sm:text-4xl md:text-5xl">
+						{typedText}<span class="animate-pulse text-(--term-green)"></span>
 					</h1>
 				</div>
 
 				<!-- Description -->
-				<div class="mb-8 border-l-2 border-[var(--term-blue)] pl-4">
-					<p class="text-lg text-[var(--term-fg-dim)]">
-						<span class="text-[var(--term-aqua)]">## </span>
-						Fast, robust, and visually stunning solutions.<br />
-						<span class="text-[var(--term-aqua)]">## </span>
-						Code written by nerds.
+				<div class="mb-8 border-l-2 border-(--term-blue) pl-4">
+					<p class="text-lg text-(--term-fg-dim)">
+						<span class="text-(--term-aqua)">> </span>
+						Fast, robust, and visually stunning applications.<br />
+						<span class="text-(--term-aqua)">> </span>
+						Created by nerds.
 					</p>
 				</div>
 
@@ -172,16 +166,16 @@
 				<div class="flex flex-col gap-3 sm:flex-row">
 					<a
 						href="/contact"
-						class="group inline-flex items-center gap-2 border-2 border-[var(--term-green)] px-4 py-2 font-mono text-sm text-[var(--term-green)] transition-all hover:bg-[var(--term-green)] hover:text-[var(--term-bg)]"
+						class="group inline-flex items-center gap-2 border-2 border-(--term-green) px-4 py-2 font-mono text-sm text-(--term-green) transition-all hover:bg-(--term-green) hover:text-(--term-bg)"
 					>
 						<span>[ START PROJECT ]</span>
 						<ChevronRight class="h-4 w-4 transition-transform group-hover:translate-x-1" />
 					</a>
 					<a
-						href="/products/importdoc"
-						class="inline-flex items-center gap-2 border border-border/50 bg-card/50 px-4 py-2 font-mono text-sm text-[var(--term-fg-dim)] transition-all hover:border-[var(--term-blue)] hover:text-[var(--term-blue)]"
+						href="/products/import-doc"
+						class="inline-flex items-center gap-2 border border-border/50 bg-card/50 px-4 py-2 font-mono text-sm text-(--term-fg-dim) transition-all hover:border-(--term-blue) hover:text-(--term-blue)"
 					>
-						<span>view ./products/importdoc</span>
+						<span>view ./products/import-doc</span>
 					</a>
 				</div>
 			</div>
@@ -196,15 +190,15 @@
 					class="flex w-full items-center justify-between bg-secondary/50 px-3 py-2 text-sm transition-colors hover:bg-secondary"
 				>
 					<div class="flex items-center gap-2">
-						<span class="text-[var(--term-green)]">$</span>
-						<span class="text-[var(--term-gray)]">visualizer --interactive</span>
+						<span class="text-(--term-green)">$</span>
+						<span class="text-(--term-gray)">visualizer --interactive</span>
 					</div>
 					<div class="flex items-center gap-3">
-						<span class="text-xs text-[var(--term-fg-dim)]">
+						<span class="text-xs text-(--term-fg-dim)">
 							{visualizers[visualizerState.current].displayName}
 						</span>
 						<ChevronDown
-							class="h-3 w-3 text-[var(--term-gray)] transition-transform duration-200 {panelExpanded
+							class="h-3 w-3 text-(--term-gray) transition-transform duration-200 {panelExpanded
 								? 'rotate-180'
 								: ''}"
 						/>
@@ -223,9 +217,9 @@
 							<div class="grid md:grid-cols-2">
 								<!-- Visualizer Selector -->
 								<div class="border-b border-border/50 p-3 md:border-b-0 md:border-r">
-									<div class="mb-2 text-xs text-[var(--term-gray)]"># Select visualizer</div>
+									<div class="mb-2 text-xs text-(--term-gray)"># Select visualizer</div>
 									<div class="grid gap-2 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2">
-										{#each visualizerOrder as visualizerName}
+										{#each visualizerOrder as visualizerName (visualizerName)}
 											{@const visualizer = visualizers[visualizerName]}
 											{@const visualizerColor = getVisualizerColor(visualizerName)}
 											<button
@@ -233,18 +227,18 @@
 												disabled={visualizerState.isTransitioning}
 												class="group flex items-center gap-3 border px-3 py-2 text-left transition-all disabled:opacity-50 {visualizerState.current ===
 												visualizerName
-													? 'border-[var(--term-green)] bg-secondary/50'
+													? 'border-(--term-green) bg-secondary/50'
 													: 'border-border/30 hover:border-border hover:bg-secondary/30'}"
 											>
 												<span style="color: {visualizerColor}"></span>
 												<div class="flex-1">
 													<div class="text-sm" style="color: {visualizerColor}">
-														./{visualizer.name}/
+														./{visualizer.name}
 													</div>
-													<div class="text-xs text-[var(--term-fg-dim)]">{visualizer.tagline}</div>
+													<div class="text-xs text-(--term-fg-dim)">{visualizer.tagline}</div>
 												</div>
 												{#if visualizerState.current === visualizerName}
-													<span class="text-xs text-[var(--term-green)]">*</span>
+													<span class="text-xs text-(--term-green)">*</span>
 												{/if}
 											</button>
 										{/each}
@@ -253,31 +247,31 @@
 
 								<!-- Controls -->
 								<div class="p-3">
-									<div class="mb-2 text-xs text-[var(--term-gray)]">
+									<div class="mb-2 text-xs text-(--term-gray)">
 										# Adjust parameters
 										{#if visualizers[visualizerState.current].interactive}
-											<span class="ml-2 text-[var(--term-yellow)]">(interactive)</span>
+											<span class="ml-2 text-(--term-yellow)">(interactive)</span>
 										{/if}
 									</div>
 									<div class="flex flex-col gap-3">
 										<!-- Speed control -->
 										<div class="flex items-center justify-between gap-3">
-											<span class="text-sm text-[var(--term-purple)]">--speed</span>
+											<span class="text-sm text-(--term-purple)">--speed</span>
 											<div class="flex items-center gap-1">
 												<button
 													onclick={() => visualizerState.cycleSpeed(-1)}
 													disabled={!canDecreaseSpeed()}
-													class="flex h-7 w-7 items-center justify-center border border-border/50 transition-colors hover:border-[var(--term-purple)] hover:text-[var(--term-purple)] disabled:opacity-30 disabled:hover:border-border/50 disabled:hover:text-current"
+													class="flex h-7 w-7 items-center justify-center border border-border/50 transition-colors hover:border-(--term-purple) hover:text-(--term-purple) disabled:opacity-30 disabled:hover:border-border/50 disabled:hover:text-current"
 												>
 													<Minus class="h-3 w-3" />
 												</button>
-												<span class="w-16 text-center font-mono text-sm text-[var(--term-purple)]">
+												<span class="w-16 text-center font-mono text-sm text-(--term-purple)">
 													{formatSpeed(visualizerState.speedMultiplier)}
 												</span>
 												<button
 													onclick={() => visualizerState.cycleSpeed(1)}
 													disabled={!canIncreaseSpeed()}
-													class="flex h-7 w-7 items-center justify-center border border-border/50 transition-colors hover:border-[var(--term-purple)] hover:text-[var(--term-purple)] disabled:opacity-30 disabled:hover:border-border/50 disabled:hover:text-current"
+													class="flex h-7 w-7 items-center justify-center border border-border/50 transition-colors hover:border-(--term-purple) hover:text-(--term-purple) disabled:opacity-30 disabled:hover:border-border/50 disabled:hover:text-current"
 												>
 													<Plus class="h-3 w-3" />
 												</button>
@@ -285,7 +279,7 @@
 										</div>
 
 										<!-- Dynamic params for current visualizer -->
-										{#each Object.entries(visualizers[visualizerState.current].params) as [key, config]}
+										{#each Object.entries(visualizers[visualizerState.current].params) as [key, config] (key)}
 											<div class="flex items-center justify-between gap-3">
 												<span class="text-sm" style="color: {config.color}">{config.label}</span>
 												<div class="flex items-center gap-1">
@@ -305,11 +299,10 @@
 														min={config.min}
 														max={config.max}
 														step={config.step}
-														onfocus={() => (focusedParam = key)}
 														onblur={(e) => handleParamBlur(e, key)}
 														onkeydown={(e) => handleParamKeydown(e, key)}
 														oninput={(e) => handleParamInput(e, key)}
-														class="w-16 border border-border/50 bg-transparent text-center font-mono text-sm transition-colors focus:border-[var(--term-fg)] focus:outline-none"
+														class="w-16 border border-border/50 bg-transparent text-center font-mono text-sm transition-colors focus:border-(--term-fg) focus:outline-none"
 														style="color: {config.color}"
 													/>
 													<button
@@ -333,7 +326,7 @@
 													visualizerState.resetParams();
 													visualizerState.restart();
 												}}
-												class="flex w-full items-center justify-center gap-2 border border-[var(--term-red)] px-3 py-2 text-sm text-[var(--term-red)] transition-colors hover:bg-[var(--term-red)] hover:text-[var(--term-bg)]"
+												class="flex w-full items-center justify-center gap-2 border border-(--term-red) px-3 py-2 text-sm text-(--term-red) transition-colors hover:bg-(--term-red) hover:text-(--term-bg)"
 											>
 												<RotateCcw class="h-3 w-3" />
 												<span>--reset</span>
