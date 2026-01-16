@@ -3,9 +3,5 @@
 </script>
 
 <section class="min-h-screen">
-	<SectionHeader
-		sectionName="products/importdoc"
-		mainTitle="importDoc"
-		subTitle="Mail intake automation for law firms"
-	/>
+	<SectionHeader mainTitle="importDoc" subTitle="Mail intake automation for law firms" />
 </section>

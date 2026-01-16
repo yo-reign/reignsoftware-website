@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Calendar, Tag, ChevronRight, FileText } from '@lucide/svelte';
+	import SectionHeader from '$lib/components/ui/SectionHeader.svelte';
 	import type { BlogPost } from '$lib/types/blog';
 
 	interface Props {
@@ -18,20 +19,10 @@
 </script>
 
 <section class="min-h-screen">
-	<!-- Header -->
-	<div class="pb-8 pt-24 text-center">
-		<div class="mb-4 inline-block border border-border bg-card px-4 py-2">
-			<span class="text-(--term-green)">$</span>
-			<span class="text-(--term-gray)"> ls -la ./blog</span>
-		</div>
-		<h1 class="text-3xl font-bold sm:text-4xl">
-			<span class="text-(--term-fg)">## Blog</span>
-		</h1>
-		<p class="mx-auto mt-4 max-w-2xl text-muted-foreground">
-			<span class="text-(--term-gray)">// </span>
-			Thoughts on software, technology, and building things.
-		</p>
-	</div>
+	<SectionHeader
+		mainTitle="Blog"
+		subTitle="Thoughts on software, technology, and building things."
+	/>
 
 	<!-- Posts list -->
 	<div class="mx-auto max-w-4xl px-4 pb-24 sm:px-6 lg:px-8">

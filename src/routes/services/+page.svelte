@@ -3,5 +3,5 @@
 </script>
 
 <section class="min-h-screen">
-	<SectionHeader sectionName="services" mainTitle="Our Services" subTitle="Coming soon" />
+	<SectionHeader mainTitle="Services" subTitle="Coming soon" />
 </section>

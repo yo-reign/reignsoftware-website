@@ -10,7 +10,7 @@
 
 <!-- Product Teaser Section -->
 <section>
-	<SectionHeader sectionName="products" mainTitle="Software in Production" />
+	<SectionHeader mainTitle="Software Currently in Production" />
 	<!-- importDoc -->
 	<ProductTeaser />
 </section>
