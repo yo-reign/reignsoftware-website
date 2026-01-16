@@ -7,7 +7,7 @@
 		visualizerOrder,
 		type VisualizerName
 	} from '$lib/components/visualizers/config';
-	import { ChevronRight, ChevronDown, Minus, Plus, RotateCcw } from '@lucide/svelte';
+	import { ChevronRight, ChevronDown, RotateCcw } from '@lucide/svelte';
 
 	let heroContent: HTMLElement;
 	let visualPanelEl: HTMLElement;
@@ -92,44 +92,11 @@
 		return multiplier < 1 ? `${multiplier}x` : `${multiplier.toFixed(1)}x`;
 	}
 
-	// Check if we can decrease/increase speed
-	function canDecreaseSpeed(): boolean {
-		return speedOptions.indexOf(visualizerState.speedMultiplier) > 0;
-	}
-
-	function canIncreaseSpeed(): boolean {
-		return speedOptions.indexOf(visualizerState.speedMultiplier) < speedOptions.length - 1;
-	}
-
-	// Handle keyboard input for params
-	function handleParamKeydown(e: KeyboardEvent, key: string) {
+	// Cycle param value on tap (for mobile-friendly interaction)
+	function cycleParam(key: string, direction: 1 | -1 = 1) {
 		const config = visualizers[visualizerState.current].params[key];
 		if (!config) return;
-
-		if (e.key === 'ArrowUp' || e.key === 'ArrowRight') {
-			e.preventDefault();
-			visualizerState.adjustParam(key, config.step);
-		} else if (e.key === 'ArrowDown' || e.key === 'ArrowLeft') {
-			e.preventDefault();
-			visualizerState.adjustParam(key, -config.step);
-		}
-	}
-
-	function handleParamInput(e: Event, key: string) {
-		const input = e.target as HTMLInputElement;
-		const value = parseInt(input.value, 10);
-		if (!isNaN(value)) {
-			visualizerState.setParam(key, value);
-		}
-	}
-
-	function handleParamBlur(_e: Event, key: string) {
-		// Ensure value is clamped on blur
-		const config = visualizers[visualizerState.current].params[key];
-		if (config) {
-			const currentValue = visualizerState.currentParams[key];
-			visualizerState.setParam(key, currentValue);
-		}
+		visualizerState.adjustParam(key, config.step * direction);
 	}
 </script>
 
@@ -181,28 +148,26 @@
 			</div>
 		</div>
 
-		<!-- Combined Visualizer Panel - anchored to bottom -->
-		<div bind:this={visualPanelEl} class="pb-8">
+		<!-- Compact Visualizer Panel - anchored to bottom -->
+		<div bind:this={visualPanelEl} class="pb-4">
 			<div class="border border-border/50 bg-card/80 backdrop-blur-sm">
 				<!-- Header - clickable to collapse -->
 				<button
 					onclick={() => (panelExpanded = !panelExpanded)}
-					class="flex w-full items-center justify-between bg-secondary/50 px-3 py-2 text-sm transition-colors hover:bg-secondary"
+					class="flex w-full items-center justify-between px-3 py-2 text-sm transition-colors hover:bg-secondary/30"
 				>
 					<div class="flex items-center gap-2">
 						<span class="text-(--term-green)">$</span>
-						<span class="text-(--term-gray)">visualizer --interactive</span>
-					</div>
-					<div class="flex items-center gap-3">
-						<span class="text-xs text-(--term-fg-dim)">
+						<span class="hidden text-(--term-gray) sm:inline">visualizer</span>
+						<span class="text-xs" style="color: {getVisualizerColor(visualizerState.current)}">
 							{visualizers[visualizerState.current].displayName}
 						</span>
-						<ChevronDown
-							class="h-3 w-3 text-(--term-gray) transition-transform duration-200 {panelExpanded
-								? 'rotate-180'
-								: ''}"
-						/>
 					</div>
+					<ChevronDown
+						class="h-4 w-4 text-(--term-gray) transition-transform duration-200 {panelExpanded
+							? 'rotate-180'
+							: ''}"
+					/>
 				</button>
 
 				<!-- Collapsible content -->
@@ -213,127 +178,98 @@
 				>
 					<div class="overflow-hidden">
 						<div class="border-t border-border/50">
-							<!-- Two column layout: selector on left, controls on right -->
-							<div class="grid md:grid-cols-2">
-								<!-- Visualizer Selector -->
-								<div class="border-b border-border/50 p-3 md:border-b-0 md:border-r">
-									<div class="mb-2 text-xs text-(--term-gray)"># Select visualizer</div>
-									<div class="grid gap-2 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2">
-										{#each visualizerOrder as visualizerName (visualizerName)}
-											{@const visualizer = visualizers[visualizerName]}
-											{@const visualizerColor = getVisualizerColor(visualizerName)}
-											<button
-												onclick={() => selectVisualizer(visualizerName)}
-												disabled={visualizerState.isTransitioning}
-												class="group flex items-center gap-3 border px-3 py-2 text-left transition-all disabled:opacity-50 {visualizerState.current ===
-												visualizerName
-													? 'border-(--term-green) bg-secondary/50'
-													: 'border-border/30 hover:border-border hover:bg-secondary/30'}"
+							<!-- Horizontal scrolling visualizer selector -->
+							<div class="flex gap-2 overflow-x-auto p-2 scrollbar-hide">
+								{#each visualizerOrder as visualizerName (visualizerName)}
+									{@const visualizerColor = getVisualizerColor(visualizerName)}
+									<button
+										onclick={() => selectVisualizer(visualizerName)}
+										disabled={visualizerState.isTransitioning}
+										class="shrink-0 px-4 py-2 text-sm transition-all disabled:opacity-50 {visualizerState.current ===
+										visualizerName
+											? 'border border-(--term-green) bg-secondary/50'
+											: 'border border-border/30 hover:border-border hover:bg-secondary/30'}"
+										style="color: {visualizerState.current === visualizerName
+											? 'var(--term-green)'
+											: visualizerColor}"
+									>
+										{visualizers[visualizerName].displayName}
+									</button>
+								{/each}
+							</div>
+
+							<!-- Controls row - horizontal scroll like visualizers -->
+							<div
+								class="flex items-center gap-2 overflow-x-auto border-t border-border/50 px-2 py-2 scrollbar-hide"
+							>
+								<!-- Reset button at front for stability -->
+								<button
+									onclick={() => {
+										visualizerState.resetParams();
+										visualizerState.restart();
+									}}
+									class="flex h-9 w-9 shrink-0 items-center justify-center border border-border/30 text-(--term-red) transition-colors hover:border-(--term-red) hover:bg-(--term-red)/10"
+									title="Reset"
+								>
+									<RotateCcw class="h-4 w-4" />
+								</button>
+
+								<!-- Speed control with -/+ buttons -->
+								<div class="flex shrink-0 items-center">
+									<button
+										onclick={() => visualizerState.cycleSpeed(-1)}
+										class="flex h-9 w-8 items-center justify-center border border-border/30 text-(--term-purple) transition-colors hover:border-(--term-purple) hover:bg-secondary/30 disabled:opacity-30"
+										disabled={speedOptions.indexOf(visualizerState.speedMultiplier) === 0}
+									>
+										−
+									</button>
+									<div class="grid h-9 place-items-center border-y border-border/30 px-2">
+										<span class="text-xs">
+											<span class="text-(--term-gray)">speed</span>
+											<span class="ml-1.5 font-mono text-(--term-purple)"
+												>{formatSpeed(visualizerState.speedMultiplier)}</span
 											>
-												<span style="color: {visualizerColor}"></span>
-												<div class="flex-1">
-													<div class="text-sm" style="color: {visualizerColor}">
-														./{visualizer.name}
-													</div>
-													<div class="text-xs text-(--term-fg-dim)">{visualizer.tagline}</div>
-												</div>
-												{#if visualizerState.current === visualizerName}
-													<span class="text-xs text-(--term-green)">*</span>
-												{/if}
-											</button>
-										{/each}
+										</span>
 									</div>
+									<button
+										onclick={() => visualizerState.cycleSpeed(1)}
+										class="flex h-9 w-8 items-center justify-center border border-border/30 text-(--term-purple) transition-colors hover:border-(--term-purple) hover:bg-secondary/30 disabled:opacity-30"
+										disabled={speedOptions.indexOf(visualizerState.speedMultiplier) ===
+											speedOptions.length - 1}
+									>
+										+
+									</button>
 								</div>
 
-								<!-- Controls -->
-								<div class="p-3">
-									<div class="mb-2 text-xs text-(--term-gray)">
-										# Adjust parameters
-										{#if visualizers[visualizerState.current].interactive}
-											<span class="ml-2 text-(--term-yellow)">(interactive)</span>
-										{/if}
-									</div>
-									<div class="flex flex-col gap-3">
-										<!-- Speed control -->
-										<div class="flex items-center justify-between gap-3">
-											<span class="text-sm text-(--term-purple)">--speed</span>
-											<div class="flex items-center gap-1">
-												<button
-													onclick={() => visualizerState.cycleSpeed(-1)}
-													disabled={!canDecreaseSpeed()}
-													class="flex h-7 w-7 items-center justify-center border border-border/50 transition-colors hover:border-(--term-purple) hover:text-(--term-purple) disabled:opacity-30 disabled:hover:border-border/50 disabled:hover:text-current"
+								<!-- Dynamic params with -/+ buttons -->
+								{#each Object.entries(visualizers[visualizerState.current].params) as [key, config] (key)}
+									<div class="flex shrink-0 items-center">
+										<button
+											onclick={() => cycleParam(key, -1)}
+											class="flex h-9 w-8 items-center justify-center border border-border/30 transition-colors hover:bg-secondary/30 disabled:opacity-30"
+											style="color: {config.color}"
+											disabled={visualizerState.currentParams[key] <= config.min}
+										>
+											−
+										</button>
+										<div class="grid h-9 place-items-center border-y border-border/30 px-2">
+											<span class="text-xs">
+												<span class="text-(--term-gray)">{config.label.replace('--', '')}</span>
+												<span class="ml-1.5 font-mono" style="color: {config.color}"
+													>{visualizerState.currentParams[key]}</span
 												>
-													<Minus class="h-3 w-3" />
-												</button>
-												<span class="w-16 text-center font-mono text-sm text-(--term-purple)">
-													{formatSpeed(visualizerState.speedMultiplier)}
-												</span>
-												<button
-													onclick={() => visualizerState.cycleSpeed(1)}
-													disabled={!canIncreaseSpeed()}
-													class="flex h-7 w-7 items-center justify-center border border-border/50 transition-colors hover:border-(--term-purple) hover:text-(--term-purple) disabled:opacity-30 disabled:hover:border-border/50 disabled:hover:text-current"
-												>
-													<Plus class="h-3 w-3" />
-												</button>
-											</div>
+											</span>
 										</div>
-
-										<!-- Dynamic params for current visualizer -->
-										{#each Object.entries(visualizers[visualizerState.current].params) as [key, config] (key)}
-											<div class="flex items-center justify-between gap-3">
-												<span class="text-sm" style="color: {config.color}">{config.label}</span>
-												<div class="flex items-center gap-1">
-													<button
-														onclick={() => visualizerState.adjustParam(key, -config.step)}
-														disabled={visualizerState.currentParams[key] <= config.min}
-														class="flex h-7 w-7 items-center justify-center border border-border/50 transition-colors disabled:opacity-30 disabled:hover:border-border/50 disabled:hover:text-current"
-														style="--hover-color: {config.color}"
-														onmouseenter={(e) => (e.currentTarget.style.borderColor = config.color)}
-														onmouseleave={(e) => (e.currentTarget.style.borderColor = '')}
-													>
-														<Minus class="h-3 w-3" />
-													</button>
-													<input
-														type="number"
-														value={visualizerState.currentParams[key]}
-														min={config.min}
-														max={config.max}
-														step={config.step}
-														onblur={(e) => handleParamBlur(e, key)}
-														onkeydown={(e) => handleParamKeydown(e, key)}
-														oninput={(e) => handleParamInput(e, key)}
-														class="w-16 border border-border/50 bg-transparent text-center font-mono text-sm transition-colors focus:border-(--term-fg) focus:outline-none"
-														style="color: {config.color}"
-													/>
-													<button
-														onclick={() => visualizerState.adjustParam(key, config.step)}
-														disabled={visualizerState.currentParams[key] >= config.max}
-														class="flex h-7 w-7 items-center justify-center border border-border/50 transition-colors disabled:opacity-30 disabled:hover:border-border/50 disabled:hover:text-current"
-														style="--hover-color: {config.color}"
-														onmouseenter={(e) => (e.currentTarget.style.borderColor = config.color)}
-														onmouseleave={(e) => (e.currentTarget.style.borderColor = '')}
-													>
-														<Plus class="h-3 w-3" />
-													</button>
-												</div>
-											</div>
-										{/each}
-
-										<!-- Action button -->
-										<div class="pt-1">
-											<button
-												onclick={() => {
-													visualizerState.resetParams();
-													visualizerState.restart();
-												}}
-												class="flex w-full items-center justify-center gap-2 border border-(--term-red) px-3 py-2 text-sm text-(--term-red) transition-colors hover:bg-(--term-red) hover:text-(--term-bg)"
-											>
-												<RotateCcw class="h-3 w-3" />
-												<span>--reset</span>
-											</button>
-										</div>
+										<button
+											onclick={() => cycleParam(key, 1)}
+											class="flex h-9 w-8 items-center justify-center border border-border/30 transition-colors hover:bg-secondary/30 disabled:opacity-30"
+											style="color: {config.color}"
+											disabled={visualizerState.currentParams[key] >= config.max}
+										>
+											+
+										</button>
 									</div>
-								</div>
+								{/each}
 							</div>
 						</div>
 					</div>
@@ -344,15 +280,12 @@
 </section>
 
 <style>
-	/* Hide number input spinners */
-	input[type='number']::-webkit-inner-spin-button,
-	input[type='number']::-webkit-outer-spin-button {
-		-webkit-appearance: none;
-		margin: 0;
+	/* Hide scrollbar but keep functionality */
+	.scrollbar-hide {
+		-ms-overflow-style: none;
+		scrollbar-width: none;
 	}
-
-	input[type='number'] {
-		-moz-appearance: textfield;
-		appearance: textfield;
+	.scrollbar-hide::-webkit-scrollbar {
+		display: none;
 	}
 </style>
