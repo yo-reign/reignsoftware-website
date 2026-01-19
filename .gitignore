@@ -27,3 +27,21 @@ vite.config.ts.timestamp-*
 Session.vim
 *.swp
 *.swo
+
+# IDE
+.idea
+.vscode
+
+# Claude/AI tooling
+.claude/
+.mcp.json
+
+# Shell configs (sandbox artifacts)
+.bash_profile
+.bashrc
+.profile
+.zprofile
+.zshrc
+.gitconfig
+.gitmodules
+.ripgreprc

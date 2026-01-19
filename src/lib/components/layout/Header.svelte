@@ -8,13 +8,12 @@
 		visualizerOrder,
 		type VisualizerName
 	} from '$lib/components/visualizers/config';
-	import { Menu, X, Layers, Sun, Moon, Monitor } from '@lucide/svelte';
+	import { Layers, Sun, Moon, Monitor } from '@lucide/svelte';
 
 	// Track if we're on the homepage (where Hero controls visibility)
 	let isHomePage = $derived($page.url.pathname === '/');
 	let previousIsHomePage = $state(true); // Track route changes
 
-	let mobileMenuOpen = $state(false);
 	let showVisualSelector = $state(false);
 	let visualDropdownOpen = $state(false);
 	let themeDropdownOpen = $state(false);
@@ -225,7 +224,7 @@
 		</a>
 
 		<!-- Desktop Navigation -->
-		<div class="hidden items-center gap-1 md:flex">
+		<div class="hidden items-center gap-1 lg:flex">
 			{#each navItems as item (item.href)}
 				<a
 					href={item.href}
@@ -239,7 +238,7 @@
 		<!-- Right side - Fixed width container to prevent layout shift -->
 		<div class="flex items-center gap-3">
 			<!-- Visualizer Selector Container - Always reserves space -->
-			<div class="relative h-10 w-[180px] sm:w-[200px]">
+			<div class="relative h-10 w-[140px] sm:w-[160px]">
 				{#if showVisualSelector}
 					<!-- Boot animation / Shutdown animation -->
 					{#if bootPhase === 'booting' || bootPhase === 'shutdown'}
@@ -376,37 +375,22 @@
 				{/if}
 			</div>
 
-			<!-- Mobile menu button -->
-			<button
-				class="p-2 md:hidden"
-				onclick={() => (mobileMenuOpen = !mobileMenuOpen)}
-				aria-label="Toggle menu"
-			>
-				{#if mobileMenuOpen}
-					<X class="h-5 w-5" />
-				{:else}
-					<Menu class="h-5 w-5" />
-				{/if}
-			</button>
 		</div>
 	</nav>
 
-	<!-- Mobile Navigation -->
-	{#if mobileMenuOpen}
-		<div class="border-t border-border/50 bg-card/95 backdrop-blur-sm md:hidden">
-			<div class="space-y-1 px-4 py-3">
-				{#each navItems as item (item.href)}
-					<a
-						href={item.href}
-						class="block px-3 py-2 text-foreground/80 transition-colors hover:bg-secondary/50"
-						onclick={() => (mobileMenuOpen = false)}
-					>
-						{item.label}
-					</a>
-				{/each}
-			</div>
+	<!-- Mobile Navigation - Horizontally scrollable -->
+	<div class="border-t border-border/50 bg-card/95 backdrop-blur-sm lg:hidden">
+		<div class="flex overflow-x-auto scrollbar-hide">
+			{#each navItems as item (item.href)}
+				<a
+					href={item.href}
+					class="flex-shrink-0 px-4 py-2 text-sm text-foreground/80 transition-colors hover:bg-secondary/50 hover:text-foreground {$page.url.pathname === item.href ? 'border-b-2 border-primary text-foreground' : ''}"
+				>
+					{item.label}
+				</a>
+			{/each}
 		</div>
-	{/if}
+	</div>
 </header>
 
 <style>
