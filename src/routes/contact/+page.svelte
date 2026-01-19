@@ -14,8 +14,8 @@
 				<h2 class="mb-4">Get in Touch</h2>
 				<p>For any inquiries, please reach out to us at:</p>
 				<p class="mt-4">
-					<a href="mailto:daniel@reignsoftware.com" class="text-lg font-medium">
-						daniel@reignsoftware.com
+					<a href="mailto:contact@reignsoftware.com" class="text-lg font-medium">
+						contact@reignsoftware.com
 					</a>
 				</p>
 				<p class="mt-6 text-sm text-(--term-gray)">We'll get back to you as soon as possible.</p>

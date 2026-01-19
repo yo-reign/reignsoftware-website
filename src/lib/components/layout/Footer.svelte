@@ -23,7 +23,7 @@
 		{ icon: Github, href: 'https://github.com/reignsoftware', label: 'GitHub' },
 		{ icon: Twitter, href: 'https://twitter.com/reignsoftware', label: 'Twitter' },
 		{ icon: Linkedin, href: 'https://linkedin.com/company/reignsoftware', label: 'LinkedIn' },
-		{ icon: Mail, href: 'mailto:hello@reignsoftware.com', label: 'Email' }
+		{ icon: Mail, href: 'mailto:contact@reignsoftware.com', label: 'Email' }
 	];
 </script>
 
