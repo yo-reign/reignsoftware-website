@@ -25,6 +25,7 @@
 		name="description"
 		content="Fast, robust, and visually stunning software solutions for businesses and consumers."
 	/>
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
 </svelte:head>
 
@@ -35,7 +36,7 @@
 	<!-- Main content layer -->
 	<div class="relative z-10 flex min-h-screen flex-col">
 		<Header />
-		<main class="flex-1">
+		<main class="flex-1 pt-9 lg:pt-0">
 			{@render children()}
 		</main>
 		<Footer />

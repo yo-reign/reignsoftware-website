@@ -1,25 +1,5 @@
 @import 'tailwindcss';
-
-/* ============================================
-   FONTS
-   ============================================ */
-@font-face {
-	font-family: 'JetBrains Mono';
-	src: url('https://fonts.gstatic.com/s/jetbrainsmono/v18/tDbY2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKxjOVGa.woff2')
-		format('woff2');
-	font-weight: 400;
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: 'JetBrains Mono';
-	src: url('https://fonts.gstatic.com/s/jetbrainsmono/v18/tDbY2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKxjPFGa.woff2')
-		format('woff2');
-	font-weight: 700;
-	font-style: normal;
-	font-display: swap;
-}
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
 
 /* ============================================
    TERMINAL THEME - Gruvbox Dark Hard TUI
