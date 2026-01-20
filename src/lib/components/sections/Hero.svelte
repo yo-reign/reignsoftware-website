@@ -100,11 +100,11 @@
 	}
 </script>
 
-<section class="relative min-h-screen">
+<section class="relative min-h-[calc(100vh-36px)] lg:min-h-screen">
 	<!-- Content -->
 	<div
 		bind:this={heroContent}
-		class="relative z-10 mx-auto flex min-h-screen max-w-6xl flex-col justify-between px-4 sm:px-6 lg:px-8"
+		class="relative z-10 mx-auto flex min-h-[calc(100vh-36px)] max-w-6xl flex-col justify-between px-4 sm:px-6 lg:min-h-screen lg:px-8"
 	>
 		<!-- Main content area - anchored to top with padding -->
 		<div class="pt-24 sm:pt-32">
